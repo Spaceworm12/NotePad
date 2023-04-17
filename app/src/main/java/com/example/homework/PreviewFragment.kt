@@ -30,10 +30,11 @@ class PreviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val allNotes = listOf(
-            Note(id = 123, name = "Первый", description = "Описание первого"),
-            Note(id = 12345, name = "Второй", description = "Описание второго"),
-            Note(id = 2567890, name = "Третий", description = "Описание третьего"),
-            Note(id = 355677, name = "Четвертый", description = "Описание четвертого"),
+            Note(id = 1, name = "Купить хлеба", description = "Описание первого"),
+            Note(id = 2, name = "Сходить в магазин", description = "Описание второго"),
+            Note(id = 3, name = "Покормить попугая", description = "Описание третьего"),
+            Note(id = 4, name = "Сделать гимнастику", description = "Описание четвертого"),
+            Note(id = 5, name = "Посмотреть график", description = "Описание пятого"),
         )
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
