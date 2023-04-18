@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
 
-class Adapter(val clickListener: (String) -> Unit) : ListAdapter<Note, Holder>(DIFF_CALLBACK) {
+class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
@@ -29,7 +30,7 @@ class Adapter(val clickListener: (String) -> Unit) : ListAdapter<Note, Holder>(D
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener { clickListener(noteModel.name) }
+        holder.binding.root.setOnClickListener { clickListener(noteModel) }
     }
 }
 

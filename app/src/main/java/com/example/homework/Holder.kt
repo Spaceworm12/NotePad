@@ -1,6 +1,7 @@
 package com.example.notepad
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 

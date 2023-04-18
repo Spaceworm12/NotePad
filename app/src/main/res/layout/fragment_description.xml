@@ -10,9 +10,9 @@
     android:paddingEnd="10dp"
     android:paddingBottom="5dp">
 
+
     <TextView
         android:id="@+id/note_name"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:textCursorDrawable="@color/black"
         style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="0dp"
