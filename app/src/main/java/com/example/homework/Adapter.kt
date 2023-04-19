@@ -1,6 +1,7 @@
 package com.example.notepad
 
 import android.view.LayoutInflater
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -31,9 +32,9 @@ class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIF
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener {
             clickListener(noteModel)
-        }
-
+            }
     }
 
 }
+
 

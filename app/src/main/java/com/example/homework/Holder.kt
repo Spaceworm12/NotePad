@@ -1,5 +1,8 @@
 package com.example.notepad
 
+import android.view.View
+import android.view.View.OnLongClickListener
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
