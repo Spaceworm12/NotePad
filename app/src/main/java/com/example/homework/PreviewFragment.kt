@@ -25,12 +25,12 @@ class PreviewFragment : Fragment() {
                     R.anim.enter_fragment_in,
                     R.anim.exit_fragment_out
                 )
-            .add(
-            R.id.fragment_container,
-            DescriptionFragment.newInstance(note)
-        )
-            .addToBackStack("")
-            .commit()
+                .add(
+                    R.id.fragment_container,
+                    DescriptionFragment.newInstance(note)
+                )
+                .addToBackStack("")
+                .commit()
         }
     }
 
@@ -44,12 +44,22 @@ class PreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val allNotes = listOf(
+        val allNotes = mutableListOf(
             Note(id = 1, name = "Купить хлеба", description = "Описание первого"),
             Note(id = 2, name = "Сходить в магазин", description = "Описание второго"),
             Note(id = 3, name = "Покормить попугая", description = "Описание третьего"),
             Note(id = 4, name = "Сделать гимнастику", description = "Описание четвертого"),
             Note(id = 5, name = "Посмотреть график", description = "Описание пятого"),
+            Note(id = 6, name = "Купить хлеба", description = "Описание шестого"),
+            Note(id = 7, name = "Сходить в магазин", description = "Описание седьмого"),
+            Note(id = 8, name = "Покормить попугая", description = "Описание восьмого"),
+            Note(id = 9, name = "Сделать гимнастику", description = "Описание девятого"),
+            Note(id = 10, name = "Посмотреть график", description = "Описание десятого"),
+            Note(id = 11, name = "Купить хлеба", description = "Описание одиннадцатого"),
+            Note(id = 12, name = "Сходить в магазин", description = "Описание двенадцатого"),
+            Note(id = 13, name = "Покормить попугая", description = "Описание тринадцатого"),
+            Note(id = 14, name = "Сделать гимнастику", description = "Описание четырнадцатого"),
+            Note(id = 15, name = "Посмотреть график", description = "Описание пятнадцатого"),
         )
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter

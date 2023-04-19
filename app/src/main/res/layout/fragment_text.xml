@@ -14,5 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="TextView" />
+
+    <Button
+        android:id="@+id/btn_del"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/thief"
+        android:gravity="bottom|center"
+        android:text="@string/delete"
+        android:layout_gravity="center|bottom"
+        android:textColor="@color/black" />
 </FrameLayout>
 

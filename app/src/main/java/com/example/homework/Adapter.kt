@@ -8,7 +8,6 @@ import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIFF_CALLBACK) {
-
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
             override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
@@ -30,7 +29,11 @@ class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIF
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener { clickListener(noteModel) }
+        holder.binding.root.setOnClickListener {
+            clickListener(noteModel)
+        }
+
     }
+
 }
 

@@ -1,7 +1,7 @@
 package com.example.homework
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.homework.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
