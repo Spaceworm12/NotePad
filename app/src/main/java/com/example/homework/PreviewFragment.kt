@@ -1,38 +1,45 @@
 package com.example.homework
 
+import android.content.ClipData.Item
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.notepad.Adapter
 
 
-class PreviewFragment : Fragment() {
+class PreviewFragment : Fragment()  {
 
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = Adapter { note ->
-        requireContext()
-        parentFragmentManager.apply {
-            this.beginTransaction()
-                .setCustomAnimations(
-                    R.anim.enter_fragment,
-                    R.anim.exit_fragment,
-                    R.anim.enter_fragment_in,
-                    R.anim.exit_fragment_out
-                )
-                .add(
-                    R.id.fragment_container,
-                    DescriptionFragment.newInstance(note)
-                )
-                .addToBackStack("")
-                .commit()
+    private val adapter = Adapter(
+        clickListener = {note ->
+            requireContext()
+            parentFragmentManager.apply {
+                this.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.enter_fragment,
+                        R.anim.exit_fragment,
+                        R.anim.enter_fragment_in,
+                        R.anim.exit_fragment_out
+                    )
+                    .add(
+                        R.id.fragment_container,
+                        DescriptionFragment.newInstance(note)
+                    )
+                    .addToBackStack("")
+                    .commit()
+            }
+        },
+        longClickListener = {
+            doToast()
         }
-    }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,4 +74,8 @@ class PreviewFragment : Fragment() {
 
 
     }
+    fun doToast(){
+        Toast.makeText(context,"123",Toast.LENGTH_SHORT).show()
+    }
+
 }

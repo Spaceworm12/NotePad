@@ -3,12 +3,16 @@ package com.example.notepad
 import android.view.LayoutInflater
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.homework.Note
+import com.example.homework.PreviewFragment
 import com.example.homework.databinding.FragmentDescriptionBinding
 
-class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIFF_CALLBACK) {
+
+class Adapter(val clickListener: (Note) -> Unit, val longClickListener:() -> Unit): ListAdapter<Note, Holder>(DIFF_CALLBACK) {
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
             override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
@@ -33,6 +37,11 @@ class Adapter(val clickListener: (Note) -> Unit) : ListAdapter<Note, Holder>(DIF
         holder.binding.root.setOnClickListener {
             clickListener(noteModel)
             }
+        holder.binding.root.setOnLongClickListener {
+            longClickListener.invoke()
+            true
+        }
+
     }
 
 }
