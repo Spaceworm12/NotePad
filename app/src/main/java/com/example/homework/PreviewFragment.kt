@@ -1,18 +1,18 @@
 package com.example.homework
 
-import android.content.ClipData.Item
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.notepad.Adapter
 
 
-class PreviewFragment : Fragment()  {
+class PreviewFragment : Fragment() {
 
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
@@ -37,7 +37,7 @@ class PreviewFragment : Fragment()  {
             }
         },
         longClickListener = {
-            doToast()
+            onCreateDialog()
         }
     )
 
@@ -74,8 +74,19 @@ class PreviewFragment : Fragment()  {
 
 
     }
-    fun doToast(){
-        Toast.makeText(context,"123",Toast.LENGTH_SHORT).show()
+
+     private fun onCreateDialog() {
+         val builder = AlertDialog.Builder(context)
+         .setMessage("Delete this note?")
+         .setCancelable(true)
+             .setPositiveButton("Yes") {
+                     dialog, id -> dialog.cancel() }
+
+         .setNegativeButton("No") {
+                 dialog, id -> dialog.cancel() }
+
+         val alert = builder.create()
+         alert.show()
     }
 
 }
