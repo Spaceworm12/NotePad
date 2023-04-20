@@ -1,13 +1,10 @@
 package com.example.notepad
 
 import android.view.LayoutInflater
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.homework.Note
-import com.example.homework.PreviewFragment
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 
@@ -43,6 +40,7 @@ class Adapter(val clickListener: (Note) -> Unit, val longClickListener:() -> Uni
         }
 
     }
+
 
 }
 
