@@ -38,7 +38,7 @@ class DescriptionFragment : Fragment() {
         val currentNote: Note =
             arguments?.getParcelable(KEY_NOTE) ?: Note(id = 0, "Нихера", description = "")
 
-        binding.elementText.text= currentNote.description
+        binding.elementText.setText(currentNote.description)
     }
 
 

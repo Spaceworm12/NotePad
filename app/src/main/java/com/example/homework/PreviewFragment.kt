@@ -52,7 +52,6 @@ class PreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         allNotes.add(Note(id = 1, name = "Купить хлеба", description = "Описание первого"))
         allNotes.add(Note(id = 2, name = "Сходить в магазин", description = "Описание второго"))
         allNotes.add(Note(id = 3, name = "Покормить попугая", description = "Описание третьего"))
@@ -64,8 +63,20 @@ class PreviewFragment : Fragment() {
         allNotes.add(Note(id = 9, name = "Сделать гимнастику", description = "Описание девятого"))
         allNotes.add(Note(id = 10, name = "Посмотреть график", description = "Описание десятого"))
         allNotes.add(Note(id = 11, name = "Купить хлеба", description = "Описание одиннадцатого"))
-        allNotes.add(Note(id = 12, name = "Сходить в магазин", description = "Описание двенадцатого"))
-        allNotes.add(Note(id = 13, name = "Покормить попугая", description = "Описание тринадцатого"))
+        allNotes.add(
+            Note(
+                id = 12,
+                name = "Сходить в магазин",
+                description = "Описание двенадцатого"
+            )
+        )
+        allNotes.add(
+            Note(
+                id = 13,
+                name = "Покормить попугая",
+                description = "Описание тринадцатого"
+            )
+        )
         allNotes.add(
             Note(
                 id = 14,

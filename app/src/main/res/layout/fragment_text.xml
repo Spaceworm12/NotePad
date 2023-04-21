@@ -11,11 +11,11 @@
     android:keepScreenOn="true"
     tools:context=".MainActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/element_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TextView" />
+        android:text="EditText" />
 
     <Button
         android:id="@+id/btn_del"
