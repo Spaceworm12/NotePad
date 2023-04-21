@@ -8,7 +8,8 @@ import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 
-class Adapter(val clickListener: (Note) -> Unit, val longClickListener:() -> Unit): ListAdapter<Note, Holder>(DIFF_CALLBACK) {
+class Adapter(val clickListener: (Note) -> Unit, val longClickListener: (Int, Note) -> Unit) :
+    ListAdapter<Note, Holder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
@@ -33,15 +34,14 @@ class Adapter(val clickListener: (Note) -> Unit, val longClickListener:() -> Uni
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener {
             clickListener(noteModel)
-            }
+        }
         holder.binding.root.setOnLongClickListener {
-            longClickListener.invoke()
+            longClickListener.invoke(currentList.indexOf(noteModel), noteModel)
             true
         }
 
     }
-
-
 }
+
 
 
