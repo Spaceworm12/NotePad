@@ -2,6 +2,7 @@ package com.example.homework
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.homework.Fragments.PreviewFragment
 import com.example.homework.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -1,6 +1,7 @@
-package com.example.homework
+package com.example.homework.Fragments.AdapterAndHolder
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 

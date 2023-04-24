@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:item="@layout/fragment_description"
-        tools:itemCount="3" />
+        tools:itemCount="15" />
 
 
 

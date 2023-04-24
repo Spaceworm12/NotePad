@@ -1,13 +1,17 @@
-package com.example.homework
+package com.example.homework.Fragments.AdapterAndHolder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 
-class PreviewAdapter(val clickListener: (NoteModel) -> Unit, val longClickListener: (Int, NoteModel) -> Unit) :
+class PreviewAdapter(
+    val clickListener: (NoteModel) -> Unit,
+    val longClickListener: (Int, NoteModel) -> Unit
+) :
     ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
 
     companion object {

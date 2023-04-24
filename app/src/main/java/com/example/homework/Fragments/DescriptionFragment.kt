@@ -1,4 +1,4 @@
-package com.example.homework
+package com.example.homework.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentTextBinding
 
 
@@ -34,6 +35,7 @@ class DescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
 
         val currentNote: NoteModel =
             arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "Нихера", description = "")
