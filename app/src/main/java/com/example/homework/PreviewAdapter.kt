@@ -1,35 +1,34 @@
-package com.example.notepad
+package com.example.homework
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.homework.Note
 import com.example.homework.databinding.FragmentDescriptionBinding
 
 
-class Adapter(val clickListener: (Note) -> Unit, val longClickListener: (Int, Note) -> Unit) :
-    ListAdapter<Note, Holder>(DIFF_CALLBACK) {
+class PreviewAdapter(val clickListener: (NoteModel) -> Unit, val longClickListener: (Int, NoteModel) -> Unit) :
+    ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
-            override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
+            override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
+            override fun areContentsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {
                 return oldItem == newItem
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentDescriptionBinding.inflate(inflater, parent, false)
-        return Holder(binding)
+        return PreviewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
+    override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener {

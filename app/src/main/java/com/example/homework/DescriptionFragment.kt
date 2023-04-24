@@ -16,7 +16,7 @@ class DescriptionFragment : Fragment() {
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
-        fun newInstance(note: Note) = DescriptionFragment().apply {
+        fun newInstance(note: NoteModel) = DescriptionFragment().apply {
             arguments = bundleOf(
                 KEY_NOTE to note
             )
@@ -35,10 +35,11 @@ class DescriptionFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        val currentNote: Note =
-            arguments?.getParcelable(KEY_NOTE) ?: Note(id = 0, "Нихера", description = "")
+        val currentNote: NoteModel =
+            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "Нихера", description = "")
 
         binding.elementText.setText(currentNote.description)
+
     }
 
 

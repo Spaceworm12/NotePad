@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.databinding.FragmentPreviewBinding
-import com.example.notepad.Adapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -16,9 +15,9 @@ class PreviewFragment : Fragment() {
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private val allNotes = mutableListOf<Note>()
+    private val allNotes = mutableListOf<NoteModel>()
 
-    private val adapter = Adapter(
+    private val adapter = PreviewAdapter(
         clickListener = { note ->
             requireContext()
             parentFragmentManager.apply {
@@ -52,40 +51,40 @@ class PreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allNotes.add(Note(id = 1, name = "Купить хлеба", description = "Описание первого"))
-        allNotes.add(Note(id = 2, name = "Сходить в магазин", description = "Описание второго"))
-        allNotes.add(Note(id = 3, name = "Покормить попугая", description = "Описание третьего"))
-        allNotes.add(Note(id = 4, name = "Сделать гимнастику", description = "Описание четвертого"))
-        allNotes.add(Note(id = 5, name = "Посмотреть график", description = "Описание пятого"))
-        allNotes.add(Note(id = 6, name = "Купить хлеба", description = "Описание шестого"))
-        allNotes.add(Note(id = 7, name = "Сходить в магазин", description = "Описание седьмого"))
-        allNotes.add(Note(id = 8, name = "Покормить попугая", description = "Описание восьмого"))
-        allNotes.add(Note(id = 9, name = "Сделать гимнастику", description = "Описание девятого"))
-        allNotes.add(Note(id = 10, name = "Посмотреть график", description = "Описание десятого"))
-        allNotes.add(Note(id = 11, name = "Купить хлеба", description = "Описание одиннадцатого"))
+        allNotes.add(NoteModel(id = 1, name = "Купить хлеба", description = "Описание первого"))
+        allNotes.add(NoteModel(id = 2, name = "Сходить в магазин", description = "Описание второго"))
+        allNotes.add(NoteModel(id = 3, name = "Покормить попугая", description = "Описание третьего"))
+        allNotes.add(NoteModel(id = 4, name = "Сделать гимнастику", description = "Описание четвертого"))
+        allNotes.add(NoteModel(id = 5, name = "Посмотреть график", description = "Описание пятого"))
+        allNotes.add(NoteModel(id = 6, name = "Купить хлеба", description = "Описание шестого"))
+        allNotes.add(NoteModel(id = 7, name = "Сходить в магазин", description = "Описание седьмого"))
+        allNotes.add(NoteModel(id = 8, name = "Покормить попугая", description = "Описание восьмого"))
+        allNotes.add(NoteModel(id = 9, name = "Сделать гимнастику", description = "Описание девятого"))
+        allNotes.add(NoteModel(id = 10, name = "Посмотреть график", description = "Описание десятого"))
+        allNotes.add(NoteModel(id = 11, name = "Купить хлеба", description = "Описание одиннадцатого"))
         allNotes.add(
-            Note(
+            NoteModel(
                 id = 12,
                 name = "Сходить в магазин",
                 description = "Описание двенадцатого"
             )
         )
         allNotes.add(
-            Note(
+            NoteModel(
                 id = 13,
                 name = "Покормить попугая",
                 description = "Описание тринадцатого"
             )
         )
         allNotes.add(
-            Note(
+            NoteModel(
                 id = 14,
                 name = "Сделать гимнастику",
                 description = "Описание четырнадцатого"
             )
         )
         allNotes.add(
-            Note(
+            NoteModel(
                 id = 15,
                 name = "Посмотреть график",
                 description = "Описание пятнадцатого"
@@ -99,7 +98,7 @@ class PreviewFragment : Fragment() {
 
     }
 
-    private fun onShowDeteteDialog(index: Int, note: Note) {
+    private fun onShowDeteteDialog(index: Int, note: NoteModel) {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage("Delete this note?")
             .setCancelable(true)
