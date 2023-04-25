@@ -1,4 +1,4 @@
-package com.example.homework.Fragments
+package com.example.homework.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentTextBinding
+import com.example.homework.models.NoteModel
 
 
 class DescriptionFragment : Fragment() {
@@ -41,6 +41,13 @@ class DescriptionFragment : Fragment() {
             arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "Нихера", description = "")
 
         binding.elementText.setText(currentNote.description)
+        binding.btnBack.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .hide(this)
+                .commit()
+        }
 
     }
 

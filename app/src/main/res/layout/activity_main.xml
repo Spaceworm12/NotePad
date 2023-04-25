@@ -7,3 +7,5 @@
     android:keepScreenOn="true"
     tools:context=".MainActivity"/>
 
+
+

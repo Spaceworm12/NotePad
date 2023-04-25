@@ -1,11 +1,11 @@
-package com.example.homework.Fragments.AdapterAndHolder
+package com.example.homework.fragments.adapterAndHolder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentDescriptionBinding
+import com.example.homework.models.NoteModel
 
 
 class PreviewAdapter(

@@ -1,8 +1,8 @@
-package com.example.homework.Fragments.AdapterAndHolder
+package com.example.homework.fragments.adapterAndHolder
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework.Model.NoteModel
 import com.example.homework.databinding.FragmentDescriptionBinding
+import com.example.homework.models.NoteModel
 
 
 class PreviewHolder(val binding: FragmentDescriptionBinding) :

@@ -1,4 +1,4 @@
-package com.example.homework.Fragments
+package com.example.homework.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.homework.Fragments.AdapterAndHolder.PreviewAdapter
-import com.example.homework.Model.NoteModel
 import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
+import com.example.homework.fragments.adapterAndHolder.PreviewAdapter
+import com.example.homework.models.NoteModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -51,6 +51,7 @@ class PreviewFragment : Fragment() {
         _binding = FragmentPreviewBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
