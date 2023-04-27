@@ -7,7 +7,18 @@
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".presentation.recycler.PreviewFragment">
     >
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_view"
@@ -20,6 +31,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:item="@layout/fragment_description"
         tools:itemCount="15" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription"/>
 
 
 

@@ -15,10 +15,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, PreviewFragment())
-            .commit()
+        if (savedInstanceState == null) apply {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, PreviewFragment())
+                .commit()
+        }
 
     }
 

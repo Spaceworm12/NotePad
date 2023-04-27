@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.homework.fragments.adapterAndHolder.PreviewAdapter
-import com.example.homework.models.NoteModel
+import com.example.homework.data.models.model.noteModel.NoteModel
+import com.example.homework.presentation.recycler.adapter.PreviewAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import ru.lesson.fragmentsample.presentation.recycler.RecyclerEvent
+import ru.lesson.fragmentsample.presentation.recycler.RecyclerViewModel
 
 
 class PreviewFragment : Fragment() {
@@ -18,7 +22,9 @@ class PreviewFragment : Fragment() {
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private val allNotes = mutableListOf<NoteModel>()
+    private val viewModel: RecyclerViewModel by lazy {
+        ViewModelProvider(this)[RecyclerViewModel::class.java]
+    }
 
     private val adapter = PreviewAdapter(
         clickListener = { note ->
@@ -55,97 +61,17 @@ class PreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allNotes.add(NoteModel(id = 1, name = "Купить хлеба", description = "Описание первого"))
-        allNotes.add(
-            NoteModel(
-                id = 2,
-                name = "Сходить в магазин",
-                description = "Описание второго"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 3,
-                name = "Покормить попугая",
-                description = "Описание третьего"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 4,
-                name = "Сделать гимнастику",
-                description = "Описание четвертого"
-            )
-        )
-        allNotes.add(NoteModel(id = 5, name = "Посмотреть график", description = "Описание пятого"))
-        allNotes.add(NoteModel(id = 6, name = "Купить хлеба", description = "Описание шестого"))
-        allNotes.add(
-            NoteModel(
-                id = 7,
-                name = "Сходить в магазин",
-                description = "Описание седьмого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 8,
-                name = "Покормить попугая",
-                description = "Описание восьмого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 9,
-                name = "Сделать гимнастику",
-                description = "Описание девятого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 10,
-                name = "Посмотреть график",
-                description = "Описание десятого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 11,
-                name = "Купить хлеба",
-                description = "Описание одиннадцатого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 12,
-                name = "Сходить в магазин",
-                description = "Описание двенадцатого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 13,
-                name = "Покормить попугая",
-                description = "Описание тринадцатого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 14,
-                name = "Сделать гимнастику",
-                description = "Описание четырнадцатого"
-            )
-        )
-        allNotes.add(
-            NoteModel(
-                id = 15,
-                name = "Посмотреть график",
-                description = "Описание пятнадцатого"
-            )
-        )
+        viewModel.submitUIEvent(RecyclerEvent.GetItems)
 
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
-        adapter.submitList(allNotes)
+        viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
+            binding.loader.isVisible = state.isLoading
+            binding.fabAddItem.isVisible = !state.isLoading
+            binding.rvFirst.isVisible = !state.isLoading
+
+            adapter.submitList(state.itemList)
+        }
 
 
     }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.homework.databinding.FragmentTextBinding
-import com.example.homework.models.NoteModel
+import com.example.homework.data.models.model.noteModel.NoteModel
 
 
 class DescriptionFragment : Fragment() {

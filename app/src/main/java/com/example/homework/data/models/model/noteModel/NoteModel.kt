@@ -1,4 +1,4 @@
-package com.example.homework.models
+package com.example.homework.data.models.model.noteModel
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
