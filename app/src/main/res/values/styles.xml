@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyButtonStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:background">@drawable/thief</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="MyBackgroundGradientStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:background">@drawable/radial_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:keepScreenOn">true</item>
+    </style>
+    <style name="Elements">
+    <item name="android:paddingStart">10dp</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingEnd">10dp</item>
+    <item name="android:paddingBottom">5dp</item>
+    <item name="android:layout_marginTop">10dp</item>
+    <item name="android:layout_marginBottom">10dp</item>
+    <item name="android:layout_marginEnd">10dp</item>
+    <item name="android:layout_marginStart">10dp</item>
+    </style>
+
+
+</resources>
