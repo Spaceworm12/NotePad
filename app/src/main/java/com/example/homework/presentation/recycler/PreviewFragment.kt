@@ -58,8 +58,7 @@ class PreviewFragment : Fragment() {
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
                 .remove(note.toString())
-                adapter.notifyItemRemoved(index)
-            }
+                adapter.notifyItemRemoved(index)}
             .setNegativeButton("No") { _, _ -> }
             .create()
             .show()

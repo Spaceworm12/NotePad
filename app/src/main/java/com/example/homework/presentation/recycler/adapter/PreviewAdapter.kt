@@ -9,7 +9,7 @@ import com.example.homework.presentation.model.NoteModel
 
 
 class PreviewAdapter(
-    private val longClickListener: (Int, NoteModel) -> Unit
+    val longClickListener: (Int, NoteModel) -> Unit
 ) :
     ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
 
@@ -34,7 +34,7 @@ class PreviewAdapter(
     override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener { clickListener(noteModel)
+        holder.binding.root.setOnClickListener { clickListener(noteModel.name)
         }
         holder.binding.root.setOnLongClickListener {
             longClickListener.invoke(currentList.indexOf(noteModel), noteModel)

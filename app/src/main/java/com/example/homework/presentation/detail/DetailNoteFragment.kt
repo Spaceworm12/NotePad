@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.homework.databinding.FragmentTextBinding
 import com.example.homework.data.models.model.noteModel.NoteModel
+import com.example.homework.databinding.FragmentTextBinding
 
 
 class DetailNoteFragment : Fragment() {
     private var _binding: FragmentTextBinding? = null
     private val binding get() = _binding!!
-
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
@@ -26,9 +25,10 @@ class DetailNoteFragment : Fragment() {
             )
         }
     }
-        private val viewModelNote: DetailViewModelNote by lazy {
-            ViewModelProvider(this)[DetailViewModelNote::class.java]
-        }
+
+    private val detailViewModelNote: DetailViewModelNote by lazy {
+        ViewModelProvider(this)[DetailViewModelNote::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +41,12 @@ class DetailNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        savedInstanceState?.let { binding.elementText.setText(DetailViewModelNote.userText.value ?: "") }
+        savedInstanceState?.let {
+            binding.elementText.setText(detailViewModelNote.userText.value ?: "")
+        }
 
         val currentNote: NoteModel =
-            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "Нихера", description = "")
+            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "", description = "")
 
         binding.elementText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -56,7 +58,7 @@ class DetailNoteFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 //Сохраняем изменения в liveData
                 s?.let {
-                    viewModelNote.submitUIEvent(DetailEvent.SaveUserText(s.toString()))
+                    detailViewModelNote.submitUIEvent(DetailEvent.SaveUserText(s.toString()))
                 }
             }
         })
@@ -70,6 +72,6 @@ class DetailNoteFragment : Fragment() {
     }
 
 
-    }
+}
 
 

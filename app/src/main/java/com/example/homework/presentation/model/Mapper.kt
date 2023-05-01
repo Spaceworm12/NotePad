@@ -9,7 +9,7 @@ import com.example.homework.presentation.model.NoteModel as ExampleModelPresenta
 // поэтому нам нужно конвертировать ExampleModel из data в ExampleModel из presentation слоя
 object Mapper {
 
-    private fun transformToPresentation(noteModel: ExampleModelPresentation): ExampleModelPresentation {
+     fun transformToPresentation(noteModel: ExampleModelPresentation): ExampleModelPresentation {
         return ExampleModelPresentation(
             id = noteModel.id,
             name = noteModel.name,
