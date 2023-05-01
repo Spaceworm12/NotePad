@@ -14,8 +14,7 @@ import com.example.homework.databinding.FragmentTextBinding
 
 
 class DetailNoteFragment : Fragment() {
-    private var _binding: FragmentTextBinding? = null
-    private val binding get() = _binding!!
+
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
@@ -25,6 +24,8 @@ class DetailNoteFragment : Fragment() {
             )
         }
     }
+    private var _binding: FragmentTextBinding? = null
+    private val binding get() = _binding!!
 
     private val detailViewModelNote: DetailViewModelNote by lazy {
         ViewModelProvider(this)[DetailViewModelNote::class.java]
@@ -39,14 +40,14 @@ class DetailNoteFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        //Восстанавливаем текст из liveData
         super.onViewCreated(view, savedInstanceState)
         savedInstanceState?.let {
             binding.elementText.setText(detailViewModelNote.userText.value ?: "")
         }
 
-        val currentNote: NoteModel =
-            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "", description = "")
+//        val currentNote: NoteModel =
+//            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "", description = "")
 
         binding.elementText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -1,5 +1,6 @@
 package com.example.homework.presentation.recycler.adapter
 
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,9 +10,11 @@ import com.example.homework.presentation.model.NoteModel
 
 
 class PreviewAdapter(
-    val longClickListener: (Int, NoteModel) -> Unit
+    private val longClickListener: (Int, NoteModel) -> Unit,
+    //private val clickListener: (NoteModel) -> Unit
 ) :
     ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
+
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
@@ -34,8 +37,7 @@ class PreviewAdapter(
     override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener { clickListener(noteModel.name)
-        }
+       // holder.binding.root.setOnClickListener { clickListener.invoke(noteModel)}
         holder.binding.root.setOnLongClickListener {
             longClickListener.invoke(currentList.indexOf(noteModel), noteModel)
             true

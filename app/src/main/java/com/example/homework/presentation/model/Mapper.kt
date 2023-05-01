@@ -1,7 +1,6 @@
 package com.example.homework.presentation.model
 
 
-
 //переназначаем имя ExampleModel из слоя презентации, чтобы не было путаницы
 import com.example.homework.presentation.model.NoteModel as ExampleModelPresentation
 
@@ -9,7 +8,7 @@ import com.example.homework.presentation.model.NoteModel as ExampleModelPresenta
 // поэтому нам нужно конвертировать ExampleModel из data в ExampleModel из presentation слоя
 object Mapper {
 
-     fun transformToPresentation(noteModel: ExampleModelPresentation): ExampleModelPresentation {
+    private fun transformToPresentation(noteModel: ExampleModelPresentation): ExampleModelPresentation {
         return ExampleModelPresentation(
             id = noteModel.id,
             name = noteModel.name,
@@ -21,6 +20,5 @@ object Mapper {
     fun transformToPresentation(task: List<ExampleModelPresentation>): List<ExampleModelPresentation> {
         return task.map { transformToPresentation(it) }
     }
-
 
 }

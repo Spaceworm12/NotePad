@@ -1,7 +1,6 @@
 package com.example.homework.presentation.recycler
 
 import android.os.Bundle
-import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,17 @@ class PreviewFragment : Fragment() {
     private val adapter = PreviewAdapter { index, note ->
         onShowDeleteDialog(index, note)
     }
+//    private val adapter = ExampleListAdapter { exampleModelName ->
+//        requireActivity()
+//            .supportFragmentManager
+//            .beginTransaction()
+//            .add(
+//                R.id.fragment_container,
+//                DetailFragment.newInstance(exampleModelName)
+//            )
+//            .addToBackStack("")
+//            .commit()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,8 +67,9 @@ class PreviewFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                .remove(note.toString())
-                adapter.notifyItemRemoved(index)}
+                //             .remove(note.toString())
+                adapter.notifyItemRemoved(index)
+            }
             .setNegativeButton("No") { _, _ -> }
             .create()
             .show()
