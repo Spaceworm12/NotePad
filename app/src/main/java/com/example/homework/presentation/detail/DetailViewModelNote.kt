@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class DetailViewModelNote: ViewModel() {
 
-        var userText = MutableLiveData<String>()
+        val userText = MutableLiveData<String>()
 
 
     //Пример LiveData c LiveData с примитивным типом данных

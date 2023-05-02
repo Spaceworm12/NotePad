@@ -5,3 +5,4 @@ import com.example.homework.data.models.model.noteModel.NoteModel
 interface ItemRepository {
     fun getItems(): List<NoteModel>
 }
+// add getNotes

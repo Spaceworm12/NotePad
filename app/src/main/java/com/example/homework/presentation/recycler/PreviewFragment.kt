@@ -1,6 +1,7 @@
 package com.example.homework.presentation.recycler
 
 import android.os.Bundle
+import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +24,14 @@ class PreviewFragment : Fragment() {
         ViewModelProvider(this)[RecyclerViewModel::class.java]
     }
 
-    private val adapter = PreviewAdapter { index, note ->
-        onShowDeleteDialog(index, note)
-    }
+//    private val adapter = PreviewAdapter(
+//        longClickListener = { index, note ->
+//            onShowDeleteDialog(index, note)
+//        },
+//        clickListener = { }
+//    )
+
+    private val adapter = PreviewAdapter( x = "") { index, note -> }
 //    private val adapter = ExampleListAdapter { exampleModelName ->
 //        requireActivity()
 //            .supportFragmentManager
@@ -67,7 +73,7 @@ class PreviewFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                //             .remove(note.toString())
+                adapter.currentList.remove(note)
                 adapter.notifyItemRemoved(index)
             }
             .setNegativeButton("No") { _, _ -> }

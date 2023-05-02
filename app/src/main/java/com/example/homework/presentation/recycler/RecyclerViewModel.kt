@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.noteRepository.ItemRepository
 import com.example.homework.data.models.model.noteRepository.ItemRepositoryImpl
+import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class RecyclerViewModel(
             viewState = viewState.copy(isLoading = true)
             delay(1500)
             viewState = viewState.copy(
-                //         itemList = Mapper.transformToPresentation(itemRepository.getItems()),
+                         itemList = Mapper.transformToPresentation(itemRepository.getItems()),
                 isLoading = false
             )
         }

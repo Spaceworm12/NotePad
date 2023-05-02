@@ -10,8 +10,9 @@ import com.example.homework.presentation.model.NoteModel
 
 
 class PreviewAdapter(
+    private val x: String,
     private val longClickListener: (Int, NoteModel) -> Unit,
-    //private val clickListener: (NoteModel) -> Unit
+//    private val clickListener: (NoteModel) -> Unit
 ) :
     ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
 
