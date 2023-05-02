@@ -7,7 +7,7 @@ sealed class RecyclerEvent {
     //Здесь хранятся все наши события из View(фрагмента)
 
     //Если нам не требуются входные данные используем object
-    object GetItems : RecyclerEvent()
+    object GetNotes : RecyclerEvent()
 
-    class AddItem(val item: NoteModel) : RecyclerEvent()
+    class AddNote(val note: NoteModel) : RecyclerEvent()
 }

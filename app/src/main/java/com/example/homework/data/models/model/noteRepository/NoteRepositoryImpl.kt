@@ -3,9 +3,14 @@ package com.example.homework.data.models.model.noteRepository
 import com.example.homework.data.models.model.noteModel.NoteModel
 
 
-class ItemRepositoryImpl : ItemRepository {
-    override fun getItems(): List<NoteModel> {
+class NoteRepositoryImpl : NoteRepository {
+    override fun getNotes(): List<NoteModel> {
         return listOf(
+            NoteModel(
+                id = 1,
+                name = "Сходить в магазин",
+                description = "Описание второго"
+            ),
             NoteModel(
                 id = 2,
                 name = "Сходить в магазин",

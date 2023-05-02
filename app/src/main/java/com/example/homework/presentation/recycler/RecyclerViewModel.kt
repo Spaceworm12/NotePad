@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homework.data.models.model.noteRepository.ItemRepository
-import com.example.homework.data.models.model.noteRepository.ItemRepositoryImpl
+import com.example.homework.data.models.model.noteRepository.NoteRepository
+import com.example.homework.data.models.model.noteRepository.NoteRepositoryImpl
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import kotlinx.coroutines.delay
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class RecyclerViewModel(
     //Создаем экземпляр именно интерфейса ItemRepository, но инициализируем классом, который его имплемиентирует,
     // так мы сможешь в любой момент изменить реализацию, почти не затрагивая слой презентации
-    private val itemRepository: ItemRepository = ItemRepositoryImpl()
+    private val noteRepository: NoteRepository = NoteRepositoryImpl()
 ) : ViewModel() {
 
     //Инициализируем нашу LiveData, именно за ее изменениями следит наша View(фрагмент)
@@ -37,14 +37,14 @@ class RecyclerViewModel(
     private fun handleUIEvent(event: RecyclerEvent) {
         when (event) {
             //Обработка ивента типа object
-            RecyclerEvent.GetItems -> getListItems()
+            RecyclerEvent.GetNotes -> getListNotes()
             //Обработка ивента типа class
-            is RecyclerEvent.AddItem -> addNewItem(item = event.item)
+            is RecyclerEvent.AddNote -> addNewNote(item = event.note)
         }
     }
 
     //Все функции viewModel приватные, кроме submitUIEvent
-    private fun getListItems() {
+    private fun getListNotes() {
         // Не обращай внимания на viewModelScope.launch, это обсудим позже, пока пусть будет магией
         // Нам это нужно сейчас чтобы задержку к 1.5 секунды поставить, для имитации загрузки
         viewModelScope.launch {
@@ -52,15 +52,15 @@ class RecyclerViewModel(
             viewState = viewState.copy(isLoading = true)
             delay(1500)
             viewState = viewState.copy(
-                         itemList = Mapper.transformToPresentation(itemRepository.getItems()),
+                notesList = Mapper.transformToPresentation(noteRepository.getNotes()),
                 isLoading = false
             )
         }
     }
 
-    private fun addNewItem(item: NoteModel) {
-        val currentItems = viewState.itemList
-        viewState = viewState.copy(itemList = currentItems + item)
+    private fun addNewNote(item: NoteModel) {
+        val currentNotes = viewState.notesList
+        viewState = viewState.copy(notesList = currentNotes + item)
     }
 
 }

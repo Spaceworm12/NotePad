@@ -1,6 +1,7 @@
 package com.example.homework.presentation.detail
 
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -9,8 +10,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.homework.data.models.model.noteModel.NoteModel
 import com.example.homework.databinding.FragmentTextBinding
+import com.example.homework.presentation.model.NoteModel
 
 
 class DetailNoteFragment : Fragment() {
@@ -23,7 +24,8 @@ class DetailNoteFragment : Fragment() {
                 KEY_NOTE to note
             )
         }
-    }
+        }
+
     private var _binding: FragmentTextBinding? = null
     private val binding get() = _binding!!
 
@@ -43,11 +45,12 @@ class DetailNoteFragment : Fragment() {
         //Восстанавливаем текст из liveData
         super.onViewCreated(view, savedInstanceState)
         savedInstanceState?.let {
-            binding.elementText.setText(detailViewModelNote.userText.value ?: "")
+            binding.elementText.setText(detailViewModelNote.userText.value ?: "desc")
+            binding.noteName.setText(detailViewModelNote.userText.value?:"name")
         }
 
-//        val currentNote: NoteModel =
-//            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "", description = "")
+       val currentNote: NoteModel =
+          arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "", description = "")
 
         binding.elementText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

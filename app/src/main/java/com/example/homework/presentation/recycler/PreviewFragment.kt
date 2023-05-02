@@ -1,7 +1,6 @@
 package com.example.homework.presentation.recycler
 
 import android.os.Bundle
-import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
+import com.example.homework.presentation.detail.DetailNoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.recycler.adapter.PreviewAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,25 +25,23 @@ class PreviewFragment : Fragment() {
         ViewModelProvider(this)[RecyclerViewModel::class.java]
     }
 
-//    private val adapter = PreviewAdapter(
-//        longClickListener = { index, note ->
-//            onShowDeleteDialog(index, note)
-//        },
-//        clickListener = { }
-//    )
+    private val adapter = PreviewAdapter(
+        longClickListener = { index, note ->
+            onShowDeleteDialog(index, note)
+        },
+        clickListener = {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .add(
+                    R.id.fragment_container,
+                    DetailNoteFragment.newInstance(it)
+                )
+                .addToBackStack("")
+                .commit()
+        }
+    )
 
-    private val adapter = PreviewAdapter( x = "") { index, note -> }
-//    private val adapter = ExampleListAdapter { exampleModelName ->
-//        requireActivity()
-//            .supportFragmentManager
-//            .beginTransaction()
-//            .add(
-//                R.id.fragment_container,
-//                DetailFragment.newInstance(exampleModelName)
-//            )
-//            .addToBackStack("")
-//            .commit()
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,14 +54,14 @@ class PreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.submitUIEvent(RecyclerEvent.GetItems)
+        viewModel.submitUIEvent(RecyclerEvent.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             binding.loader.isVisible = state.isLoading
             binding.fabAddItem.isVisible = !state.isLoading
             binding.recView.isVisible = !state.isLoading
-            adapter.submitList(state.itemList)
+            adapter.submitList(state.notesList)
         }
 
 
