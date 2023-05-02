@@ -14,6 +14,7 @@ import com.example.homework.presentation.detail.DetailNoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.recycler.adapter.PreviewAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.concurrent.ThreadLocalRandom
 
 
 class PreviewFragment : Fragment() {
@@ -59,11 +60,23 @@ class PreviewFragment : Fragment() {
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             binding.loader.isVisible = state.isLoading
-            binding.fabAddItem.isVisible = !state.isLoading
+            binding.addNote.isVisible = !state.isLoading
             binding.recView.isVisible = !state.isLoading
             adapter.submitList(state.notesList)
         }
-
+        binding.addNote.setOnClickListener {
+            // scrollToBottom(binding.scroll)
+            //Еще один ивент для ViewModel
+            viewModel.submitUIEvent(
+                RecyclerEvent.AddNote(
+                    NoteModel(
+                        id = ThreadLocalRandom.current().nextLong(0, 999999),
+                        name = "Новая заметка",
+                        description = "Описание"
+                    )
+                )
+            )
+        }
 
     }
 
@@ -79,5 +92,12 @@ class PreviewFragment : Fragment() {
             .create()
             .show()
     }
+//    fun scrollToBottom(scrollView: ScrollView) {
+//        scrollView.post {
+//            scrollView.fullScroll(View.FOCUS_DOWN)
+//        }
+//    }
 
 }
+
+

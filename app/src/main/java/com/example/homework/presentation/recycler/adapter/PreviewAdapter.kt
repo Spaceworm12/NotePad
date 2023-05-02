@@ -36,7 +36,7 @@ class PreviewAdapter(
     override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener { clickListener.invoke(noteModel) }
+        holder.binding.root.setOnClickListener { clickListener(noteModel) }
         holder.binding.root.setOnLongClickListener {
             longClickListener.invoke(currentList.indexOf(noteModel), noteModel)
             true

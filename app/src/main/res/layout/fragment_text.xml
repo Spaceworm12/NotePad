@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container"
-    android:background="@drawable/thief"
-    android:clickable="false"
-    android:focusable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    tools:context=".MainActivity">
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:toots="http://schemas.android.com/tools"
+    style="@style/MyBackgroundGradientStyle">
+
     <TextView
         android:id="@+id/note_name"
+        android:text="NameNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textCursorDrawable="@color/black"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         android:paddingStart="10dp"
         android:paddingEnd="18dp"
-        />
+        android:textColor="@color/black"
+        android:textCursorDrawable="@color/black"
+        android:textSize="20sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        toots:ignore="MissingConstraints"
+        style="@style/MyButtonStyle"/>
 
     <EditText
-        android:id="@+id/element_text"
+        android:id="@+id/note_descriprion"
+        android:text="DescriptionNote"
         android:layout_width="match_parent"
-        android:gravity="left|top"
-        android:typeface="monospace"
-        android:layout_marginTop="70dp"
         android:layout_height="wrap_content"
-        android:text=""
-        tools:ignore="LabelFor,RtlHardcoded"
-        android:autofillHints=""
         android:inputType="text"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/note_name"
+        style="@style/MyButtonStyle"
         />
 
     <Button
         android:id="@+id/btn_back"
-        android:layout_marginBottom="15dp"
-        style = "@style/MyButtonStyle"
+        style="@style/MyButtonStyle"
         android:layout_gravity="bottom|center"
+        android:layout_marginBottom="8dp"
         android:text="@string/go_back"
-        android:textColor="@color/black" />
-</FrameLayout>
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
