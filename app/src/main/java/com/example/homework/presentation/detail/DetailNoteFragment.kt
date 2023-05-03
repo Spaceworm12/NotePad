@@ -44,14 +44,13 @@ class DetailNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //Восстанавливаем текст из liveData
         super.onViewCreated(view, savedInstanceState)
+        val currentNote: NoteModel =
+            arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "123", description = "desc")
+        binding.noteName.text = currentNote.name
         if(savedInstanceState==null) {
-            val currentNote: NoteModel =
-                arguments?.getParcelable(KEY_NOTE) ?: NoteModel(id = 0, "123", description = "desc")
             binding.noteDescriprion.setText(currentNote.description)
-            binding.noteName.text = currentNote.name
         } else {
-            binding.noteDescriprion.setText(detailViewModelNote.userText.value ?: "d")
-            binding.noteName.text = detailViewModelNote.userText.value?:"n"
+            binding.noteDescriprion.setText(detailViewModelNote.userText.value ?: "nothing")
         }
 
 
