@@ -1,5 +1,6 @@
 package com.example.homework.presentation.recycler
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,12 @@ class PreviewFragment : Fragment() {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.enter_fragment,
+                    R.anim.exit_fragment,
+                    R.anim.enter_fragment_in,
+                    R.anim.exit_fragment_out
+                )
                 .add(
                     R.id.fragment_container,
                     DetailNoteFragment.newInstance(it)
@@ -53,6 +60,7 @@ class PreviewFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.submitUIEvent(RecyclerEvent.GetNotes)
@@ -76,6 +84,8 @@ class PreviewFragment : Fragment() {
                     )
                 )
             )
+            adapter.notifyDataSetChanged()
+            binding.recView.smoothScrollToPosition(adapter.itemCount - 1)
         }
 
     }
@@ -85,19 +95,14 @@ class PreviewFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                adapter.currentList.remove(note)
+                viewModel.submitUIEvent(RecyclerEvent.DeleteNote(note, index))
                 adapter.notifyItemRemoved(index)
             }
             .setNegativeButton("No") { _, _ -> }
             .create()
             .show()
     }
-//    fun scrollToBottom(scrollView: ScrollView) {
-//        scrollView.post {
-//            scrollView.fullScroll(View.FOCUS_DOWN)
-//        }
-//    }
-
 }
+
 
 

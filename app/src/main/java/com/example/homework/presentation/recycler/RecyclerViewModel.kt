@@ -40,6 +40,7 @@ class RecyclerViewModel(
             RecyclerEvent.GetNotes -> getListNotes()
             //Обработка ивента типа class
             is RecyclerEvent.AddNote -> addNewNote(item = event.note)
+            is RecyclerEvent.DeleteNote -> deleteNote(note = event.note, index = event.index)
         }
     }
 
@@ -52,7 +53,8 @@ class RecyclerViewModel(
             viewState = viewState.copy(isLoading = true)
             delay(1500)
             viewState = viewState.copy(
-                notesList = Mapper.transformToPresentation(noteRepository.getNotes()),
+                notesList = Mapper.transformToPresentation(noteRepository.getNotes())
+                    .toMutableList(),
                 isLoading = false
             )
         }
@@ -60,7 +62,16 @@ class RecyclerViewModel(
 
     private fun addNewNote(item: NoteModel) {
         val currentNotes = viewState.notesList
-        viewState = viewState.copy(notesList = currentNotes + item)
+        currentNotes.add(item)
+        viewState = viewState.copy(notesList = currentNotes)
     }
 
+    private fun deleteNote(note: NoteModel, index: Int) {
+        val correctNotes = viewState.notesList
+        correctNotes.removeAt(index)
+        viewState = viewState.copy(notesList = correctNotes)
+    }
 }
+
+
+

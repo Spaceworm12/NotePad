@@ -10,4 +10,6 @@ sealed class RecyclerEvent {
     object GetNotes : RecyclerEvent()
 
     class AddNote(val note: NoteModel) : RecyclerEvent()
+
+    class DeleteNote(val note: NoteModel, val index: Int) : RecyclerEvent()
 }

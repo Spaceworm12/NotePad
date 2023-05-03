@@ -8,4 +8,7 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="go_back">go back</string>
+    <string name="add">ADD</string>
+    <string name="descriptionnote">DescriptionNote</string>
+    <string name="namenote">NameNote</string>
 </resources>

@@ -13,41 +13,39 @@
         android:id="@+id/loader"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:outlineAmbientShadowColor="@color/custom"
+        android:outlineSpotShadowColor="@color/custom"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:ignore="UnusedAttribute" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:scrollbars="vertical"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:item="@layout/fragment_description"
-        tools:itemCount="15" />
-    <ScrollView
-        android:id="@+id/scroll"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"/>
+        app:layout_constraintVertical_bias="0.0"
+        tools:item="@layout/fragment_description" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/add_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/MyButtonStyle"
+        android:layout_width="82dp"
+        android:layout_height="70dp"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_black"
+        android:background="@drawable/circle_btn"
+        android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription"/>
-
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
