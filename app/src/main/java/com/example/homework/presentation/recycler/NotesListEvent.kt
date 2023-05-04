@@ -7,5 +7,5 @@ sealed class NotesListEvent {
 
     class AddNote(val note: NoteModel) : NotesListEvent()
 
-    class DeleteNote(val note: NoteModel, val index: Int) : NotesListEvent()
+    class DeleteNote(val index: Int) : NotesListEvent()
 }

@@ -31,7 +31,7 @@ class NotesListViewModel(
         when (event) {
             NotesListEvent.GetNotes -> getListNotes()
             is NotesListEvent.AddNote -> addNewNote(item = event.note)
-            is NotesListEvent.DeleteNote -> deleteNote(note = event.note, index = event.index)
+            is NotesListEvent.DeleteNote -> deleteNote(index = event.index)
         }
     }
     private fun getListNotes() {
@@ -52,7 +52,7 @@ class NotesListViewModel(
         viewState = viewState.copy(notesList = currentNotes)
     }
 
-    private fun deleteNote(note: NoteModel, index: Int) {
+    private fun deleteNote(index: Int) {
         val correctNotes = viewState.notesList
         correctNotes.removeAt(index)
         viewState = viewState.copy(notesList = correctNotes)
