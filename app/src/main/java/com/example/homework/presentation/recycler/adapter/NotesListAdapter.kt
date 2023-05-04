@@ -8,11 +8,11 @@ import com.example.homework.databinding.FragmentDescriptionBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class PreviewAdapter(
+class NotesListAdapter(
     private val longClickListener: (Int, NoteModel) -> Unit,
     private val clickListener: (NoteModel) -> Unit
 ) :
-    ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
+    ListAdapter<NoteModel, NotesListHolder>(DIFF_CALLBACK) {
 
 
     companion object {
@@ -27,13 +27,13 @@ class PreviewAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesListHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentDescriptionBinding.inflate(inflater, parent, false)
-        return PreviewHolder(binding)
+        return NotesListHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NotesListHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener { clickListener(noteModel) }

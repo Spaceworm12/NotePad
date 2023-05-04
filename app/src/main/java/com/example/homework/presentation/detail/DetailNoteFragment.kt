@@ -1,6 +1,5 @@
 package com.example.homework.presentation.detail
 
-import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,12 +9,9 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.homework.MainActivity
 import com.example.homework.R
-import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.homework.databinding.FragmentTextBinding
 import com.example.homework.presentation.model.NoteModel
-import com.example.homework.presentation.recycler.PreviewFragment
 
 
 class DetailNoteFragment : Fragment() {
@@ -33,8 +29,8 @@ class DetailNoteFragment : Fragment() {
     private var _binding: FragmentTextBinding? = null
     private val binding get() = _binding!!
 
-    private val detailViewModelNote: DetailViewModelNote by lazy {
-        ViewModelProvider(this)[DetailViewModelNote::class.java]
+    private val detailViewModelNote: DetaiNotelViewModel by lazy {
+        ViewModelProvider(this)[DetaiNotelViewModel::class.java]
     }
 
     override fun onCreateView(

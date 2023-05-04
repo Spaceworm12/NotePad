@@ -5,7 +5,7 @@ import com.example.homework.databinding.FragmentDescriptionBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class PreviewHolder(val binding: FragmentDescriptionBinding) :
+class NotesListHolder(val binding: FragmentDescriptionBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(noteModel: NoteModel) {

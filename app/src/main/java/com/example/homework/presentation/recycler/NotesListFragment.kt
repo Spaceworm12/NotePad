@@ -13,21 +13,21 @@ import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.homework.presentation.detail.DetailNoteFragment
 import com.example.homework.presentation.model.NoteModel
-import com.example.homework.presentation.recycler.adapter.PreviewAdapter
+import com.example.homework.presentation.recycler.adapter.NotesListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.ThreadLocalRandom
 
 
-class PreviewFragment : Fragment() {
+class NotesListFragment : Fragment() {
 
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RecyclerViewModel by lazy {
-        ViewModelProvider(this)[RecyclerViewModel::class.java]
+    private val viewModel: NotesListViewModel by lazy {
+        ViewModelProvider(this)[NotesListViewModel::class.java]
     }
 
-    private val adapter = PreviewAdapter(
+    private val adapter = NotesListAdapter(
         longClickListener = { index, note ->
             onShowDeleteDialog(index, note)
         },
@@ -63,7 +63,7 @@ class PreviewFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.submitUIEvent(RecyclerEvent.GetNotes)
+        viewModel.submitUIEvent(NotesListEvent.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
@@ -73,10 +73,8 @@ class PreviewFragment : Fragment() {
             adapter.submitList(state.notesList)
         }
         binding.addNote.setOnClickListener {
-            // scrollToBottom(binding.scroll)
-            //Еще один ивент для ViewModel
             viewModel.submitUIEvent(
-                RecyclerEvent.AddNote(
+                NotesListEvent.AddNote(
                     NoteModel(
                         id = ThreadLocalRandom.current().nextLong(0, 999999),
                         name = "Новая заметка",
@@ -95,7 +93,7 @@ class PreviewFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.submitUIEvent(RecyclerEvent.DeleteNote(note, index))
+                viewModel.submitUIEvent(NotesListEvent.DeleteNote(note, index))
                 adapter.notifyItemRemoved(index)
             }
             .setNegativeButton("No") { _, _ -> }
