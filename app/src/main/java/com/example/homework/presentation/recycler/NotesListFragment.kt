@@ -63,6 +63,11 @@ class NotesListFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val image = resources.getIdentifier("undef", "drawable", requireContext().packageName)
+
+        binding.back.setBackgroundResource(image)
+
         viewModel.submitUIEvent(NotesListEvent.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
@@ -93,7 +98,7 @@ class NotesListFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.submitUIEvent(NotesListEvent.DeleteNote(note, index))
+                viewModel.submitUIEvent(NotesListEvent.DeleteNote(index))
                 adapter.notifyItemRemoved(index)
             }
             .setNegativeButton("No") { _, _ -> }
