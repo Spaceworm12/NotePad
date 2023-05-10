@@ -4,20 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.homework.data.models.model.app.App
 import com.example.homework.data.models.model.noteRepository.NoteRepository
 import com.example.homework.data.models.model.noteRepository.NoteRepositoryImpl
 import com.example.homework.presentation.model.Mapper
-import com.example.homework.presentation.model.NoteModel
+import com.example.homework.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class NotesListViewModel(
-    private val noteRepository: NoteRepository = NoteRepositoryImpl()
+    private val noteRepository: NoteRepository = NoteRepositoryImpl(App.getExampleDao())
 ) : ViewModel() {
     private val _viewState = MutableLiveData(NotesListViewState())
     val viewStateObs: LiveData<NotesListViewState> get() = _viewState
-    private var viewState: NotesListViewState
+    var viewState: NotesListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
@@ -30,32 +31,55 @@ class NotesListViewModel(
     private fun handleUIEvent(event: NotesListEvent) {
         when (event) {
             NotesListEvent.GetNotes -> getListNotes()
-            is NotesListEvent.AddNote -> addNewNote(item = event.note)
-            is NotesListEvent.DeleteNote -> deleteNote(index = event.index)
+//            is NotesListEvent.AddNote -> addNewNote(item = event.note)
+            is NotesListEvent.DeleteNote -> deleteNote(id = event.id)
         }
     }
+
     private fun getListNotes() {
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
+            val result = noteRepository.getItems()
             delay(1500)
-            viewState = viewState.copy(
-                notesList = Mapper.transformToPresentation(noteRepository.getNotes())
-                    .toMutableList(),
-                isLoading = false
-            )
+            when (result) {
+                is Resource.Success -> {
+                    viewState = viewState.copy(
+                        notesList = Mapper.transformToPresentation(result.data ?: emptyList()),
+                                isLoading = false
+                    )
+                }
+                is Resource.Error -> {
+                    viewState =
+                        viewState.copy(isLoading = false, errorText = result.message ?: "error")
+                }
+
+                else -> {}
+            }
         }
     }
 
-    private fun addNewNote(item: NoteModel) {
-        val currentNotes = viewState.notesList
-        currentNotes.add(item)
-        viewState = viewState.copy(notesList = currentNotes)
-    }
+//    private fun addNewNote( note: NoteModel) {
+//        val currentNotes = viewState.notesList
+//        currentNotes.add(item)
+//        viewState = viewState.copy(notesList = currentNotes)
+//    }
 
-    private fun deleteNote(index: Int) {
-        val correctNotes = viewState.notesList
-        correctNotes.removeAt(index)
-        viewState = viewState.copy(notesList = correctNotes)
+    private fun deleteNote(id: Long) {
+        viewModelScope.launch {
+            viewState = viewState.copy(isLoading = true)
+            val result = noteRepository.deleteExample(id)
+            when (result) {
+                is Resource.Success -> {
+                    getListNotes()
+                }
+
+                is Resource.Error -> {
+                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
+                }
+
+                else -> {}
+            }
+        }
     }
 }
 

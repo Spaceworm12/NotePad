@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -75,6 +76,8 @@ class NotesListFragment : Fragment() {
             binding.loader.isVisible = state.isLoading
             binding.addNote.isVisible = !state.isLoading
             binding.recView.isVisible = !state.isLoading
+            if (state.errorText.isNotBlank())
+                Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
             adapter.submitList(state.notesList)
         }
         binding.addNote.setOnClickListener {

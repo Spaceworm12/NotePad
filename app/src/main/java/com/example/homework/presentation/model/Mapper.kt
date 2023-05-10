@@ -1,12 +1,11 @@
 package com.example.homework.presentation.model
 
-import com.example.homework.data.models.model.db.entity.ExampleEntity
-import com.example.homework.data.models.model.noteModel.NoteModel
+import com.example.homework.data.models.model.db.entity.EntityExample
 import com.example.homework.presentation.model.NoteModel as ExampleNoteModelPresentation
 
 object Mapper {
 
-    private fun transformToPresentation(noteModel: NoteModel): ExampleNoteModelPresentation {
+    private fun transformToPresentation(noteModel: EntityExample): ExampleNoteModelPresentation {
         return ExampleNoteModelPresentation(
             id = noteModel.id,
             name = noteModel.name,
@@ -14,12 +13,12 @@ object Mapper {
         )
     }
 
-    fun transformToPresentation(task: List<NoteModel>): List<ExampleNoteModelPresentation> {
+    fun transformToPresentation(task: List<EntityExample>): List<ExampleNoteModelPresentation> {
         return task.map { transformToPresentation(it) }
     }
 
-    fun transformToData(model: ExampleNoteModelPresentation): ExampleEntity {
-        return ExampleEntity(
+    fun transformToData(model: ExampleNoteModelPresentation): EntityExample {
+        return EntityExample(
             id = model.id,
             name = model.name,
             description = model.description
