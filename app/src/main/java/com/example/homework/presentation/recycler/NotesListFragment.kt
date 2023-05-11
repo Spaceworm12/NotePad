@@ -101,7 +101,7 @@ class NotesListFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.submitUIEvent(NotesListEvent.DeleteNote(index))
+                viewModel.submitUIEvent(NotesListEvent.DeleteNote(id.toLong()))
                 adapter.notifyItemRemoved(index)
             }
             .setNegativeButton("No") { _, _ -> }

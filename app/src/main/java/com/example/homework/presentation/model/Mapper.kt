@@ -1,6 +1,7 @@
 package com.example.homework.presentation.model
 
 import com.example.homework.data.models.model.db.entity.EntityExample
+import com.example.homework.data.models.model.noteModel.NoteModel
 import com.example.homework.presentation.model.NoteModel as ExampleNoteModelPresentation
 
 object Mapper {
@@ -17,7 +18,7 @@ object Mapper {
         return task.map { transformToPresentation(it) }
     }
 
-    fun transformToData(model: ExampleNoteModelPresentation): EntityExample {
+    fun transformToData(model: NoteModel): EntityExample { //model:ExampleNoteModelPresentation???
         return EntityExample(
             id = model.id,
             name = model.name,
