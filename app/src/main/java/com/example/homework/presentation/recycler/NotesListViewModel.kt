@@ -31,9 +31,7 @@ class NotesListViewModel(
     private fun handleUIEvent(event: NotesListEvent) {
         when (event) {
             is NotesListEvent.GetNotes -> getListNotes()
-//            is NotesListEvent.AddNote -> addN(item = event.note)
             is NotesListEvent.DeleteNote -> deleteNote(id = event.id)
-            else -> {}
         }
     }
 

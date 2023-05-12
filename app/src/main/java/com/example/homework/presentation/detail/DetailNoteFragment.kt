@@ -70,7 +70,6 @@ class DetailNoteFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //Сохраняем изменения в liveData
                 s?.let {
                     detailNoteViewModel.submitUIEvent(DetailEvent.SaveUserDescription(s.toString()))
                 }
