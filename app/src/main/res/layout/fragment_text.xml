@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/note_name"
-        android:text="@string/namenote"
+        android:hint="@string/namenote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -42,7 +42,7 @@
         android:layout_marginVertical="70dp"
         android:layout_marginHorizontal="20dp"
         android:gravity="left|top"
-        android:text="@string/descriptionnote"
+        android:hint="@string/descriptionnote"
         app:layout_constraintTop_toBottomOf="@id/note_name"
         toots:ignore="RtlHardcoded" />
 

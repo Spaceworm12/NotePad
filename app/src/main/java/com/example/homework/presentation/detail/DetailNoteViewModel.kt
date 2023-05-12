@@ -38,8 +38,8 @@ class DetailNoteViewModel(
                 Mapper.transformToData(
                     NoteModel(
                         id = id,
-                        name = userTitle.value ?: "",
-                        description = userDescription.value ?: ""
+                        name = userTitle.value ?: "Empty title",
+                        description = userDescription.value ?: "Empty Description"
                     )
                 )
             )
