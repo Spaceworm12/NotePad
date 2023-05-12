@@ -9,7 +9,7 @@
     xmlns:toots="http://schemas.android.com/tools"
     style="@style/MyBackgroundGradientStyle">
 
-    <TextView
+    <EditText
         android:id="@+id/note_name"
         android:text="@string/namenote"
         android:layout_width="match_parent"

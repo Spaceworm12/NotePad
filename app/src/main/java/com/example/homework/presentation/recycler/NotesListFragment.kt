@@ -1,6 +1,5 @@
 package com.example.homework.presentation.recycler
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.homework.presentation.detail.DetailNoteFragment
-import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.recycler.adapter.NotesListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.concurrent.ThreadLocalRandom
 
 
 class NotesListFragment : Fragment() {
@@ -29,8 +26,8 @@ class NotesListFragment : Fragment() {
     }
 
     private val adapter = NotesListAdapter(
-        longClickListener = { index, note ->
-            onShowDeleteDialog(index, note)
+        longClickListener = { id ->
+            onShowDeleteDialog(id)
         },
         clickListener = {
             requireActivity()
@@ -60,8 +57,6 @@ class NotesListFragment : Fragment() {
         return binding.root
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -81,28 +76,25 @@ class NotesListFragment : Fragment() {
             adapter.submitList(state.notesList)
         }
         binding.addNote.setOnClickListener {
-            viewModel.submitUIEvent(
-                NotesListEvent.AddNote(
-                    NoteModel(
-                        id = ThreadLocalRandom.current().nextLong(0, 999999),
-                        name = "Новая заметка",
-                        description = "Описание"
-                    )
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    DetailNoteFragment.newInstance(viewModel.viewState.getEmptyItem())
                 )
-            )
-            adapter.notifyDataSetChanged()
-            binding.recView.smoothScrollToPosition(adapter.itemCount - 1)
+                .addToBackStack("")
+                .commit()
         }
 
     }
 
-    private fun onShowDeleteDialog(index: Int, note: NoteModel) {
+    private fun onShowDeleteDialog(id: Long) {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.submitUIEvent(NotesListEvent.DeleteNote(id.toLong()))
-                adapter.notifyItemRemoved(index)
+                viewModel.submitUIEvent(NotesListEvent.DeleteNote(id))
             }
             .setNegativeButton("No") { _, _ -> }
             .create()

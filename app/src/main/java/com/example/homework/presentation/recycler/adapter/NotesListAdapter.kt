@@ -9,8 +9,8 @@ import com.example.homework.presentation.model.NoteModel
 
 
 class NotesListAdapter(
-    private val longClickListener: (Int, NoteModel) -> Unit,
-    private val clickListener: (NoteModel) -> Unit
+    private val clickListener: (NoteModel) -> Unit,
+    private val longClickListener: (Long) -> Unit
 ) :
     ListAdapter<NoteModel, NotesListHolder>(DIFF_CALLBACK) {
 
@@ -38,7 +38,7 @@ class NotesListAdapter(
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener { clickListener(noteModel) }
         holder.binding.root.setOnLongClickListener {
-            longClickListener.invoke(currentList.indexOf(noteModel), noteModel)
+            longClickListener.invoke(noteModel.id)
             true
         }
 

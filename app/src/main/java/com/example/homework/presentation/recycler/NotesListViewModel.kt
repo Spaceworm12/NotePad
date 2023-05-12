@@ -30,9 +30,10 @@ class NotesListViewModel(
 
     private fun handleUIEvent(event: NotesListEvent) {
         when (event) {
-            NotesListEvent.GetNotes -> getListNotes()
-//            is NotesListEvent.AddNote -> addNewNote(item = event.note)
+            is NotesListEvent.GetNotes -> getListNotes()
+//            is NotesListEvent.AddNote -> addN(item = event.note)
             is NotesListEvent.DeleteNote -> deleteNote(id = event.id)
+            else -> {}
         }
     }
 
@@ -45,7 +46,7 @@ class NotesListViewModel(
                 is Resource.Success -> {
                     viewState = viewState.copy(
                         notesList = Mapper.transformToPresentation(result.data ?: emptyList()),
-                                isLoading = false
+                        isLoading = false
                     )
                 }
                 is Resource.Error -> {
@@ -57,12 +58,6 @@ class NotesListViewModel(
             }
         }
     }
-
-//    private fun addNewNote( note: NoteModel) {
-//        val currentNotes = viewState.notesList
-//        currentNotes.add(item)
-//        viewState = viewState.copy(notesList = currentNotes)
-//    }
 
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
