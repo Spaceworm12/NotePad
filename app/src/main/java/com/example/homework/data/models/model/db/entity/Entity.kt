@@ -3,12 +3,19 @@ package com.example.homework.data.models.model.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-private const val TABLE_NAME = "my_table"
+private const val TABLE_NAME = "table"
 
-@Entity(tableName = TABLE_NAME)
-data class EntityExample(
+@Entity
+data class Entity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
     val description: String
 )
+
+
+
+
+
+
+
