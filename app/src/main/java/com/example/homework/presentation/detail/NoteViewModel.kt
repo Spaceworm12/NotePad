@@ -28,7 +28,7 @@ class NoteViewModel(
             is NoteEvent.SaveUserTitle -> userTitle.postValue(event.text)
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
-            is NoteEvent.DeleteNote -> deleteNote(id = event.id)
+        //    is NoteEvent.DeleteNote -> deleteNote(id = event.id)
         }
     }
 
@@ -56,17 +56,17 @@ class NoteViewModel(
         }
     }
 
-    private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            val result =
-                repo.delete(id)
-            when (result) {
-                is Resource.Success -> {
-                    exit.postValue(true)
-                }
-                is Resource.Error -> {
-                }
-            }
-        }
-    }
+//    private fun deleteNote(id: Long) {
+//        viewModelScope.launch {
+//            val result =
+//                repo.delete(id)
+//            when (result) {
+//                is Resource.Success -> {
+//                    exit.postValue(true)
+//                }
+//                is Resource.Error -> {
+//                }
+//            }
+//        }
+//    }
 }

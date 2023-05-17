@@ -8,8 +8,13 @@ import com.example.homework.data.models.model.db.Db
 
 class ApplicationDb : Application() {
 
+    override fun onCreate() {
+        super.onCreate()
+        appInstance = this
+    }
+
     companion object {
-        private var appInstance: Application? = null
+        private var appInstance: ApplicationDb? = null
         private var db: Db? = null
 
         fun dao(): Dao {
@@ -17,7 +22,7 @@ class ApplicationDb : Application() {
             return db!!.dao()
         }
 
-        fun checkDb() {
+        private fun checkDb() {
             if (db == null) {
                 val builder = Room.databaseBuilder(
                     appInstance!!.applicationContext,
@@ -31,8 +36,5 @@ class ApplicationDb : Application() {
         }
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        appInstance = this
-    }
+
 }

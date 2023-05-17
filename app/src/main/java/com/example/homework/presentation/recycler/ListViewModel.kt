@@ -32,7 +32,6 @@ class ListViewModel(
         when (event) {
             is ListEvent.GetNotes -> getListNotes()
             is ListEvent.DeleteNote -> deleteNote(id = event.id)
-            else -> {}
         }
     }
 
@@ -68,6 +67,7 @@ class ListViewModel(
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }
+
             }
         }
     }

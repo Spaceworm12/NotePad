@@ -79,7 +79,7 @@ class ListFragment : Fragment() {
                     R.id.fragment_container,
                     NoteFragment.newInstance(viewModel.viewState.getEmptyItem())
                 )
-                .addToBackStack("list_2")
+                .addToBackStack("")
                 .commit()
         }
 
