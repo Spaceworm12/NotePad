@@ -48,5 +48,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/clear_all"
+        style="@style/MyButtonStyle"
+        android:layout_width="106dp"
+        android:layout_height="85dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/circle_btn"
+        android:text="DELETE ALL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

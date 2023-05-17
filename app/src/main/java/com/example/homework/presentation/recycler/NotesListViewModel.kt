@@ -32,6 +32,7 @@ class NotesListViewModel(
         when (event) {
             is NotesListEvent.GetNotes -> getListNotes()
             is NotesListEvent.DeleteNote -> deleteNote(id = event.id)
+            is NotesListEvent.DeleteAll -> getListNotes()
         }
     }
 
@@ -69,12 +70,11 @@ class NotesListViewModel(
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }
-
-                else -> {}
             }
         }
     }
-}
+
+    }
 
 
 

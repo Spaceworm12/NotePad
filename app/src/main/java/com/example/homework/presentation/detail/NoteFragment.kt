@@ -10,33 +10,33 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.homework.databinding.FragmentTextBinding
+import com.example.homework.databinding.FragmentNoteBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class DetailNoteFragment : Fragment() {
+class NoteFragment : Fragment() {
 
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
-        fun newInstance(note: NoteModel) = DetailNoteFragment().apply {
+        fun newInstance(note: NoteModel) = NoteFragment().apply {
             arguments = bundleOf(
                 KEY_NOTE to note
             )
         }
     }
 
-    private var _binding: FragmentTextBinding? = null
+    private var _binding: FragmentNoteBinding? = null
     private val binding get() = _binding!!
-    private val detailNoteViewModel: DetailNoteViewModel by lazy {
-        ViewModelProvider(this)[DetailNoteViewModel::class.java]
+    private val noteViewModel: NoteViewModel by lazy {
+        ViewModelProvider(this)[NoteViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTextBinding.inflate(inflater, container, false)
+        _binding = FragmentNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,7 +46,7 @@ class DetailNoteFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
                 KEY_NOTE,
                 NoteModel::class.java
-            ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
+        ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote() //ВАПРОСИКИ
 
         binding.noteName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -57,7 +57,7 @@ class DetailNoteFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    detailNoteViewModel.submitUIEvent(DetailEvent.SaveUserTitle(s.toString()))
+                    noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(s.toString()))
                 }
             }
         })
@@ -71,27 +71,30 @@ class DetailNoteFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    detailNoteViewModel.submitUIEvent(DetailEvent.SaveUserDescription(s.toString()))
+                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(s.toString()))
                 }
             }
         })
         binding.btnSave.setOnClickListener {
-            detailNoteViewModel.submitUIEvent(DetailEvent.SaveNote(note.id))
+            noteViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
         }
-        detailNoteViewModel.exit.observe(viewLifecycleOwner) { isExit ->
+        noteViewModel.exit.observe(viewLifecycleOwner) { isExit ->
             if (isExit)
                 requireActivity().supportFragmentManager.popBackStackImmediate()
         }
         binding.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        binding.btnDelete.setOnClickListener{
+            noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
+        }
     }
 
     private fun getEmptyNote(): NoteModel {
         return NoteModel(
             id = 0,
-            name = "",
-            description = ""
+            name = "Новая заметОЧКА",
+            description = "Новое описание"
         )
     }
 

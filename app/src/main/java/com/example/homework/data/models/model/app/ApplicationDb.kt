@@ -3,6 +3,7 @@ package com.example.homework.data.models.model.app
 import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomMasterTable.TABLE_NAME
+import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
 
 class ApplicationDb : Application() {
@@ -11,10 +12,9 @@ class ApplicationDb : Application() {
         private var appInstance: Application? = null
         private var db: Db? = null
 
-        fun dao() {
+        fun dao(): Dao {
             checkDb()
-            db!!.dao()
-
+            return db!!.dao()
         }
 
         fun checkDb() {

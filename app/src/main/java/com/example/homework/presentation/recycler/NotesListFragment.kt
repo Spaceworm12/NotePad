@@ -100,6 +100,7 @@ class NotesListFragment : Fragment() {
             .create()
             .show()
     }
+
 }
 
 

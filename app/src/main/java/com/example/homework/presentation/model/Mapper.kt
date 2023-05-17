@@ -1,12 +1,12 @@
 package com.example.homework.presentation.model
 
-import com.example.homework.data.models.model.db.entity.EntityExample
+import com.example.homework.data.models.model.db.entity.NoteModel
 import com.example.homework.presentation.model.NoteModel as ExampleNoteModelPresentation
 
 object Mapper {
 
-    private fun transformToPresentation(model: EntityExample): ExampleNoteModelPresentation {
-        return ExampleNoteModelPresentation(
+    private fun transformToPresentation(model: NoteModel): ExampleNoteModelPresentation {
+        return ExampleNoteModelPresentation( dsa
             id = model.id,
             name = model.name,
             description = model.description
