@@ -85,9 +85,9 @@ class NoteFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
-//        binding.btnDelete.setOnClickListener{
-//            noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
-//        }
+        binding.btnDelete.setOnClickListener{
+            noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
+        }
     }
 
     private fun getEmptyNote(): NoteModel {

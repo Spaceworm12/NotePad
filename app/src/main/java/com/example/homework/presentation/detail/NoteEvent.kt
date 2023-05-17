@@ -8,5 +8,5 @@ sealed class NoteEvent {
 
     class SaveNote(val id: Long) : NoteEvent()
 
-    //class DeleteNote(val id: Long): NoteEvent()
+    class DeleteNote(val id: Long): NoteEvent()
 }

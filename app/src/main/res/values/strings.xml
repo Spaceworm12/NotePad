@@ -12,4 +12,5 @@
     <string name="descriptionnote">DescriptionNote</string>
     <string name="namenote">NameNote</string>
     <string name="save">SAVE</string>
+    <string name="deleteNote">DELETE</string>
 </resources>
