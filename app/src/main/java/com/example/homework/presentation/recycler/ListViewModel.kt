@@ -32,6 +32,7 @@ class ListViewModel(
         when (event) {
             is ListEvent.GetNotes -> getListNotes()
             is ListEvent.DeleteNote -> deleteNote(id = event.id)
+            is ListEvent.DeleteAll -> deleteAll()
         }
     }
 
@@ -58,8 +59,7 @@ class ListViewModel(
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
-            val result = repo.delete(id)
-            when (result) {
+            when (val result = repo.delete(id)) {
                 is Resource.Success -> {
                     getListNotes()
                 }
@@ -67,7 +67,20 @@ class ListViewModel(
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }
+            }
+        }
+    }
+    private fun deleteAll() {
+        viewModelScope.launch {
+            viewState = viewState.copy(isLoading = true)
+            when (val result = repo.deleteAll()) {
+                is Resource.Success -> {
+                    getListNotes()
+                }
 
+                is Resource.Error -> {
+                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
+                }
             }
         }
     }

@@ -32,6 +32,15 @@ class RepoImpl(private val dao: Dao): Repo {
         }
         return Resource.Success(response)
     }
+    override suspend fun clearAll() {
+        val response = try {
+            dao.delete(id)
+        }catch (e:Exception) {
+            return Resource.Error("НЕ УДАЛЯЕТСЯ")
+        }
+        return Resource.Success(response)
+    }
+
 
 }
 

@@ -8,12 +8,17 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Database
 import com.example.homework.R
+import com.example.homework.data.models.model.db.Db
 import com.example.homework.databinding.FragmentPreviewBinding
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.recycler.adapter.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class ListFragment : Fragment() {
@@ -59,7 +64,6 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.submitUIEvent(ListEvent.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
@@ -82,8 +86,12 @@ class ListFragment : Fragment() {
                 .addToBackStack("")
                 .commit()
         }
+        binding.deleteAll.setOnClickListener{
+            onShowDeleteDialogAll()
+                }
+            }
 
-    }
+
 
     private fun onShowDeleteDialog(id: Long) {
         MaterialAlertDialogBuilder(requireContext())
@@ -91,6 +99,17 @@ class ListFragment : Fragment() {
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
                 viewModel.submitUIEvent(ListEvent.DeleteNote(id))
+            }
+            .setNegativeButton("No") { _, _ -> }
+            .create()
+            .show()
+    }
+    private fun onShowDeleteDialogAll() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage("Delete all notes?")
+            .setCancelable(true)
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.submitUIEvent(ListEvent.DeleteAll())
             }
             .setNegativeButton("No") { _, _ -> }
             .create()

@@ -2,12 +2,14 @@ package com.example.homework.presentation.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.ApplicationDb
 import com.example.homework.data.models.model.noteRepository.Repo
 import com.example.homework.data.models.model.noteRepository.RepoImpl
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.recycler.ListViewModel
 import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
@@ -17,6 +19,7 @@ class NoteViewModel(
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()
+
     val exit = MutableLiveData(false)
 
     fun submitUIEvent(event: NoteEvent) {
@@ -29,6 +32,7 @@ class NoteViewModel(
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
+
 
         }
     }
@@ -61,6 +65,7 @@ class NoteViewModel(
         viewModelScope.launch {
             val result =
                 repo.delete(id)
+
             when (result) {
                 is Resource.Success -> {
                     exit.postValue(true)

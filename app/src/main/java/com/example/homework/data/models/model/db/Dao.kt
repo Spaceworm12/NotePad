@@ -18,4 +18,7 @@ interface Dao {
     @Query("DELETE FROM my_table WHERE id = :id")
     suspend fun delete(id: Long)
 
+    @Query("DELETE * FROM my_table")
+    suspend fun deleteAll()
+
 }

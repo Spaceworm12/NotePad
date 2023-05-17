@@ -8,4 +8,5 @@ interface Repo {
     suspend fun getAll(): Resource<List<MyEntity>>
     suspend fun create(entity: MyEntity): Resource<Long>
     suspend fun delete(id: Long): Resource<Unit>
+    suspend fun clearAll(): Resource<List<MyEntity>>
 }
