@@ -11,21 +11,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentPreviewBinding
-import com.example.homework.presentation.detail.DetailNoteFragment
-import com.example.homework.presentation.recycler.adapter.NotesListAdapter
+import com.example.homework.presentation.detail.NoteFragment
+import com.example.homework.presentation.recycler.adapter.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class NotesListFragment : Fragment() {
+class ListFragment : Fragment() {
 
     private var _binding: FragmentPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: NotesListViewModel by lazy {
-        ViewModelProvider(this)[NotesListViewModel::class.java]
+    private val viewModel: ListViewModel by lazy {
+        ViewModelProvider(this)[ListViewModel::class.java]
     }
 
-    private val adapter = NotesListAdapter(
+    private val adapter = ListAdapter(
         longClickListener = { id ->
             onShowDeleteDialog(id)
         },
@@ -41,7 +41,7 @@ class NotesListFragment : Fragment() {
                 )
                 .add(
                     R.id.fragment_container,
-                    DetailNoteFragment.newInstance(it)
+                    NoteFragment.newInstance(it)
                 )
                 .addToBackStack("")
                 .commit()
@@ -60,11 +60,7 @@ class NotesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val image = resources.getIdentifier("undef", "drawable", requireContext().packageName)
-
-        binding.back.setBackgroundResource(image)
-
-        viewModel.submitUIEvent(NotesListEvent.GetNotes)
+        viewModel.submitUIEvent(ListEvent.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
@@ -81,9 +77,9 @@ class NotesListFragment : Fragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    DetailNoteFragment.newInstance(viewModel.viewState.getEmptyItem())
+                    NoteFragment.newInstance(viewModel.viewState.getEmptyItem())
                 )
-                .addToBackStack("")
+                .addToBackStack("list_2")
                 .commit()
         }
 
@@ -94,7 +90,7 @@ class NotesListFragment : Fragment() {
             .setMessage("Delete this note?")
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.submitUIEvent(NotesListEvent.DeleteNote(id))
+                viewModel.submitUIEvent(ListEvent.DeleteNote(id))
             }
             .setNegativeButton("No") { _, _ -> }
             .create()

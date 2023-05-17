@@ -1,11 +1,11 @@
 package com.example.homework.data.models.model.noteRepository
 
 import com.example.homework.data.models.model.db.Dao
-import com.example.homework.data.models.model.db.entity.Entity
+import com.example.homework.data.models.model.db.entity.MyEntity
 import com.example.homework.util.Resource
 class RepoImpl(private val dao: Dao): Repo {
 
-    override suspend fun getAll(): Resource<List<Entity>> {
+    override suspend fun getAll(): Resource<List<MyEntity>> {
         val response = try {
             dao.getAll()
         }catch (e:Exception) {
@@ -14,7 +14,7 @@ class RepoImpl(private val dao: Dao): Repo {
         return Resource.Success(response)
     }
 
-    override suspend fun create(note: Entity): Resource<Long> {
+    override suspend fun create(note: MyEntity): Resource<Long> {
         val response = try {
             dao.create(note)
         }catch (e:Exception) {

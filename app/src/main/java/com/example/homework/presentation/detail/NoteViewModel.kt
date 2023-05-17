@@ -59,7 +59,7 @@ class NoteViewModel(
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
             val result =
-                repo.delete(Mapper.transformToData(NoteModel(id = id, name = "", description = "")))
+                repo.delete(id)
             when (result) {
                 is Resource.Success -> {
                     exit.postValue(true)

@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.homework.databinding.FragmentDescriptionBinding
+import com.example.homework.databinding.FragmentPreviewBinding
+import com.example.homework.databinding.FragmentViewBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class NotesListAdapter(
+class ListAdapter(
     private val clickListener: (NoteModel) -> Unit,
     private val longClickListener: (Long) -> Unit
 ) :
-    ListAdapter<NoteModel, NotesListHolder>(DIFF_CALLBACK) {
+    ListAdapter<NoteModel, ListHolder>(DIFF_CALLBACK) {
 
 
     companion object {
@@ -27,13 +28,13 @@ class NotesListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesListHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FragmentDescriptionBinding.inflate(inflater, parent, false)
-        return NotesListHolder(binding)
+        val binding = FragmentViewBinding.inflate(inflater, parent, false)
+        return ListHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NotesListHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
         holder.binding.root.setOnClickListener { clickListener(noteModel) }

@@ -4,42 +4,42 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homework.data.models.model.app.App
-import com.example.homework.data.models.model.noteRepository.NoteRepository
-import com.example.homework.data.models.model.noteRepository.NoteRepositoryImpl
+import com.example.homework.data.models.model.app.ApplicationDb
+import com.example.homework.data.models.model.noteRepository.Repo
+import com.example.homework.data.models.model.noteRepository.RepoImpl
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class NotesListViewModel(
-    private val noteRepository: NoteRepository = NoteRepositoryImpl(App.getExampleDao())
+class ListViewModel(
+    private val repo: Repo = RepoImpl(ApplicationDb.dao())
 ) : ViewModel() {
-    private val _viewState = MutableLiveData(NotesListViewState())
-    val viewStateObs: LiveData<NotesListViewState> get() = _viewState
-    var viewState: NotesListViewState
+    private val _viewState = MutableLiveData(ListViewState())
+    val viewStateObs: LiveData<ListViewState> get() = _viewState
+    var viewState: ListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
 
-    fun submitUIEvent(event: NotesListEvent) {
+    fun submitUIEvent(event: ListEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: NotesListEvent) {
+    private fun handleUIEvent(event: ListEvent) {
         when (event) {
-            is NotesListEvent.GetNotes -> getListNotes()
-            is NotesListEvent.DeleteNote -> deleteNote(id = event.id)
-            is NotesListEvent.DeleteAll -> getListNotes()
+            is ListEvent.GetNotes -> getListNotes()
+            is ListEvent.DeleteNote -> deleteNote(id = event.id)
+            else -> {}
         }
     }
 
     private fun getListNotes() {
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
-            val result = noteRepository.getItems()
+            val result = repo.getAll()
             delay(1500)
             when (result) {
                 is Resource.Success -> {
@@ -52,8 +52,6 @@ class NotesListViewModel(
                     viewState =
                         viewState.copy(isLoading = false, errorText = result.message ?: "error")
                 }
-
-                else -> {}
             }
         }
     }
@@ -61,7 +59,7 @@ class NotesListViewModel(
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
-            val result = noteRepository.deleteExample(id)
+            val result = repo.delete(id)
             when (result) {
                 is Resource.Success -> {
                     getListNotes()
@@ -73,8 +71,8 @@ class NotesListViewModel(
             }
         }
     }
+}
 
-    }
 
 
 
