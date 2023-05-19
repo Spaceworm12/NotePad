@@ -17,6 +17,7 @@
         android:outlineAmbientShadowColor="@color/custom"
         android:outlineSpotShadowColor="@color/custom"
         android:visibility="gone"
+        android:indeterminateTint="@color/custom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

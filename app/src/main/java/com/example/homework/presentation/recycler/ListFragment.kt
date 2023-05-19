@@ -38,13 +38,13 @@ class ListFragment : Fragment() {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
-                .setCustomAnimations(
-                    R.anim.enter_fragment,
-                    R.anim.exit_fragment,
-                    R.anim.enter_fragment_in,
-                    R.anim.exit_fragment_out
-                )
-                .add(
+//                .setCustomAnimations(
+//                    R.anim.enter_fragment,
+//                    R.anim.exit_fragment,
+//                    R.anim.enter_fragment_in,
+//                    R.anim.exit_fragment_out
+//                )
+                .replace(
                     R.id.fragment_container,
                     NoteFragment.newInstance(it)
                 )
@@ -90,6 +90,11 @@ class ListFragment : Fragment() {
             onShowDeleteDialogAll()
                 }
             }
+
+//    override fun onStart() {
+//        super.onStart()
+//        viewModel.submitUIEvent(ListEvent.GetNotes)
+//    }
 
 
 

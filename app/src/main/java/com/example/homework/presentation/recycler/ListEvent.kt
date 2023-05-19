@@ -6,4 +6,5 @@ sealed class ListEvent {
     class DeleteNote(val id: Long) : ListEvent()
     class DeleteAll : ListEvent()
 
+
 }
