@@ -46,7 +46,7 @@ class NoteFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
                 KEY_NOTE,
                 NoteModel::class.java
-        ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote() //ВАПРОСИКИ
+            ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
 
         binding.noteName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -83,12 +83,14 @@ class NoteFragment : Fragment() {
                 requireActivity().supportFragmentManager.popBackStackImmediate()
         }
         binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressed()
+//            noteViewModel.exit.observe(viewLifecycleOwner) {
+                noteViewModel.exit.postValue(true)
+            }
+            binding.btnDelete.setOnClickListener {
+                noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
+            }
         }
-        binding.btnDelete.setOnClickListener{
-            noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
-        }
-    }
+
 
     private fun getEmptyNote(): NoteModel {
         return NoteModel(

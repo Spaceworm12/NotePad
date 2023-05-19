@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 class NoteViewModel(
-    private val repo: Repo = RepoImpl(ApplicationDb.dao())
+    private val repo: Repo = RepoImpl(ApplicationDb.dao(),ApplicationDb.getDb())
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()
@@ -32,7 +32,6 @@ class NoteViewModel(
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-
 
         }
     }
@@ -70,7 +69,7 @@ class NoteViewModel(
                 is Resource.Success -> {
                     exit.postValue(true)
                 }
-                is Resource.Error -> {
+                is Resource.Error -> {//описать
                 }
             }
         }

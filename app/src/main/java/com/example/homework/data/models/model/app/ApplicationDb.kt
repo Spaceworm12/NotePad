@@ -21,6 +21,10 @@ class ApplicationDb : Application() {
             checkDb()
             return db!!.dao()
         }
+        fun getDb(): Db {
+            checkDb()
+            return db!!
+        }
 
         private fun checkDb() {
             if (db == null) {

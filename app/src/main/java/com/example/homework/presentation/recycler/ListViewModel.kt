@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 
 class ListViewModel(
-    private val repo: Repo = RepoImpl(ApplicationDb.dao())
+    private val repo: Repo = RepoImpl(ApplicationDb.dao(),ApplicationDb.getDb())
 ) : ViewModel() {
     private val _viewState = MutableLiveData(ListViewState())
     val viewStateObs: LiveData<ListViewState> get() = _viewState
