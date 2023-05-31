@@ -9,13 +9,13 @@ import com.example.homework.data.models.model.db.entity.MyEntity
 interface Dao {
 
 
-    @Query("SELECT * FROM my_table")
+    @Query("SELECT * FROM table_with_notes")
     suspend fun getAll(): List<MyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun create(example: MyEntity): Long
 
-    @Query("DELETE FROM my_table WHERE id = :id")
+    @Query("DELETE FROM table_with_notes WHERE id = :id")
     suspend fun delete(id: Long)
 
     }

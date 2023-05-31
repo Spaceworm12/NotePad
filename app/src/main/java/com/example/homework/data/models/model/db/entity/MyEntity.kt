@@ -3,9 +3,9 @@ package com.example.homework.data.models.model.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-private const val TABLE_NAME = "my_table"
+const val ALL_NOTES = "table_with_notes"
 
-@Entity(tableName = TABLE_NAME)
+@Entity(tableName = ALL_NOTES)
 data class MyEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,

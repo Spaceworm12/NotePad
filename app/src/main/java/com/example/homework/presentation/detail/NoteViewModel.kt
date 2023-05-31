@@ -1,5 +1,6 @@
 package com.example.homework.presentation.detail
 
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -70,7 +71,8 @@ class NoteViewModel(
 
             when (repo.delete(id)) {
                 is Resource.Success -> {
-                    exit.postValue(true)
+                    goBack()
+
                 }
                 is Resource.Error -> {//описать
                 }
