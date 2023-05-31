@@ -6,7 +6,7 @@ import androidx.room.RoomMasterTable.TABLE_NAME
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
 
-class ApplicationDb : Application() {
+class DbNotes : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -14,7 +14,7 @@ class ApplicationDb : Application() {
     }
 
     companion object {
-        private var appInstance: ApplicationDb? = null
+        private var appInstance: DbNotes? = null
         private var db: Db? = null
 
         fun dao(): Dao {

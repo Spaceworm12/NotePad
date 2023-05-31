@@ -5,7 +5,7 @@ import com.example.homework.data.models.model.db.Db
 import com.example.homework.data.models.model.db.entity.MyEntity
 import com.example.homework.util.Resource
 
-class RepoImpl(private val dao: Dao, private val db: Db) : Repo {
+class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository {
 
     override suspend fun getAll(): Resource<List<MyEntity>> {
         val response = try {

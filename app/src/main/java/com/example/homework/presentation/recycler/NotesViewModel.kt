@@ -4,35 +4,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homework.data.models.model.app.ApplicationDb
-import com.example.homework.data.models.model.noteRepository.Repo
-import com.example.homework.data.models.model.noteRepository.RepoImpl
+import com.example.homework.data.models.model.app.DbNotes
+import com.example.homework.data.models.model.noteRepository.Repository
+import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class ListViewModel(
-    private val repo: Repo = RepoImpl(ApplicationDb.dao(),ApplicationDb.getDb())
+class NotesViewModel(
+    private val repo: Repository = RepositoryImplement(DbNotes.dao(),DbNotes.getDb())
 ) : ViewModel() {
-    private val _viewState = MutableLiveData(ListViewState())
-    val viewStateObs: LiveData<ListViewState> get() = _viewState
-    var viewState: ListViewState
+    private val _viewState = MutableLiveData(NotesViewState())
+    val viewStateObs: LiveData<NotesViewState> get() = _viewState
+    var viewState: NotesViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
 
-    fun submitUIEvent(event: ListEvent) {
+    fun submitUIEvent(event: NotesEvents) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: ListEvent) {
+    private fun handleUIEvent(event: NotesEvents) {
         when (event) {
-            is ListEvent.GetNotes -> getListNotes()
-            is ListEvent.DeleteNote -> deleteNote(id = event.id)
-            is ListEvent.DeleteAll -> deleteAll()
+            is NotesEvents.GetNotes -> getListNotes()
+            is NotesEvents.DeleteNote -> deleteNote(id = event.id)
+            is NotesEvents.DeleteAll -> deleteAll()
         }
     }
 

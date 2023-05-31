@@ -5,7 +5,7 @@ import com.example.homework.databinding.FragmentViewBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class ListHolder(val binding: FragmentViewBinding) :
+class NotesHolder(val binding: FragmentViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(noteModel: NoteModel) {

@@ -3,9 +3,9 @@ package com.example.homework.presentation.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homework.data.models.model.app.ApplicationDb
-import com.example.homework.data.models.model.noteRepository.Repo
-import com.example.homework.data.models.model.noteRepository.RepoImpl
+import com.example.homework.data.models.model.app.DbNotes
+import com.example.homework.data.models.model.noteRepository.Repository
+import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.util.Resource
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 
 class NoteViewModel(
-    private val repo: Repo = RepoImpl(ApplicationDb.dao(), ApplicationDb.getDb())
+    private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()

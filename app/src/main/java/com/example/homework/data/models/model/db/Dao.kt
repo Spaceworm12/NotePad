@@ -2,7 +2,6 @@ package com.example.homework.data.models.model.db
 
 import androidx.room.Dao
 import androidx.room.*
-import com.example.homework.data.models.model.app.ApplicationDb
 import com.example.homework.data.models.model.db.entity.MyEntity
 
 @Dao

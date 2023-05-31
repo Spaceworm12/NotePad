@@ -2,7 +2,7 @@ package com.example.homework.presentation.recycler
 
 import com.example.homework.presentation.model.NoteModel
 
-data class ListViewState(
+data class NotesViewState(
     val notesList: List<NoteModel> = emptyList(),
     val isLoading: Boolean = false,
     val errorText: String = ""
