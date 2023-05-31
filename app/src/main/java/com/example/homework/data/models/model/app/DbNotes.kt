@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
-import com.example.homework.data.models.model.db.entity.ALL_NOTES
+import com.example.homework.data.models.model.db.entity.TABLE_NOTES
 
 class DbNotes : Application() {
 
@@ -30,7 +30,7 @@ class DbNotes : Application() {
             if (db == null) {
                 val builder = Room.databaseBuilder(
                     appInstance!!.applicationContext,
-                    Db::class.java, ALL_NOTES
+                    Db::class.java, TABLE_NOTES
                 )
                 db = builder
                     .allowMainThreadQueries()
