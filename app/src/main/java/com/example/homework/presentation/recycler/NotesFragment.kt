@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
-import com.example.homework.databinding.FragmentPreviewBinding
+import com.example.homework.databinding.FragmentNotesBinding
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,7 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class NotesFragment : Fragment() {
 
-    private var _binding: FragmentPreviewBinding? = null
+    private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: NotesViewModel by lazy {
@@ -53,7 +53,7 @@ class NotesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPreviewBinding.inflate(inflater, container, false)
+        _binding = FragmentNotesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

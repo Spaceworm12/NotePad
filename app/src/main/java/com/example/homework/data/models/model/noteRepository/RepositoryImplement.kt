@@ -2,12 +2,12 @@ package com.example.homework.data.models.model.noteRepository
 
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
-import com.example.homework.data.models.model.db.entity.MyEntity
+import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.util.Resource
 
 class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository {
 
-    override suspend fun getAll(): Resource<List<MyEntity>> {
+    override suspend fun getAll(): Resource<List<NoteEntity>> {
         val response = try {
             dao.getAll()
         } catch (e: Exception) {
@@ -16,9 +16,9 @@ class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository
         return Resource.Success(response)
     }
 
-    override suspend fun create(example: MyEntity): Resource<Long> {
+    override suspend fun create(entity: NoteEntity): Resource<Long> {
         val response = try {
-            dao.create(example)
+            dao.create(entity)
         } catch (e: Exception) {
             return Resource.Error("НЕ ДОБАВЛЯЕТСЯ)")
         }

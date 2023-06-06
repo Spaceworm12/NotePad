@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 const val TABLE_NOTES = "all_notes"
 
 @Entity(tableName = TABLE_NOTES)
-data class MyEntity(
+data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,

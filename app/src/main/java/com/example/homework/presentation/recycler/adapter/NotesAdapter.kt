@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.homework.databinding.FragmentViewBinding
+import com.example.homework.databinding.FragmentRecyclerNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
 
 
@@ -29,7 +29,7 @@ class NotesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FragmentViewBinding.inflate(inflater, parent, false)
+        val binding = FragmentRecyclerNoteBoxBinding.inflate(inflater, parent, false)
         return NotesHolder(binding)
     }
 
