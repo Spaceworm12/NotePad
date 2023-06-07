@@ -86,6 +86,8 @@ class NotesFragment : Fragment() {
                 }
             }
 
+
+
     private fun onShowDeleteDialog(id: Long) {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage("Delete this note?")

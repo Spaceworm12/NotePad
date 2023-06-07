@@ -32,7 +32,6 @@ class NoteViewModel(
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
             is NoteEvent.Exit -> goBack()
-
         }
     }
 

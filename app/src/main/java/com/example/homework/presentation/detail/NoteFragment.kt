@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.homework.R
 import com.example.homework.databinding.FragmentNoteBinding
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.recycler.NotesFragment
 
 
 class NoteFragment : Fragment() {
@@ -78,8 +80,17 @@ class NoteFragment : Fragment() {
                 }
             }
         })
+
         binding.btnSave.setOnClickListener {
             noteViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    NotesFragment()
+                )
+                .commit()
         }
         noteViewModel.exit.observe(viewLifecycleOwner) { isExit ->
             if (isExit)
@@ -90,6 +101,15 @@ class NoteFragment : Fragment() {
         }
         binding.btnDelete.setOnClickListener {
             noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    NotesFragment()
+                )
+                .commit()
+
 
         }
     }
