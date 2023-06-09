@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".data.models.model.app.DbNotes"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|screenSize|orientation"
         android:dataExtractionRules="@xml/data_extraction_rules"

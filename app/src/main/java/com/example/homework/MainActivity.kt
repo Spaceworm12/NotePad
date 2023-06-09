@@ -3,7 +3,7 @@ package com.example.homework
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework.databinding.ActivityMainBinding
-import com.example.homework.fragments.PreviewFragment
+import com.example.homework.presentation.recycler.NotesFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,10 +15,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, PreviewFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, NotesFragment())
+                .commit()
+        }
 
     }
 

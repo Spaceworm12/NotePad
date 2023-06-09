@@ -1,18 +1,19 @@
-package com.example.homework.fragments.adapterAndHolder
+package com.example.homework.presentation.recycler.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.homework.databinding.FragmentDescriptionBinding
-import com.example.homework.models.NoteModel
+import com.example.homework.databinding.FragmentRecyclerNoteBoxBinding
+import com.example.homework.presentation.model.NoteModel
 
 
-class PreviewAdapter(
-    val clickListener: (NoteModel) -> Unit,
-    val longClickListener: (Int, NoteModel) -> Unit
+class NotesAdapter(
+    private val clickListener: (NoteModel) -> Unit,
+    private val longClickListener: (Long) -> Unit
 ) :
-    ListAdapter<NoteModel, PreviewHolder>(DIFF_CALLBACK) {
+    ListAdapter<NoteModel, NotesHolder>(DIFF_CALLBACK) {
+
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
@@ -26,20 +27,18 @@ class PreviewAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = FragmentDescriptionBinding.inflate(inflater, parent, false)
-        return PreviewHolder(binding)
+        val binding = FragmentRecyclerNoteBoxBinding.inflate(inflater, parent, false)
+        return NotesHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PreviewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NotesHolder, position: Int) {
         val noteModel = getItem(position)
         holder.bind(noteModel)
-        holder.binding.root.setOnClickListener {
-            clickListener(noteModel)
-        }
+        holder.binding.root.setOnClickListener { clickListener(noteModel) }
         holder.binding.root.setOnLongClickListener {
-            longClickListener.invoke(currentList.indexOf(noteModel), noteModel)
+            longClickListener.invoke(noteModel.id)
             true
         }
 
