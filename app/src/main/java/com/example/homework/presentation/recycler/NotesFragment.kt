@@ -39,7 +39,7 @@ class NotesFragment : Fragment() {
                     R.anim.enter_fragment_in,
                     R.anim.exit_fragment_out
                 )
-                .replace(
+                .add(
                     R.id.fragment_container,
                     NoteFragment.newInstance(it)
                 )
@@ -74,39 +74,39 @@ class NotesFragment : Fragment() {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
-                .replace(
+                .add(
                     R.id.fragment_container,
                     NoteFragment.newInstance(viewModel.viewState.getEmptyItem())
                 )
                 .addToBackStack("")
                 .commit()
         }
-        binding.deleteAll.setOnClickListener{
+        binding.deleteAll.setOnClickListener {
             onShowDeleteDialogAll()
-                }
-            }
-
+        }
+    }
 
 
     private fun onShowDeleteDialog(id: Long) {
         MaterialAlertDialogBuilder(requireContext())
-            .setMessage("Delete this note?")
+            .setMessage(getString(R.string.delete_dialog_title))
             .setCancelable(true)
-            .setPositiveButton("Yes") { _, _ ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 viewModel.submitUIEvent(NotesEvents.DeleteNote(id))
             }
-            .setNegativeButton("No") { _, _ -> }
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
             .show()
     }
+
     private fun onShowDeleteDialogAll() {
         MaterialAlertDialogBuilder(requireContext())
-            .setMessage("Delete all notes?")
+            .setMessage(getString(R.string.delete_dialog_title))
             .setCancelable(true)
-            .setPositiveButton("Yes") { _, _ ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 viewModel.submitUIEvent(NotesEvents.DeleteAll())
             }
-            .setNegativeButton("No") { _, _ -> }
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
             .show()
     }

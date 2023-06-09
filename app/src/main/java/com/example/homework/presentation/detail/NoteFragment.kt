@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,8 @@ class NoteFragment : Fragment() {
 
         binding.noteName.setText(note.name)
         binding.noteDescriprion.setText(note.description)
+        noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(note.name))
+        noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(note.description))
 
         binding.noteName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -111,6 +114,12 @@ class NoteFragment : Fragment() {
                 .commit()
 
 
+        }
+        noteViewModel.errorText.observe(viewLifecycleOwner) {
+            if (it.isNotBlank()){
+                Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+                noteViewModel.submitUIEvent(NoteEvent.Error)
+            }
         }
     }
 

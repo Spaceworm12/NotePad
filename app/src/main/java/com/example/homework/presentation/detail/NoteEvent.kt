@@ -11,4 +11,6 @@ sealed class NoteEvent {
     class DeleteNote(val id: Long) : NoteEvent()
 
     object Exit : NoteEvent()
+
+    object Error:NoteEvent()
 }

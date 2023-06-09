@@ -1,6 +1,5 @@
 package com.example.homework.presentation.detail
 
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +17,7 @@ class NoteViewModel(
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()
+    val errorText = MutableLiveData<String>()
 
     val exit = MutableLiveData(false)
 
@@ -31,7 +31,8 @@ class NoteViewModel(
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-            is NoteEvent.Exit -> goBack()
+            NoteEvent.Exit -> goBack()
+            NoteEvent.Error -> errorText.postValue("")
         }
     }
 
@@ -57,25 +58,30 @@ class NoteViewModel(
             when (result) {
                 is Resource.Success -> {
                     exit.postValue(true)
+
                 }
 
                 is Resource.Error -> {
+                    errorText.postValue(result.message ?: "")
                 }
             }
         }
     }
 
+
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
-
-            when (repo.delete(id)) {
+            when (val result = repo.delete(id)) {
                 is Resource.Success -> {
                     goBack()
 
                 }
-                is Resource.Error -> {//описать
+                is Resource.Error -> {
+                    errorText.postValue(result.message ?: "")
                 }
             }
         }
     }
+
 }
+

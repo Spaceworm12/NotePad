@@ -13,4 +13,7 @@
     <string name="namenote">NameNote</string>
     <string name="save">SAVE</string>
     <string name="deleteNote">DELETE</string>
+    <string name="delete_dialog_title">Delete this note?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
