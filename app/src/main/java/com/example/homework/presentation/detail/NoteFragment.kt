@@ -129,6 +129,7 @@ class NoteFragment : Fragment() {
             id = 0,
             name = "",
             description = ""
+        type =""
         )
     }
 

@@ -9,7 +9,8 @@ object Mapper {
         return NoteModelPresentation(
             id = model.id,
             name = model.name,
-            description = model.description
+            description = model.description,
+            type = model.type
         )
     }
 
@@ -21,8 +22,24 @@ object Mapper {
         return NoteEntity(
             id = model.id,
             name = model.name,
-            description = model.description
+            description = model.description,
+            type = model.type
         )
     }
 
+    fun transformToType(type: String): NoteType {
+        return when (type) {
+            "NOTE_TYPE" -> NoteType.NOTE_TYPE
+            "BIRTHDAY_TYPE" -> NoteType.BIRTHDAY_TYPE
+            else -> NoteType.NOTE_TYPE
+        }
+    }
+
+    fun transformFromType(type: NoteType): String {
+        return when (type) {
+            NoteType.NOTE_TYPE -> "NOTE_TYPE"
+            NoteType.BIRTHDAY_TYPE -> "BIRTHDAY_TYPE"
+        }
+
+    }
 }
