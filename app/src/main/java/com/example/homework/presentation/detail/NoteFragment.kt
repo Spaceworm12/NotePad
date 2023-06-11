@@ -128,8 +128,9 @@ class NoteFragment : Fragment() {
         return NoteModel(
             id = 0,
             name = "",
-            description = ""
-        type =""
+            description = "",
+            type = "NOTE_TYPE"
+
         )
     }
 

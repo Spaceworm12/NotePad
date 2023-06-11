@@ -1,4 +1,4 @@
-package com.example.homework.presentation.detail
+package com.example.homework.presentation.detailBd
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,27 +12,28 @@ import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
 
-class NoteViewModel(
+class BdViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
-    private val userTitle = MutableLiveData<String>()
-    private val userDescription = MutableLiveData<String>()
+    private val user = MutableLiveData<String>()
+    private val date = MutableLiveData<String>()
+    private val description = MutableLiveData<String>()
     val errorText = MutableLiveData<String>()
 
     val exit = MutableLiveData(false)
 
-    fun submitUIEvent(event: NoteEvent) {
+    fun submitUIEvent(event: BdEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: NoteEvent) {
+    private fun handleUIEvent(event: BdEvent) {
         when (event) {
-            is NoteEvent.SaveUserTitle -> userTitle.postValue(event.text)
-            is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
-            is NoteEvent.SaveNote -> saveNewNote(id = event.id)
-            is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-            NoteEvent.Exit -> goBack()
-            NoteEvent.Error -> errorText.postValue("")
+            is BdEvent.SaveUserBd -> user.postValue(event.text)
+            is BdEvent.SaveDateBd -> date.postValue(event.text)
+            is BdEvent.SaveBd -> saveNewBd(id = event.id)
+            is BdEvent.SaveUserDescription -> description.postValue(event.text)
+            BdEvent.Exit -> goBack()
+            BdEvent.Error -> errorText.postValue("")
         }
     }
 
@@ -42,16 +43,16 @@ class NoteViewModel(
         }
     }
 
-    private fun saveNewNote(id: Long) {
+    private fun saveNewBd(id: Long) {
 
         viewModelScope.launch {
             val result = repo.create(
                 Mapper.transformToData(
                     NoteModel(
                         id = id,
-                        name = userTitle.value ?: "Empty title",
-                        description = userDescription.value ?: "Empty Description",
-                        type = "NOTE_TYPE"
+                        name = user.value ?: "Empty user",
+                        description = date.value ?: "Empty date",
+                        type = "BIRTHDAY_TYPE"
                     )
                 )
             )
@@ -70,19 +71,19 @@ class NoteViewModel(
     }
 
 
-    private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            when (val result = repo.delete(id)) {
-                is Resource.Success -> {
-                    goBack()
-
-                }
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
-                }
+//    private fun deleteBd(id: Long) {
+//        viewModelScope.launch {
+//            when (val result = repo.delete(id)) {
+//                is Resource.Success -> {
+//                    goBack()
+//
+//                }
+//                is Resource.Error -> {
+//                    errorText.postValue(result.message ?: "")
+//                }
             }
-        }
-    }
-
-}
+//        }
+//    }
+//
+//}
 

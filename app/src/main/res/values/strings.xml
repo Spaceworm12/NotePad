@@ -16,4 +16,9 @@
     <string name="delete_dialog_title">Delete this note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="date">Date</string>
+    <string name="saveBd">save</string>
+    <string name="cancel">cancel</string>
+    <string name="user">user</string>
 </resources>
