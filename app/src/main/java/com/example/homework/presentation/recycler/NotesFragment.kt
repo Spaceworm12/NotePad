@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentNotesBinding
 import com.example.homework.presentation.detail.NoteFragment
+import com.example.homework.presentation.detailBd.BdFragment
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -70,7 +71,11 @@ class NotesFragment : Fragment() {
                 Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
             adapter.submitList(state.notesList)
         }
-        binding.addNote.setOnClickListener {
+        binding.addNew.setOnClickListener {
+            binding.addNote.visibility
+            }
+            binding.addBd.visibility
+            binding.addNote.setOnClickListener{
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -80,6 +85,17 @@ class NotesFragment : Fragment() {
                 )
                 .addToBackStack("")
                 .commit()
+        }
+        binding.addBd.setOnClickListener{
+            requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .add(
+                R.id.fragment_container,
+                BdFragment.newInstance(viewModel.viewState.getEmptyItem())
+            )
+            .addToBackStack("")
+            .commit()
         }
         binding.deleteAll.setOnClickListener {
             onShowDeleteDialogAll()
