@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.databinding.FragmentNoteBinding
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.NotesFragment
 
 
@@ -116,8 +117,8 @@ class NoteFragment : Fragment() {
 
         }
         noteViewModel.errorText.observe(viewLifecycleOwner) {
-            if (it.isNotBlank()){
-                Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+            if (it.isNotBlank()) {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 noteViewModel.submitUIEvent(NoteEvent.Error)
             }
         }
@@ -129,8 +130,8 @@ class NoteFragment : Fragment() {
             id = 0,
             name = "",
             description = "",
-            type = "NOTE_TYPE"
-
+            type = NoteType.NOTE_TYPE,
+            date = ""
         )
     }
 

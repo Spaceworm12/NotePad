@@ -26,11 +26,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        toots:text = "text"/>
+        toots:text = "name"/>
 
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/bd_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -39,7 +39,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/username"
-        toots:text = "text"/>
+        toots:text = "id"/>
+
+    <TextView
+        android:id="@+id/bd_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="18dp"
+        android:paddingEnd="40dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        toots:text="date" />
 
 
 

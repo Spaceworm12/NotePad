@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.homework.databinding.FragmentBdBoxBinding
 import com.example.homework.databinding.FragmentNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 
 
 class NotesAdapter(
@@ -32,7 +33,7 @@ class NotesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (getItem(itemCount - 1).type == "NOTE_TYPE") {
+        return if (getItem(itemCount - 1).type == NoteType.NOTE_TYPE) {
             val inflater = LayoutInflater.from(parent.context)
             val binding = FragmentNoteBoxBinding.inflate(inflater, parent, false)
             NotesHolder(binding)
@@ -41,23 +42,33 @@ class NotesAdapter(
             val binding = FragmentBdBoxBinding.inflate(inflater, parent, false)
             BdHolder(binding)
         }
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val noteModel = getItem(position).type
-        if (getItem(itemCount - 1).type == "NOTE_TYPE") {
-        holder.bin
-        holder.binding.root.setOnClickListener { clickListener(noteModel) }
-        holder.binding.root.setOnLongClickListener {
-            longClickListener.invoke(noteModel.id)
-            true
+        val noteModel: NoteModel = getItem(position)
+        if (noteModel.type == NoteType.NOTE_TYPE) {
+            (holder as NotesHolder).binding
+            holder.bind(noteModel)
+            holder.binding.root.setOnClickListener {
+                clickListener(noteModel)
+            }
+            holder.binding.root.setOnClickListener {
+                longClickListener.invoke(noteModel.id)
+            }
+        } else {
+            (holder as BdHolder).binding
+            holder.bindBd(noteModel)
+            holder.binding.root.setOnClickListener {
+                clickListener(noteModel)
+            }
+            holder.binding.root.setOnClickListener {
+                longClickListener.invoke(noteModel.id)
+            }
         }
+
     }
+
 }
-
-
-
 
 
 

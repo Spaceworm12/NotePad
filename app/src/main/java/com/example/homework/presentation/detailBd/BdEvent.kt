@@ -1,7 +1,5 @@
 package com.example.homework.presentation.detailBd
 
-import com.example.homework.presentation.detail.NoteEvent
-
 sealed class BdEvent {
 
     class SaveUserBd(val text: String) : BdEvent()
@@ -14,6 +12,6 @@ sealed class BdEvent {
 
     object Exit : BdEvent()
 
-    object Error: BdEvent()
+    object Error : BdEvent()
 
 }

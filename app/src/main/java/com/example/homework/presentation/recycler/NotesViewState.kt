@@ -1,17 +1,29 @@
 package com.example.homework.presentation.recycler
 
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 
 data class NotesViewState(
     val notesList: List<NoteModel> = emptyList(),
     val isLoading: Boolean = false,
     val errorText: String = ""
 ) {
-    fun getEmptyItem(): NoteModel {
+    fun getEmptyNote(): NoteModel {
         return NoteModel(
             id = 0,
             name = "",
-            description = ""
+            description = "",
+            type = NoteType.NOTE_TYPE,
+            date=""
         )
     }
+        fun getEmptyBd(): NoteModel {
+            return NoteModel(
+                id = 0,
+                name = "",
+                description = "",
+                type = NoteType.BIRTHDAY_TYPE,
+                date="Date"
+            )
+        }
 }

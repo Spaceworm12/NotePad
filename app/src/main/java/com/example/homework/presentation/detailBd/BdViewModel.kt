@@ -8,6 +8,7 @@ import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
@@ -51,8 +52,9 @@ class BdViewModel(
                     NoteModel(
                         id = id,
                         name = user.value ?: "Empty user",
-                        description = date.value ?: "Empty date",
-                        type = "BIRTHDAY_TYPE"
+                        description = description.value ?: "Empty date",
+                        type = NoteType.BIRTHDAY_TYPE,
+                        date = date.value ?: "Date"
                     )
                 )
             )
@@ -69,21 +71,6 @@ class BdViewModel(
             }
         }
     }
+}
 
-
-//    private fun deleteBd(id: Long) {
-//        viewModelScope.launch {
-//            when (val result = repo.delete(id)) {
-//                is Resource.Success -> {
-//                    goBack()
-//
-//                }
-//                is Resource.Error -> {
-//                    errorText.postValue(result.message ?: "")
-//                }
-            }
-//        }
-//    }
-//
-//}
 

@@ -8,9 +8,9 @@ import com.example.homework.presentation.model.NoteModel
 class BdHolder(val binding: FragmentBdBoxBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-     fun bind(noteModel: NoteModel) {
+     fun bindBd (noteModel: NoteModel) {
         binding.username.text = noteModel.name
-        binding.date.text = noteModel.id.toString()
-
+        binding.bdDate.text = noteModel.date
+         binding.bdId.text = noteModel.id.toString()
     }
 }

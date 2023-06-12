@@ -1,7 +1,7 @@
 package com.example.homework.data.models.model.db
 
-import androidx.room.Dao
 import androidx.room.*
+import androidx.room.Dao
 import com.example.homework.data.models.model.db.entity.NoteEntity
 
 @Dao
@@ -18,6 +18,6 @@ interface Dao {
     @Query("DELETE FROM all_notes WHERE id = :id")
     suspend fun delete(id: Long)
 
-    }
+}
 
 

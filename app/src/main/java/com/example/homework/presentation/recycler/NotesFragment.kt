@@ -13,6 +13,7 @@ import com.example.homework.R
 import com.example.homework.databinding.FragmentNotesBinding
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailBd.BdFragment
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -31,23 +32,42 @@ class NotesFragment : Fragment() {
             onShowDeleteDialog(id)
         },
         clickListener = {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(
-                    R.anim.enter_fragment,
-                    R.anim.exit_fragment,
-                    R.anim.enter_fragment_in,
-                    R.anim.exit_fragment_out
-                )
-                .add(
-                    R.id.fragment_container,
-                    NoteFragment.newInstance(it)
-                )
-                .addToBackStack("")
-                .commit()
+            if (it.type.equals(NoteType.NOTE_TYPE)) {
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.enter_fragment,
+                        R.anim.exit_fragment,
+                        R.anim.enter_fragment_in,
+                        R.anim.exit_fragment_out
+                    )
+                    .add(
+                        R.id.fragment_container,
+                        NoteFragment.newInstance(it)
+                    )
+                    .addToBackStack("")
+                    .commit()
+            }else{
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.enter_fragment,
+                        R.anim.exit_fragment,
+                        R.anim.enter_fragment_in,
+                        R.anim.exit_fragment_out
+                    )
+                    .add(
+                        R.id.fragment_container,
+                        BdFragment.newInstance(it)
+                    )
+                    .addToBackStack("")
+                    .commit()
+            }
         }
     )
+
 
 
     override fun onCreateView(
@@ -72,16 +92,16 @@ class NotesFragment : Fragment() {
             adapter.submitList(state.notesList)
         }
         binding.addNew.setOnClickListener {
-            binding.addNote.visibility
-            }
-            binding.addBd.visibility
+            binding.addNote.isVisible
+            binding.addBd.isVisible
+        }
             binding.addNote.setOnClickListener{
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    NoteFragment.newInstance(viewModel.viewState.getEmptyItem())
+                    NoteFragment.newInstance(viewModel.viewState.getEmptyNote())
                 )
                 .addToBackStack("")
                 .commit()
@@ -92,7 +112,7 @@ class NotesFragment : Fragment() {
             .beginTransaction()
             .add(
                 R.id.fragment_container,
-                BdFragment.newInstance(viewModel.viewState.getEmptyItem())
+                BdFragment.newInstance(viewModel.viewState.getEmptyBd())
             )
             .addToBackStack("")
             .commit()

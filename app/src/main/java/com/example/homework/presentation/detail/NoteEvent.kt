@@ -12,5 +12,5 @@ sealed class NoteEvent {
 
     object Exit : NoteEvent()
 
-    object Error: NoteEvent()
+    object Error : NoteEvent()
 }

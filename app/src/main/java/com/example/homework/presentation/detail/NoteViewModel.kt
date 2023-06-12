@@ -8,6 +8,7 @@ import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
@@ -51,7 +52,8 @@ class NoteViewModel(
                         id = id,
                         name = userTitle.value ?: "Empty title",
                         description = userDescription.value ?: "Empty Description",
-                        type = "NOTE_TYPE"
+                        type = NoteType.NOTE_TYPE,
+                        date = ""
                     )
                 )
             )

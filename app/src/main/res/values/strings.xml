@@ -21,4 +21,9 @@
     <string name="saveBd">save</string>
     <string name="cancel">cancel</string>
     <string name="user">user</string>
+    <string name="add_bd">add_bd</string>
+    <string name="add_note">add_note</string>
+    <string name="delete_all">DELETE ALL</string>
+    <string name="bd">BD</string>
+    <string name="note">NOTE</string>
 </resources>
