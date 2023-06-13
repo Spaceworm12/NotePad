@@ -57,8 +57,7 @@ class NotesAdapter(
                     true
             }
         } else {
-            (holder as BdHolder).binding
-            holder.bindBd(noteModel)
+            (holder as BdHolder).bind(noteModel)
             holder.binding.root.setOnClickListener {
                 clickListener(noteModel)
             }
