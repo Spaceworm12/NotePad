@@ -52,8 +52,9 @@ class NotesAdapter(
             holder.binding.root.setOnClickListener {
                 clickListener(noteModel)
             }
-            holder.binding.root.setOnClickListener {
+                holder.binding.root.setOnLongClickListener {
                 longClickListener.invoke(noteModel.id)
+                    true
             }
         } else {
             (holder as BdHolder).binding
@@ -61,8 +62,9 @@ class NotesAdapter(
             holder.binding.root.setOnClickListener {
                 clickListener(noteModel)
             }
-            holder.binding.root.setOnClickListener {
+            holder.binding.root.setOnLongClickListener {
                 longClickListener.invoke(noteModel.id)
+                true
             }
         }
 

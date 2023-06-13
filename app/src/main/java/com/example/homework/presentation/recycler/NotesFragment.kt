@@ -32,7 +32,7 @@ class NotesFragment : Fragment() {
             onShowDeleteDialog(id)
         },
         clickListener = {
-            if (it.type.equals(NoteType.NOTE_TYPE)) {
+            if (it.type==NoteType.NOTE_TYPE) {
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()
@@ -85,15 +85,16 @@ class NotesFragment : Fragment() {
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             binding.loader.isVisible = state.isLoading
-            binding.addNote.isVisible = !state.isLoading
+            binding.addNew.isVisible = !state.isLoading
             binding.recView.isVisible = !state.isLoading
             if (state.errorText.isNotBlank())
                 Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
             adapter.submitList(state.notesList)
         }
         binding.addNew.setOnClickListener {
-            binding.addNote.isVisible
-            binding.addBd.isVisible
+            binding.addNote.isVisible = !binding.addNote.isVisible
+            binding.addBd.isVisible=!binding.addBd.isVisible
+            binding.addNew.rotation = if(binding.addNote.isVisible) 45f else 0f
         }
             binding.addNote.setOnClickListener{
             requireActivity()
