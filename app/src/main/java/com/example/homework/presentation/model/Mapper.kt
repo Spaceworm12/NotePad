@@ -29,19 +29,5 @@ object Mapper {
         )
     }
 
-//    fun transformToType(type: String): NoteType {
-//        return when (type) {
-//            "NOTE_TYPE" -> NoteType.NOTE_TYPE
-//            "BIRTHDAY_TYPE" -> NoteType.BIRTHDAY_TYPE
-//            else -> NoteType.NOTE_TYPE
-//        }
-//    }
-//
-//    fun transformFromType(type: NoteType): String {
-//        return when (type) {
-//            NoteType.NOTE_TYPE -> "NOTE_TYPE"
-//            NoteType.BIRTHDAY_TYPE -> "BIRTHDAY_TYPE"
-//        }
-
-    }
+}
 

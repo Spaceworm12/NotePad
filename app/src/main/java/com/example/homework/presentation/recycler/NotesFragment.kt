@@ -15,6 +15,7 @@ import com.example.homework.R
 import com.example.homework.databinding.FragmentNotesBinding
 import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
+import com.example.homework.presentation.detail.NoteViewModel
 import com.example.homework.presentation.detailBd.BdFragment
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
@@ -28,6 +29,9 @@ class NotesFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: NotesViewModel by lazy {
         ViewModelProvider(this)[NotesViewModel::class.java]
+    }
+    private val noteViewModel: NoteViewModel by lazy {
+        ViewModelProvider(this)[NoteViewModel::class.java]
     }
 
     private val adapter = NotesAdapter(
@@ -63,7 +67,7 @@ class NotesFragment : Fragment() {
                         val datePickerDialog = DatePickerDialog(
                             requireContext(),
                             { view, year, monthOfYear, dayOfMonth ->
-                                it.description=
+                                it.date =
                                     (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                             },
                             year,
@@ -71,10 +75,10 @@ class NotesFragment : Fragment() {
                             day
                         )
                         datePickerDialog.show()
+
                     }
                     .create()
                     .show()
-                viewModel.submitUIEvent(NoteEvent.SaveDateBd())
                     }else{
                 requireActivity()
                     .supportFragmentManager
@@ -92,6 +96,7 @@ class NotesFragment : Fragment() {
                     .addToBackStack("")
                     .commit()
             }
+            noteViewModel.submitUIEvent(NoteEvent.SaveDateBd(it.date))
         }
     )
 

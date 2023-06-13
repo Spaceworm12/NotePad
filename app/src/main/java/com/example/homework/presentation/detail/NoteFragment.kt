@@ -54,6 +54,7 @@ class NoteFragment : Fragment() {
 
         binding.noteName.setText(note.name)
         binding.noteDescriprion.setText(note.description)
+        binding.bdDate.setText(note.date)
         noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(note.name))
         noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(note.description))
 
@@ -81,6 +82,19 @@ class NoteFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
                     noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(s.toString()))
+                }
+            }
+        })
+        binding.bdDate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    noteViewModel.submitUIEvent(NoteEvent.SaveDateBd(s.toString()))
                 }
             }
         })

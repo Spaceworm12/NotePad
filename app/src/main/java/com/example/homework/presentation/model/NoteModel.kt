@@ -7,9 +7,9 @@ import kotlinx.parcelize.Parcelize
 data class NoteModel(
     val id: Long,
     val name: String,
-    val description: String,
+    var description: String,
     val type: NoteType,
-    val date: String
+    var date: String
 ) : Parcelable
 
 enum class NoteType{
