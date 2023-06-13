@@ -20,6 +20,9 @@ class NotesAdapter(
 
     companion object {
 
+        const val NOTE_TYPE = 11
+        const val BIRTHDAY_TYPE = 15
+
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
             override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {
@@ -33,40 +36,55 @@ class NotesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (getItem(itemCount - 1).type == NoteType.NOTE_TYPE) {
-            val inflater = LayoutInflater.from(parent.context)
-            val binding = FragmentNoteBoxBinding.inflate(inflater, parent, false)
-            NotesHolder(binding)
-        } else {
-            val inflater = LayoutInflater.from(parent.context)
-            val binding = FragmentBdBoxBinding.inflate(inflater, parent, false)
-            BdHolder(binding)
+        val inflater = LayoutInflater.from(parent.context)
+
+        return when (viewType) {
+            NOTE_TYPE -> {
+                val binding = FragmentNoteBoxBinding.inflate(inflater, parent, false)
+                NotesHolder(binding)
+            }
+
+            else -> {
+                val binding = FragmentBdBoxBinding.inflate(inflater, parent, false)
+                BdHolder(binding)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteModel: NoteModel = getItem(position)
-        if (noteModel.type == NoteType.NOTE_TYPE) {
-            (holder as NotesHolder).binding
-            holder.bind(noteModel)
-            holder.binding.root.setOnClickListener {
-                clickListener(noteModel)
-            }
+        when (holder) {
+            is NotesHolder -> {
+                holder.bind(noteModel)
+                holder.binding.root.setOnClickListener {
+                    clickListener(noteModel)
+                }
                 holder.binding.root.setOnLongClickListener {
-                longClickListener.invoke(noteModel.id)
+                    longClickListener.invoke(noteModel.id)
                     true
+                }
             }
-        } else {
-            (holder as BdHolder).bind(noteModel)
-            holder.binding.root.setOnClickListener {
-                clickListener(noteModel)
-            }
-            holder.binding.root.setOnLongClickListener {
-                longClickListener.invoke(noteModel.id)
-                true
-            }
-        }
 
+            is BdHolder -> {
+                holder.bind(noteModel)
+                holder.binding.root.setOnClickListener {
+                    clickListener(noteModel)
+                }
+                holder.binding.root.setOnLongClickListener {
+                    longClickListener.invoke(noteModel.id)
+                    true
+                }
+            }
+
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val note = getItem(position)
+        return when (note.type) {
+            NoteType.NOTE_TYPE -> NOTE_TYPE
+            else -> BIRTHDAY_TYPE
+        }
     }
 
 }
