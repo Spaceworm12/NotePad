@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.DbNotes
 import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
+import com.example.homework.presentation.detailBd.BdEvent
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -18,6 +19,7 @@ class NoteViewModel(
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()
+    private val date = MutableLiveData<String>()
     val errorText = MutableLiveData<String>()
 
     val exit = MutableLiveData(false)
@@ -32,6 +34,7 @@ class NoteViewModel(
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
+            is NoteEvent.SaveDateBd -> date.postValue(event.text)
             NoteEvent.Exit -> goBack()
             NoteEvent.Error -> errorText.postValue("")
         }

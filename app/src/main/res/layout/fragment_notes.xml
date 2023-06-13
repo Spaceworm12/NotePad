@@ -45,7 +45,10 @@
         android:layout_height="70dp"
         android:layout_margin="16dp"
         android:background="@drawable/circle_btn"
-        android:text="@string/add"
+        android:text="@string/plus_chain"
+        android:textSize="20sp"
+        android:textAllCaps="true"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

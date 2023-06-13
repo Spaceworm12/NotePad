@@ -10,6 +10,7 @@ class NotesHolder(val binding: FragmentNoteBoxBinding) :
 
     fun bind(noteModel: NoteModel) {
         binding.noteName.text = noteModel.name
+        binding.bdDate.text = noteModel.date
         binding.noteId.text = noteModel.id.toString()
 
     }

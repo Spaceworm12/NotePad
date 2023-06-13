@@ -37,7 +37,6 @@ class BdFragment : Fragment() {
     private val bdViewModel: BdViewModel by lazy {
         ViewModelProvider(this)[BdViewModel::class.java]
     }
-    lateinit var selectedDateTV: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +65,7 @@ class BdFragment : Fragment() {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { view, year, monthOfYear, dayOfMonth ->
-                    selectedDateTV.text =
+                    binding.selectedDate.text =
                         (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                 },
                 year,
@@ -78,19 +77,19 @@ class BdFragment : Fragment() {
         bdViewModel.submitUIEvent(BdEvent.SaveUserBd(note.name))
         bdViewModel.submitUIEvent(BdEvent.SaveUserDescription(note.description))
         bdViewModel.submitUIEvent(BdEvent.SaveDateBd(note.date))
-//        binding.selectedDate.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                s?.let {
-//                    bdViewModel.submitUIEvent(BdEvent.SaveUserBd(s.toString()))
-//                }
-//            }
-//        })
+        binding.selectedDate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    bdViewModel.submitUIEvent(BdEvent.SaveDateBd(s.toString()))
+                }
+            }
+        })
         binding.user.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }

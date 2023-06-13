@@ -26,4 +26,5 @@
     <string name="delete_all">DELETE ALL</string>
     <string name="bd">BD</string>
     <string name="note">NOTE</string>
+    <string name="plus_chain">+</string>
 </resources>

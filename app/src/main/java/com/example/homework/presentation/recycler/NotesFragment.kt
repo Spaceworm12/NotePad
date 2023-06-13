@@ -1,5 +1,7 @@
 package com.example.homework.presentation.recycler
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +13,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentNotesBinding
+import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailBd.BdFragment
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.*
 
 
 class NotesFragment : Fragment() {
 
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: NotesViewModel by lazy {
         ViewModelProvider(this)[NotesViewModel::class.java]
     }
@@ -33,22 +36,46 @@ class NotesFragment : Fragment() {
         },
         clickListener = {
             if (it.type==NoteType.NOTE_TYPE) {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.enter_fragment,
-                        R.anim.exit_fragment,
-                        R.anim.enter_fragment_in,
-                        R.anim.exit_fragment_out
-                    )
-                    .add(
-                        R.id.fragment_container,
-                        NoteFragment.newInstance(it)
-                    )
-                    .addToBackStack("")
-                    .commit()
-            }else{
+                AlertDialog.Builder(requireContext())
+                    .setMessage("what are you want fucking asshole?")
+                    .setPositiveButton("OPEN FUCKING NOTE") { _, _ ->
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .setCustomAnimations(
+                                R.anim.enter_fragment,
+                                R.anim.exit_fragment,
+                                R.anim.enter_fragment_in,
+                                R.anim.exit_fragment_out
+                            )
+                            .add(
+                                R.id.fragment_container,
+                                NoteFragment.newInstance(it)
+                            )
+                            .addToBackStack("")
+                            .commit()
+                    }
+                    .setNegativeButton("CHECK FUCK BD") { _, _ ->
+                        val d = Calendar.getInstance()
+                        val year = d.get(Calendar.YEAR)
+                        val month = d.get(Calendar.MONTH)
+                        val day = d.get(Calendar.DAY_OF_MONTH)
+                        val datePickerDialog = DatePickerDialog(
+                            requireContext(),
+                            { view, year, monthOfYear, dayOfMonth ->
+                                it.description=
+                                    (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                            },
+                            year,
+                            month,
+                            day
+                        )
+                        datePickerDialog.show()
+                    }
+                    .create()
+                    .show()
+                viewModel.submitUIEvent(NoteEvent.SaveDateBd())
+                    }else{
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()

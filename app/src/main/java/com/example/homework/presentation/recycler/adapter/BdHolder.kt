@@ -10,7 +10,7 @@ class BdHolder(val binding: FragmentBdBoxBinding) :
 
      fun bind (noteModel: NoteModel) {
         binding.username.text = noteModel.name
-//        binding.bdDate.text = noteModel.date
+        binding.bdDate.text = noteModel.date
          binding.bdId.text = noteModel.id.toString()
     }
 }
