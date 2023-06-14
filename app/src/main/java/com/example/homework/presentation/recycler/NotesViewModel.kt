@@ -8,6 +8,8 @@ import com.example.homework.data.models.model.app.DbNotes
 import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
+import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,6 +19,12 @@ class NotesViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(),DbNotes.getDb())
 ) : ViewModel() {
     private val _viewState = MutableLiveData(NotesViewState())
+    private val userDate = MutableLiveData<String>()
+    private val userTitle = MutableLiveData<String>()
+    private val userDescription = MutableLiveData<String>()
+    val errorText = MutableLiveData<String>()
+    val exit = MutableLiveData(false)
+
     val viewStateObs: LiveData<NotesViewState> get() = _viewState
     var viewState: NotesViewState
         get() = _viewState.value!!
@@ -33,6 +41,7 @@ class NotesViewModel(
             is NotesEvents.GetNotes -> getListNotes()
             is NotesEvents.DeleteNote -> deleteNote(id = event.id)
             is NotesEvents.DeleteAll -> deleteAll()
+            is NotesEvents.AddDate -> addDate(id = event.id, date = event.date)
         }
     }
 
@@ -70,6 +79,7 @@ class NotesViewModel(
             }
         }
     }
+
     private fun deleteAll() {
         viewModelScope.launch {
             viewState = viewState.copy(isLoading = true)
@@ -84,7 +94,36 @@ class NotesViewModel(
             }
         }
     }
+
+    private fun addDate(id: Long, date: String) {
+
+        viewModelScope.launch {
+            val result = repo.create(
+                Mapper.transformToData(
+                    NoteModel(
+                        id = id,
+                        name = userTitle.value ?: "Empty title",
+                        description = userDescription.value ?: "Empty Description",
+                        type = NoteType.NOTE_TYPE,
+                        date = userDate.value?:""
+                    )
+                )
+            )
+
+            when (result) {
+                is Resource.Success -> {
+                    getListNotes()
+
+                }
+
+                is Resource.Error -> {
+                    errorText.postValue(result.message ?: "CAN NOTE ADD DATE")
+                }
+            }
+        }
+    }
 }
+
 
 
 
