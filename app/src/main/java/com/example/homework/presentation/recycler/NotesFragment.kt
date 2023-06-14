@@ -69,6 +69,7 @@ class NotesFragment : Fragment() {
                             { view, year, monthOfYear, dayOfMonth ->
                                 it.date =
                                     (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+
                             },
                             year,
                             month,
@@ -97,6 +98,7 @@ class NotesFragment : Fragment() {
                     .commit()
             }
             noteViewModel.submitUIEvent(NoteEvent.SaveDateBd(it.date))
+
         }
     )
 
@@ -140,15 +142,17 @@ class NotesFragment : Fragment() {
                 .commit()
         }
         binding.addBd.setOnClickListener{
-            requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .add(
-                R.id.fragment_container,
-                BdFragment.newInstance(viewModel.viewState.getEmptyBd())
-            )
-            .addToBackStack("")
-            .commit()
+            Custom().show(parentFragmentManager,"")
+
+//            requireActivity()
+//            .supportFragmentManager
+//            .beginTransaction()
+//            .add(
+//                R.id.fragment_container,
+//                BdFragment.newInstance(viewModel.viewState.getEmptyBd())
+//            )
+//            .addToBackStack("")
+//            .commit()
         }
         binding.deleteAll.setOnClickListener {
             onShowDeleteDialogAll()
