@@ -9,9 +9,11 @@ import com.example.homework.databinding.FragmentBdBoxBinding
 import com.example.homework.databinding.FragmentNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
+import com.example.homework.presentation.recycler.AddBirthdayDialog
 
 
 class NotesAdapter(
+    private val listener:AddBirthdayDialog.Listener,
     private val clickListener: (NoteModel) -> Unit,
     private val longClickListener: (Long) -> Unit
 ) :

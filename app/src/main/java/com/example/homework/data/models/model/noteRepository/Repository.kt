@@ -9,5 +9,6 @@ interface Repository {
     suspend fun create(entity: NoteEntity): Resource<Long>
     suspend fun delete(id: Long): Resource<Unit>
     suspend fun deleteAll(): Resource<Unit>
+   // suspend fun update():Resource<Unit>
 
 }

@@ -41,7 +41,7 @@ class NotesViewModel(
             is NotesEvents.GetNotes -> getListNotes()
             is NotesEvents.DeleteNote -> deleteNote(id = event.id)
             is NotesEvents.DeleteAll -> deleteAll()
-            is NotesEvents.AddDate -> addDate(id = event.id, date = event.date)
+            is NotesEvents.Update -> addDate(id = event.id, date = event.date)
         }
     }
 

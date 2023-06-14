@@ -4,22 +4,24 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
+import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.databinding.FragmentAddBirthdayDialogBinding
 import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detail.NoteViewModel
+import com.example.homework.presentation.model.NoteModel
 import java.util.*
 
 class AddBirthdayDialog : DialogFragment() {
 
     interface Listener {
 
-        fun onClick()
-
+        fun onClickUnit(id: NoteModel)
 
     }
 
@@ -34,7 +36,7 @@ class AddBirthdayDialog : DialogFragment() {
         binding.btnPicker.setOnClickListener {}
             binding.btnOpen.setOnClickListener {}
             binding.btnPicker.setOnClickListener {
-                var date: String
+                var s: String
                 val d = Calendar.getInstance()
                 val year = d.get(Calendar.YEAR)
                 val month = d.get(Calendar.MONTH)
@@ -42,7 +44,7 @@ class AddBirthdayDialog : DialogFragment() {
                 val datePickerDialog = DatePickerDialog(
                     requireContext(),
                     { view, year, monthOfYear, dayOfMonth ->
-                        date =
+                        s =
                             (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
 
                     },

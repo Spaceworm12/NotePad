@@ -94,7 +94,7 @@ class NoteFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    noteViewModel.submitUIEvent(NoteEvent.SaveDateBd(s.toString()))
+                    noteViewModel.submitUIEvent(NoteEvent.Update(s.toString()))
                 }
             }
         })

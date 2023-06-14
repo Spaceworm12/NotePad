@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
+import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.databinding.FragmentNotesBinding
 import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detail.NoteViewModel
 import com.example.homework.presentation.detailBd.BdFragment
+import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,58 +29,14 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
     private val viewModel: NotesViewModel by lazy {
         ViewModelProvider(this)[NotesViewModel::class.java]
     }
-    private val noteViewModel: NoteViewModel by lazy {
-        ViewModelProvider(this)[NoteViewModel::class.java]
-    }
-
-    private val adapter = NotesAdapter(
+    private val adapter = NotesAdapter(this,
         longClickListener = { id ->
             onShowDeleteDialog(id)
         },
         clickListener = {
-            if (it.type==NoteType.NOTE_TYPE) {
-                AddBirthdayDialog().show(parentFragmentManager,"")
-//                AlertDialog.Builder(requireContext())
-//                    .setMessage("what are you want fucking asshole?")
-//                    .setPositiveButton("OPEN FUCKING NOTE") { _, _ ->
-//                        requireActivity()
-//                            .supportFragmentManager
-//                            .beginTransaction()
-//                            .setCustomAnimations(
-//                                R.anim.enter_fragment,
-//                                R.anim.exit_fragment,
-//                                R.anim.enter_fragment_in,
-//                                R.anim.exit_fragment_out
-//                            )
-//                            .add(
-//                                R.id.fragment_container,
-//                                NoteFragment.newInstance(it)
-//                            )
-//                            .addToBackStack("")
-//                            .commit()
-//                    }
-//                    .setNegativeButton("CHECK FUCK BD") { _, _ ->
-//                        AddBirthdayDyalog().show(parentFragmentManager,"")
-//                        val d = Calendar.getInstance()
-//                        val year = d.get(Calendar.YEAR)
-//                        val month = d.get(Calendar.MONTH)
-//                        val day = d.get(Calendar.DAY_OF_MONTH)
-//                        val datePickerDialog = DatePickerDialog(
-//                            requireContext(),
-//                            { view, year, monthOfYear, dayOfMonth ->
-//                                it.date =
-//                                    (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-//
-//                            },
-//                            year,
-//                            month,
-//                            day
-//                        )
-//                        datePickerDialog.show()
-//
-//                    }
-//                    .create()
-                    }else{
+            if (it.type == NoteType.NOTE_TYPE) {
+
+            } else {
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()
@@ -95,11 +53,10 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
                     .addToBackStack("")
                     .commit()
             }
-            noteViewModel.submitUIEvent(NoteEvent.SaveDateBd(it.date))
+//            noteViewModel.submitUIEvent(NoteEvent.Update(it.date))
 
         }
     )
-
 
 
     override fun onCreateView(
@@ -125,10 +82,10 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
         }
         binding.addNew.setOnClickListener {
             binding.addNote.isVisible = !binding.addNote.isVisible
-            binding.addBd.isVisible=!binding.addBd.isVisible
-            binding.addNew.rotation = if(binding.addNote.isVisible) 45f else 0f
+            binding.addBd.isVisible = !binding.addBd.isVisible
+            binding.addNew.rotation = if (binding.addNote.isVisible) 45f else 0f
         }
-            binding.addNote.setOnClickListener{
+        binding.addNote.setOnClickListener {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -139,16 +96,16 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
                 .addToBackStack("")
                 .commit()
         }
-        binding.addBd.setOnClickListener{
+        binding.addBd.setOnClickListener {
             requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .add(
-                R.id.fragment_container,
-                BdFragment.newInstance(viewModel.viewState.getEmptyBd())
-            )
-            .addToBackStack("")
-            .commit()
+                .supportFragmentManager
+                .beginTransaction()
+                .add(
+                    R.id.fragment_container,
+                    BdFragment.newInstance(viewModel.viewState.getEmptyBd())
+                )
+                .addToBackStack("")
+                .commit()
         }
         binding.deleteAll.setOnClickListener {
             onShowDeleteDialogAll()
@@ -180,7 +137,7 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
             .show()
     }
 
-    override fun onClick() {
+    override fun onClickUnit(id: NoteModel) {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
@@ -192,7 +149,7 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
             )
             .add(
                 R.id.fragment_container,
-                NoteFragment.newInstance()
+                NoteFragment.newInstance(id)
             )
             .addToBackStack("")
             .commit()
