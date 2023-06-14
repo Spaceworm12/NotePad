@@ -17,6 +17,7 @@ interface Dao {
 
     @Query("DELETE FROM all_notes WHERE id = :id")
     suspend fun delete(id: Long)
+    @Query("UPDATE all_notes SET date = :date")
 
 }
 

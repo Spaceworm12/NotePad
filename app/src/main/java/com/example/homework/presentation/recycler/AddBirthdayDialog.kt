@@ -14,10 +14,13 @@ import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detail.NoteViewModel
 import java.util.*
 
-class AddBirthdayDyalog : DialogFragment() {
+class AddBirthdayDialog : DialogFragment() {
 
-    private val noteViewModel: NoteViewModel by lazy {
-        ViewModelProvider(this)[NoteViewModel::class.java]
+    interface Listener {
+
+        fun onClick()
+
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -28,24 +31,8 @@ class AddBirthdayDyalog : DialogFragment() {
             .setCancelable(true)
             .create()
         binding.btnOpen.setOnClickListener{}
-        binding.btnPicker.setOnClickListener {
-            binding.btnOpen.setOnClickListener {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.enter_fragment,
-                        R.anim.exit_fragment,
-                        R.anim.enter_fragment_in,
-                        R.anim.exit_fragment_out
-                    )
-                    .add(
-                        R.id.fragment_container,
-                        NoteFragment.newInstance(noteViewModel.submitUIEvent(NoteEvent.)
-                    )
-                    .addToBackStack("")
-                    .commit()
-            }
+        binding.btnPicker.setOnClickListener {}
+            binding.btnOpen.setOnClickListener {}
             binding.btnPicker.setOnClickListener {
                 var date: String
                 val d = Calendar.getInstance()
@@ -64,13 +51,8 @@ class AddBirthdayDyalog : DialogFragment() {
                     day
                 )
                 datePickerDialog.show()
-
             }
-        }
         return dialog
-    }
-    companion object {
-        const val TAG = "PurchaseConfirmationDialog"
     }
 }
 

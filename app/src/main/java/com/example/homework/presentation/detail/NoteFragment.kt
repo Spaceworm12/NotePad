@@ -153,6 +153,7 @@ class NoteFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
 
 

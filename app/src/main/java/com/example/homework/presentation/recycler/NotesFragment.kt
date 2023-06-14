@@ -20,7 +20,7 @@ import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class NotesFragment : Fragment() {
+class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
 
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
@@ -37,7 +37,7 @@ class NotesFragment : Fragment() {
         },
         clickListener = {
             if (it.type==NoteType.NOTE_TYPE) {
-                AddBirthdayDyalog().show(parentFragmentManager,"")
+                AddBirthdayDialog().show(parentFragmentManager,"")
 //                AlertDialog.Builder(requireContext())
 //                    .setMessage("what are you want fucking asshole?")
 //                    .setPositiveButton("OPEN FUCKING NOTE") { _, _ ->
@@ -178,6 +178,24 @@ class NotesFragment : Fragment() {
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
             .show()
+    }
+
+    override fun onClick() {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                R.anim.enter_fragment,
+                R.anim.exit_fragment,
+                R.anim.enter_fragment_in,
+                R.anim.exit_fragment_out
+            )
+            .add(
+                R.id.fragment_container,
+                NoteFragment.newInstance()
+            )
+            .addToBackStack("")
+            .commit()
     }
 
 }
