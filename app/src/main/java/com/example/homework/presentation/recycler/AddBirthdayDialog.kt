@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
+import com.example.homework.R
 import com.example.homework.databinding.FragmentAddBirthdayDialogBinding
 import com.example.homework.presentation.model.NoteModel
 import java.util.*
@@ -31,6 +32,7 @@ class AddBirthdayDialog(
             openNote.invoke(note)
             dismiss()
         }
+
 
         binding.btnPicker.setOnClickListener {
             var date: String

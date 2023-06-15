@@ -12,5 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/custom</item>
+        <item name="colorControlActivated">@color/custom</item>
+        <item name="android:selectableItemBackgroundBorderless">@color/custom</item>
     </style>
 </resources>
