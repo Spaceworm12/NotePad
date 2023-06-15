@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent"
         toots:ignore="MissingConstraints" />
 
-    <EditText
+    <TextView
         android:id="@+id/bd_date"
         style="@style/MyButtonStyle"
         android:layout_width="match_parent"
@@ -37,7 +37,6 @@
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="18dp"
-        android:inputType="date"
         android:paddingBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"

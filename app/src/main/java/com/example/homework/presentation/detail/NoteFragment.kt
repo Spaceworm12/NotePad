@@ -1,5 +1,6 @@
 package com.example.homework.presentation.detail
 
+import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +17,7 @@ import com.example.homework.databinding.FragmentNoteBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.NotesFragment
+import java.util.*
 
 
 class NoteFragment : Fragment() {
@@ -86,19 +88,24 @@ class NoteFragment : Fragment() {
                 }
             }
         })
-        binding.bdDate.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(s.toString()))
-                }
-            }
-        })
+        binding.bdDate.setOnClickListener{
+            val d = Calendar.getInstance()
+            val year = d.get(Calendar.YEAR)
+            val month = d.get(Calendar.MONTH)
+            val day = d.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    val s = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                    binding.bdDate.text = s
+                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(s))
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
 
         binding.btnSave.setOnClickListener {
             noteViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
