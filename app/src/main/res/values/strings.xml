@@ -28,4 +28,10 @@
     <string name="note">NOTE</string>
     <string name="plus_chain">+</string>
     <string name="birthday">birthday</string>
+    <string name="open">OPEN</string>
+    <string name="birthday_add">BIRTHDAY</string>
+    <string name="description">Description</string>
+    <string name="birthday_new">Add Birthday</string>
+    <string name="open_note">Open Note</string>
+    <string name="description_note">Description</string>
 </resources>
