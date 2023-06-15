@@ -44,5 +44,15 @@ class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository
     }
 
 
+    override suspend fun changeDate(date: String, id: Long): Resource<Unit> {
+        val response = try {
+            dao.changeDate(date, id)
+        } catch (e: Exception) {
+            return Resource.Error("НЕ УДАЛЯЕТСЯ")
+        }
+        return Resource.Success(response)
+    }
 }
+
+
 

@@ -14,16 +14,17 @@ data class NotesViewState(
             name = "",
             description = "",
             type = NoteType.NOTE_TYPE,
-            date=""
+            date = ""
         )
     }
-        fun getEmptyBd(): NoteModel {
-            return NoteModel(
-                id = 0,
-                name = "",
-                description = "",
-                type = NoteType.BIRTHDAY_TYPE,
-                date="Date"
-            )
-        }
+
+    fun getEmptyBirth(): NoteModel {
+        return NoteModel(
+            id = 0,
+            name = "",
+            description = "",
+            type = NoteType.BIRTHDAY_TYPE,
+            date = "Date"
+        )
+    }
 }

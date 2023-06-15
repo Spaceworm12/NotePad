@@ -5,15 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.homework.databinding.FragmentBdBoxBinding
+import com.example.homework.databinding.FragmentBirthBoxBinding
 import com.example.homework.databinding.FragmentNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.example.homework.presentation.recycler.AddBirthdayDialog
 
 
 class NotesAdapter(
-    private val listener:AddBirthdayDialog.Listener,
     private val clickListener: (NoteModel) -> Unit,
     private val longClickListener: (Long) -> Unit
 ) :
@@ -47,8 +45,8 @@ class NotesAdapter(
             }
 
             else -> {
-                val binding = FragmentBdBoxBinding.inflate(inflater, parent, false)
-                BdHolder(binding)
+                val binding = FragmentBirthBoxBinding.inflate(inflater, parent, false)
+                BirthHolder(binding)
             }
         }
     }
@@ -67,7 +65,7 @@ class NotesAdapter(
                 }
             }
 
-            is BdHolder -> {
+            is BirthHolder -> {
                 holder.bind(noteModel)
                 holder.binding.root.setOnClickListener {
                     clickListener(noteModel)

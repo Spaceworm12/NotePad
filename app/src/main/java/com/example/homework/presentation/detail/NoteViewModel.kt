@@ -18,7 +18,7 @@ class NoteViewModel(
 ) : ViewModel() {
     private val userTitle = MutableLiveData<String>()
     private val userDescription = MutableLiveData<String>()
-    private val date = MutableLiveData<String>()
+    private val userDate = MutableLiveData<String>()
     val errorText = MutableLiveData<String>()
 
     val exit = MutableLiveData(false)
@@ -31,9 +31,9 @@ class NoteViewModel(
         when (event) {
             is NoteEvent.SaveUserTitle -> userTitle.postValue(event.text)
             is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
+            is NoteEvent.SaveUserDate -> userDate.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-            is NoteEvent.Update -> date.postValue(event.text)
             NoteEvent.Exit -> goBack()
             NoteEvent.Error -> errorText.postValue("")
         }
@@ -55,7 +55,7 @@ class NoteViewModel(
                         name = userTitle.value ?: "Empty title",
                         description = userDescription.value ?: "Empty Description",
                         type = NoteType.NOTE_TYPE,
-                        date = ""
+                        date = userDate.value ?: "Empty date"
                     )
                 )
             )

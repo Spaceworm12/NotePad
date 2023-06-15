@@ -5,7 +5,7 @@ sealed class NotesEvents {
     object GetNotes : NotesEvents()
     class DeleteNote(val id: Long) : NotesEvents()
     class DeleteAll : NotesEvents()
-    class Update(val id: Long, val date: String) : NotesEvents()
+    class SaveUserDate(val date: String, val id: Long) : NotesEvents()
 
 
 }

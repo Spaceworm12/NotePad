@@ -10,32 +10,33 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
-import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.databinding.FragmentNotesBinding
-import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
-import com.example.homework.presentation.detail.NoteViewModel
-import com.example.homework.presentation.detailBd.BdFragment
+import com.example.homework.presentation.detailBd.BirthFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.NotesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
+class NotesFragment : Fragment() {
 
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: NotesViewModel by lazy {
         ViewModelProvider(this)[NotesViewModel::class.java]
     }
-    private val adapter = NotesAdapter(this,
+
+    private val adapter = NotesAdapter(
         longClickListener = { id ->
             onShowDeleteDialog(id)
         },
         clickListener = {
             if (it.type == NoteType.NOTE_TYPE) {
-
+                AddBirthdayDialog(
+                    note = it,
+                    openNote = { note -> openNote(note) },
+                    saveDate = { id, date -> saveDate(id, date) }).show(parentFragmentManager, "")
             } else {
                 requireActivity()
                     .supportFragmentManager
@@ -48,14 +49,15 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
                     )
                     .add(
                         R.id.fragment_container,
-                        BdFragment.newInstance(it)
+                        BirthFragment.newInstance(it)
                     )
                     .addToBackStack("")
                     .commit()
             }
-//            noteViewModel.submitUIEvent(NoteEvent.Update(it.date))
+
 
         }
+
     )
 
 
@@ -102,7 +104,7 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
                 .beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    BdFragment.newInstance(viewModel.viewState.getEmptyBd())
+                    BirthFragment.newInstance(viewModel.viewState.getEmptyBirth())
                 )
                 .addToBackStack("")
                 .commit()
@@ -137,7 +139,7 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
             .show()
     }
 
-    override fun onClickUnit(id: NoteModel) {
+    private fun openNote(note: NoteModel) {
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
@@ -149,11 +151,18 @@ class NotesFragment : Fragment(), AddBirthdayDialog.Listener {
             )
             .add(
                 R.id.fragment_container,
-                NoteFragment.newInstance(id)
+                NoteFragment.newInstance(note)
             )
             .addToBackStack("")
             .commit()
     }
+
+    fun saveDate(id: Long, s: String) {
+
+        viewModel.submitUIEvent(NotesEvents.SaveUserDate(s, id))
+
+    }
+
 
 }
 

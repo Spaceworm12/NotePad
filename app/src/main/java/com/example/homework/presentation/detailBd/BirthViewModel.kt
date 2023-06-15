@@ -13,7 +13,7 @@ import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
 
-class BdViewModel(
+class BirthViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
     private val user = MutableLiveData<String>()
@@ -23,18 +23,18 @@ class BdViewModel(
 
     val exit = MutableLiveData(false)
 
-    fun submitUIEvent(event: BdEvent) {
+    fun submitUIEvent(event: BirthEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: BdEvent) {
+    private fun handleUIEvent(event: BirthEvent) {
         when (event) {
-            is BdEvent.SaveUserBd -> user.postValue(event.text)
-            is BdEvent.SaveDateBd -> date.postValue(event.text)
-            is BdEvent.SaveBd -> saveNewBd(id = event.id)
-            is BdEvent.SaveUserDescription -> description.postValue(event.text)
-            BdEvent.Exit -> goBack()
-            BdEvent.Error -> errorText.postValue("")
+            is BirthEvent.SaveUserBirth -> user.postValue(event.text)
+            is BirthEvent.SaveBirthDate -> date.postValue(event.text)
+            is BirthEvent.SaveBirth -> saveNewBd(id = event.id)
+            is BirthEvent.SaveUserDescription -> description.postValue(event.text)
+            BirthEvent.Exit -> goBack()
+            BirthEvent.Error -> errorText.postValue("")
         }
     }
 

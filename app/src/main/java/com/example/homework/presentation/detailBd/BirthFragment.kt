@@ -8,41 +8,40 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
-import com.example.homework.databinding.FragmentBdBinding
+import com.example.homework.databinding.FragmentBirthBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.NotesFragment
 import java.util.*
 
-class BdFragment : Fragment() {
+class BirthFragment : Fragment() {
 
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
-        fun newInstance(note: NoteModel) = BdFragment().apply {
+        fun newInstance(note: NoteModel) = BirthFragment().apply {
             arguments = bundleOf(
                 KEY_NOTE to note
             )
         }
     }
 
-    private var _binding: FragmentBdBinding? = null
+    private var _binding: FragmentBirthBinding? = null
     private val binding get() = _binding!!
-    private val bdViewModel: BdViewModel by lazy {
-        ViewModelProvider(this)[BdViewModel::class.java]
+    private val bdViewModel: BirthViewModel by lazy {
+        ViewModelProvider(this)[BirthViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBdBinding.inflate(inflater, container, false)
+        _binding = FragmentBirthBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,9 +73,9 @@ class BdFragment : Fragment() {
             )
             datePickerDialog.show()
         }
-        bdViewModel.submitUIEvent(BdEvent.SaveUserBd(note.name))
-        bdViewModel.submitUIEvent(BdEvent.SaveUserDescription(note.description))
-        bdViewModel.submitUIEvent(BdEvent.SaveDateBd(note.date))
+        bdViewModel.submitUIEvent(BirthEvent.SaveUserBirth(note.name))
+        bdViewModel.submitUIEvent(BirthEvent.SaveUserDescription(note.description))
+        bdViewModel.submitUIEvent(BirthEvent.SaveBirthDate(note.date))
         binding.selectedDate.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -86,7 +85,7 @@ class BdFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    bdViewModel.submitUIEvent(BdEvent.SaveDateBd(s.toString()))
+                    bdViewModel.submitUIEvent(BirthEvent.SaveBirthDate(s.toString()))
                 }
             }
         })
@@ -99,7 +98,7 @@ class BdFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    bdViewModel.submitUIEvent(BdEvent.SaveUserBd(s.toString()))
+                    bdViewModel.submitUIEvent(BirthEvent.SaveUserBirth(s.toString()))
                 }
             }
         })
@@ -113,13 +112,13 @@ class BdFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    bdViewModel.submitUIEvent(BdEvent.SaveUserDescription(s.toString()))
+                    bdViewModel.submitUIEvent(BirthEvent.SaveUserDescription(s.toString()))
                 }
             }
         })
 
         binding.btnSaveBd.setOnClickListener {
-            bdViewModel.submitUIEvent(BdEvent.SaveBd(note.id))
+            bdViewModel.submitUIEvent(BirthEvent.SaveBirth(note.id))
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -134,14 +133,14 @@ class BdFragment : Fragment() {
                 requireActivity().supportFragmentManager.popBackStackImmediate()
         }
         binding.btnCancelBd.setOnClickListener {
-            bdViewModel.submitUIEvent(BdEvent.Exit)
+            bdViewModel.submitUIEvent(BirthEvent.Exit)
         }
 
 
         bdViewModel.errorText.observe(viewLifecycleOwner) {
             if (it.isNotBlank()) {
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                bdViewModel.submitUIEvent(BdEvent.Error)
+                bdViewModel.submitUIEvent(BirthEvent.Error)
             }
         }
     }
