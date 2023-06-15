@@ -83,6 +83,7 @@
         android:layout_margin="20dp"
         android:text="@string/saveBd"
         android:textAllCaps="false"
+        android:background="@drawable/thief"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -90,6 +91,7 @@
         android:id="@+id/btn_cancel_bd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/thief"
         android:layout_centerInParent="true"
         android:layout_margin="20dp"
         android:text="@string/cancel"
