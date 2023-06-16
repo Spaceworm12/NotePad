@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/note_name"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/bd_date"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/birthday"
@@ -51,7 +51,7 @@
 
     <EditText
         android:id="@+id/note_descriprion"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_marginHorizontal="20dp"
@@ -70,7 +70,7 @@
 
     <Button
         android:id="@+id/btn_back"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -86,7 +86,7 @@
 
     <Button
         android:id="@+id/btn_save"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
@@ -101,7 +101,7 @@
 
     <Button
         android:id="@+id/btn_delete"
-        style="@style/MyButtonStyle"
+        style="@style/MainButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
