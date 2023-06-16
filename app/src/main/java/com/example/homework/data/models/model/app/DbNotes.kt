@@ -36,10 +36,7 @@ class DbNotes : Application() {
                 db = builder
                     .allowMainThreadQueries()
                     .build()
-
             }
         }
     }
-
-
 }

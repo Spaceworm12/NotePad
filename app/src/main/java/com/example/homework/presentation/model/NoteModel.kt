@@ -11,7 +11,6 @@ data class NoteModel(
     val type: NoteType,
     var date: String
 ) : Parcelable
-
 enum class NoteType{
     NOTE_TYPE,
     BIRTHDAY_TYPE

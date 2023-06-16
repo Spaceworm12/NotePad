@@ -7,8 +7,6 @@ import com.example.homework.data.models.model.db.entity.NoteEntity
 @Dao
 
 interface Dao {
-
-
     @Query("SELECT * FROM all_notes")
     suspend fun getAll(): List<NoteEntity>
 
@@ -20,7 +18,6 @@ interface Dao {
 
     @Query("UPDATE all_notes SET date = :date WHERE id = :id")
     suspend fun changeDate(date: String, id: Long)
-
 }
 
 

@@ -8,7 +8,7 @@
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.recycler.NotesFragment">
+    tools:context=".presentation.recycler.ListFragment">
 
     <ProgressBar
         android:id="@+id/loader"

@@ -34,4 +34,6 @@
     <string name="birthday_new">Add Birthday</string>
     <string name="open_note">Open Note</string>
     <string name="description_note">Description</string>
+    <string name="description_birthday">description</string>
+    <string name="date_birthday">Date</string>
 </resources>

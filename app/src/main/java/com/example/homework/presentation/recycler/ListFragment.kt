@@ -10,30 +10,30 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
-import com.example.homework.databinding.FragmentNotesBinding
+import com.example.homework.databinding.FragmentListNotesBinding
 import com.example.homework.presentation.detail.NoteFragment
-import com.example.homework.presentation.detailBd.BirthFragment
+import com.example.homework.presentation.detailBd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.example.homework.presentation.recycler.adapter.NotesAdapter
+import com.example.homework.presentation.recycler.adapter.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class NotesFragment : Fragment() {
+class ListFragment : Fragment() {
 
-    private var _binding: FragmentNotesBinding? = null
+    private var _binding: FragmentListNotesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: NotesViewModel by lazy {
-        ViewModelProvider(this)[NotesViewModel::class.java]
+    private val viewModel: ListViewModel by lazy {
+        ViewModelProvider(this)[ListViewModel::class.java]
     }
 
-    private val adapter = NotesAdapter(
+    private val adapter = ListAdapter(
         longClickListener = { id ->
             onShowDeleteDialog(id)
         },
         clickListener = {
             if (it.type == NoteType.NOTE_TYPE) {
-                AddBirthdayDialog(
+                BirthdayDyalog(
                     note = it,
                     openNote = { note -> openNote(note) },
                     saveDate = { id, date -> saveDate(id, date) }).show(parentFragmentManager, "")
@@ -49,7 +49,7 @@ class NotesFragment : Fragment() {
                     )
                     .add(
                         R.id.fragment_container,
-                        BirthFragment.newInstance(it)
+                        BirthdayFragment.newInstance(it)
                     )
                     .addToBackStack("")
                     .commit()
@@ -65,13 +65,13 @@ class NotesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNotesBinding.inflate(inflater, container, false)
+        _binding = FragmentListNotesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.submitUIEvent(NotesEvents.GetNotes)
+        viewModel.submitUIEvent(ListEvents.GetNotes)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
@@ -104,7 +104,7 @@ class NotesFragment : Fragment() {
                 .beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    BirthFragment.newInstance(viewModel.viewState.getEmptyBirth())
+                    BirthdayFragment.newInstance(viewModel.viewState.getEmptyBirth())
                 )
                 .addToBackStack("")
                 .commit()
@@ -120,7 +120,7 @@ class NotesFragment : Fragment() {
             .setMessage(getString(R.string.delete_dialog_title))
             .setCancelable(true)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.submitUIEvent(NotesEvents.DeleteNote(id))
+                viewModel.submitUIEvent(ListEvents.DeleteNote(id))
             }
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
@@ -132,7 +132,7 @@ class NotesFragment : Fragment() {
             .setMessage(getString(R.string.delete_dialog_title))
             .setCancelable(true)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.submitUIEvent(NotesEvents.DeleteAll())
+                viewModel.submitUIEvent(ListEvents.DeleteAll())
             }
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
@@ -159,7 +159,7 @@ class NotesFragment : Fragment() {
 
     fun saveDate(id: Long, s: String) {
 
-        viewModel.submitUIEvent(NotesEvents.SaveUserDate(s, id))
+        viewModel.submitUIEvent(ListEvents.SaveUserDate(s, id))
 
     }
 

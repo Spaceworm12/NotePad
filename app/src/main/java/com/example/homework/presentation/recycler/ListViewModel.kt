@@ -12,28 +12,28 @@ import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
 
-class NotesViewModel(
+class ListViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
-    private val _viewState = MutableLiveData(NotesViewState())
+    private val _viewState = MutableLiveData(ListViewState())
     val errorText = MutableLiveData<String>()
-    val viewStateObs: LiveData<NotesViewState> get() = _viewState
-    var viewState: NotesViewState
+    val viewStateObs: LiveData<ListViewState> get() = _viewState
+    var viewState: ListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
 
-    fun submitUIEvent(event: NotesEvents) {
+    fun submitUIEvent(event: ListEvents) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: NotesEvents) {
+    private fun handleUIEvent(event: ListEvents) {
         when (event) {
-            is NotesEvents.GetNotes -> getListNotes()
-            is NotesEvents.DeleteNote -> deleteNote(id = event.id)
-            is NotesEvents.DeleteAll -> deleteAll()
-            is NotesEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
+            is ListEvents.GetNotes -> getListNotes()
+            is ListEvents.DeleteNote -> deleteNote(id = event.id)
+            is ListEvents.DeleteAll -> deleteAll()
+            is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
 
         }
     }

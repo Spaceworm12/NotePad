@@ -5,25 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.homework.databinding.FragmentBirthBoxBinding
+import com.example.homework.databinding.FragmentBirthdayBoxBinding
 import com.example.homework.databinding.FragmentNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 
-
-class NotesAdapter(
+class ListAdapter(
     private val clickListener: (NoteModel) -> Unit,
     private val longClickListener: (Long) -> Unit
 ) :
     ListAdapter<NoteModel, ViewHolder>(DIFF_CALLBACK) {
 
-
     companion object {
-
         const val NOTE_TYPE = 11
         const val BIRTHDAY_TYPE = 15
-
-
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
             override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {
                 return oldItem.id == newItem.id
@@ -41,12 +36,12 @@ class NotesAdapter(
         return when (viewType) {
             NOTE_TYPE -> {
                 val binding = FragmentNoteBoxBinding.inflate(inflater, parent, false)
-                NotesHolder(binding)
+                ListHolder(binding)
             }
 
             else -> {
-                val binding = FragmentBirthBoxBinding.inflate(inflater, parent, false)
-                BirthHolder(binding)
+                val binding = FragmentBirthdayBoxBinding.inflate(inflater, parent, false)
+                BirthdayHolder(binding)
             }
         }
     }
@@ -54,7 +49,7 @@ class NotesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteModel: NoteModel = getItem(position)
         when (holder) {
-            is NotesHolder -> {
+            is ListHolder -> {
                 holder.bind(noteModel)
                 holder.binding.root.setOnClickListener {
                     clickListener(noteModel)
@@ -65,7 +60,7 @@ class NotesAdapter(
                 }
             }
 
-            is BirthHolder -> {
+            is BirthdayHolder -> {
                 holder.bind(noteModel)
                 holder.binding.root.setOnClickListener {
                     clickListener(noteModel)
@@ -86,7 +81,6 @@ class NotesAdapter(
             else -> BIRTHDAY_TYPE
         }
     }
-
 }
 
 

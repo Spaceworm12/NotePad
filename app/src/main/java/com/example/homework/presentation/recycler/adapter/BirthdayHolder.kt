@@ -1,18 +1,17 @@
 package com.example.homework.presentation.recycler.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework.databinding.FragmentNoteBoxBinding
+import com.example.homework.databinding.FragmentBirthdayBoxBinding
 import com.example.homework.presentation.model.NoteModel
 
 
-class NotesHolder(val binding: FragmentNoteBoxBinding) :
+class BirthdayHolder(val binding: FragmentBirthdayBoxBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(noteModel: NoteModel) {
-        binding.noteName.text = noteModel.name
+        binding.username.text = noteModel.name
         binding.bdDate.text = noteModel.date
-        binding.noteId.text = noteModel.id.toString()
-
+        binding.bdId.text = noteModel.id.toString()
     }
 }
 

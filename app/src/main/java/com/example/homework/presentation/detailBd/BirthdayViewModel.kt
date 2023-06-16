@@ -1,5 +1,6 @@
 package com.example.homework.presentation.detailBd
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,60 +14,56 @@ import com.example.homework.util.Resource
 import kotlinx.coroutines.launch
 
 
-class BirthViewModel(
+class BirthdayViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
-    private val user = MutableLiveData<String>()
-    private val date = MutableLiveData<String>()
-    private val description = MutableLiveData<String>()
-    val errorText = MutableLiveData<String>()
-
-    val exit = MutableLiveData(false)
-
-    fun submitUIEvent(event: BirthEvent) {
+    private val _viewState = MutableLiveData(BirthdayViewState())
+    val viewStateObs: LiveData<BirthdayViewState> get() = _viewState
+    var viewState: BirthdayViewState
+        get() = _viewState.value!!
+        set(value) {
+            _viewState.value = value
+        }
+    fun submitUIEvent(event: BirthdayEvent) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: BirthEvent) {
+    private fun handleUIEvent(event: BirthdayEvent) {
         when (event) {
-            is BirthEvent.SaveUserBirth -> user.postValue(event.text)
-            is BirthEvent.SaveBirthDate -> date.postValue(event.text)
-            is BirthEvent.SaveBirth -> saveNewBd(id = event.id)
-            is BirthEvent.SaveUserDescription -> description.postValue(event.text)
-            BirthEvent.Exit -> goBack()
-            BirthEvent.Error -> errorText.postValue("")
+            is BirthdayEvent.SaveUserBirth -> viewState = viewState.copy(user = event.text)
+            is BirthdayEvent.SaveBirthDate -> viewState = viewState.copy(date = event.text)
+            is BirthdayEvent.SaveBirth -> saveNewBd(id = event.id)
+            is BirthdayEvent.SaveUserDescription -> viewState = viewState.copy(description = event.text)
+            BirthdayEvent.Exit -> goBack()
+            BirthdayEvent.Error -> viewState = viewState.copy(errorText = "ERR")
         }
     }
 
     private fun goBack() {
         viewModelScope.launch {
-            exit.postValue(true)
+           viewState = viewState.copy(exit = true)
         }
     }
 
     private fun saveNewBd(id: Long) {
-
         viewModelScope.launch {
             val result = repo.create(
                 Mapper.transformToData(
                     NoteModel(
                         id = id,
-                        name = user.value ?: "Empty user",
-                        description = description.value ?: "Empty date",
+                        name = viewState.user,
+                        description = viewState.description,
                         type = NoteType.BIRTHDAY_TYPE,
-                        date = date.value ?: "Date"
+                        date = viewState.date
                     )
                 )
             )
-
             when (result) {
                 is Resource.Success -> {
-                    exit.postValue(true)
-
+                    viewState = viewState.copy(exit = true)
                 }
-
                 is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
+                   viewState = viewState.copy(errorText = "ERR")
                 }
             }
         }

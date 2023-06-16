@@ -6,22 +6,19 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
-import com.example.homework.R
-import com.example.homework.databinding.FragmentAddBirthdayDialogBinding
+import com.example.homework.databinding.FragmentBirthdayDialogBinding
 import com.example.homework.presentation.model.NoteModel
 import java.util.*
 
-class AddBirthdayDialog(
+class BirthdayDyalog(
     private val note: NoteModel,
     private val openNote: (NoteModel) -> Unit,
     private val saveDate: (Long, String) -> Unit
 ) : DialogFragment() {
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         val binding =
-            FragmentAddBirthdayDialogBinding.inflate(LayoutInflater.from(context), null, false)
+            FragmentBirthdayDialogBinding.inflate(LayoutInflater.from(context), null, false)
         val dialog: Dialog =
             AlertDialog.Builder(requireContext())
                 .setCustomTitle(binding.root)
@@ -32,8 +29,6 @@ class AddBirthdayDialog(
             openNote.invoke(note)
             dismiss()
         }
-
-
         binding.btnPicker.setOnClickListener {
             var date: String
             val d = Calendar.getInstance()
@@ -57,5 +52,4 @@ class AddBirthdayDialog(
         }
         return dialog
     }
-
 }
