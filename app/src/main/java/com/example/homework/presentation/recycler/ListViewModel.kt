@@ -29,12 +29,15 @@ class ListViewModel(
     }
 
     private fun handleUIEvent(event: ListEvents) {
+        setEvents(event)
+    }
+
+    private fun setEvents(event: ListEvents) {
         when (event) {
             is ListEvents.GetNotes -> getListNotes()
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
             is ListEvents.DeleteAll -> deleteAll()
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
-
         }
     }
 
@@ -63,7 +66,6 @@ class ListViewModel(
                 is Resource.Success -> {
                     getListNotes()
                 }
-
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }
@@ -78,7 +80,6 @@ class ListViewModel(
                 is Resource.Success -> {
                     getListNotes()
                 }
-
                 is Resource.Error -> {
                     viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
                 }
@@ -92,14 +93,10 @@ class ListViewModel(
             val result = repo.changeDate(
                 date, id
             )
-
-
             when (result) {
                 is Resource.Success -> {
                     getListNotes()
-
                 }
-
                 is Resource.Error -> {
                     errorText.postValue(result.message ?: "CAN NOTE ADD DATE")
                 }

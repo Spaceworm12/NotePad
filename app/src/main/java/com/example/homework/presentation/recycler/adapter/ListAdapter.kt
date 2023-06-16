@@ -19,6 +19,7 @@ class ListAdapter(
     companion object {
         const val NOTE_TYPE = 11
         const val BIRTHDAY_TYPE = 15
+
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NoteModel>() {
             override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {
                 return oldItem.id == newItem.id
@@ -33,6 +34,22 @@ class ListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
+        return checkHolderType(viewType, inflater, parent)
+    }
+
+    private fun checkHolderType(
+        viewType: Int,
+        inflater: LayoutInflater,
+        parent: ViewGroup
+    ): ViewHolder {
+        return returnViewType(viewType, inflater, parent)
+    }
+
+    private fun returnViewType(
+        viewType: Int,
+        inflater: LayoutInflater,
+        parent: ViewGroup
+    ): ViewHolder {
         return when (viewType) {
             NOTE_TYPE -> {
                 val binding = FragmentNoteBoxBinding.inflate(inflater, parent, false)

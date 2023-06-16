@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.DbNotes
 import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
-import com.example.homework.presentation.detailBd.BirthdayViewState
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -30,9 +29,18 @@ class NoteViewModel(
     }
 
     private fun handleUIEvent(event: NoteEvent) {
+        eventsAction(event)
+    }
+
+    private fun eventsAction(event: NoteEvent) {
+        eventsActions(event)
+    }
+
+    private fun eventsActions(event: NoteEvent) {
         when (event) {
             is NoteEvent.SaveUserTitle -> viewState = viewState.copy(userTitle = event.text)
-            is NoteEvent.SaveUserDescription -> viewState = viewState.copy(userDescription = event.text)
+            is NoteEvent.SaveUserDescription -> viewState =
+                viewState.copy(userDescription = event.text)
             is NoteEvent.SaveUserDate -> viewState = viewState.copy(userDate = event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
@@ -46,9 +54,7 @@ class NoteViewModel(
             viewState = viewState.copy(exit = true)
         }
     }
-
     private fun saveNewNote(id: Long) {
-
         viewModelScope.launch {
             val result = repo.create(
                 Mapper.transformToData(
@@ -65,23 +71,18 @@ class NoteViewModel(
             when (result) {
                 is Resource.Success -> {
                     viewState=viewState.copy(exit = true)
-
                 }
-
                 is Resource.Error -> {
                     viewState=viewState.copy(errorText = result.message?:"ERROR")
                 }
             }
         }
     }
-
-
     private fun deleteNote(id: Long) {
         viewModelScope.launch {
             when (val result = repo.delete(id)) {
                 is Resource.Success -> {
                     goBack()
-
                 }
                 is Resource.Error -> {
                     viewState=viewState.copy(errorText = result.message?:"ERROR")
@@ -89,6 +90,5 @@ class NoteViewModel(
             }
         }
     }
-
 }
 

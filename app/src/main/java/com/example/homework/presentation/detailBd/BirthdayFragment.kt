@@ -52,10 +52,49 @@ class BirthdayFragment : Fragment() {
                 NoteModel::class.java
             ) ?: getEmptyBd() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyBd()
 
-        binding.user.setText(note.name)
-        binding.noteDescriprion.setText(note.description)
-        binding.selectedDate.setText(note.date)
+        setNoteValues(note)
+        viewStateObsSet()
+        bindButtons(note)
+        submitUiEventsUser(note)
+    }
 
+    private fun bindButtons(note: NoteModel) {
+        binding.btnPicker.setOnClickListener {
+            val x = Calendar.getInstance()
+            val y = x.get(Calendar.YEAR)
+            val m = x.get(Calendar.MONTH)
+            val d = x.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    binding.selectedDate.text =
+                        (dayOfMonth.toString()+ "-" + (monthOfYear + 1) + "-" + year)
+                },
+                y,
+                m,
+                d
+            )
+            datePickerDialog.show()
+        }
+        setTextWatchers()
+        binding.btnSaveBd.setOnClickListener {
+            bdViewModel.submitUIEvent(BirthdayEvent.SaveBirth(note.id))
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    ListFragment()
+                )
+                .commit()
+        }
+
+        binding.btnCancelBd.setOnClickListener {
+            bdViewModel.submitUIEvent(BirthdayEvent.Exit)
+        }
+    }
+
+    private fun viewStateObsSet() {
         bdViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             if (state.exit) {
                 requireActivity().supportFragmentManager.popBackStackImmediate()
@@ -65,28 +104,15 @@ class BirthdayFragment : Fragment() {
                 bdViewModel.submitUIEvent(BirthdayEvent.Error)
             }
         }
-        binding.btnPicker.setOnClickListener {
-            val d = Calendar.getInstance()
-            val year = d.get(Calendar.YEAR)
-            val month = d.get(Calendar.MONTH)
-            val day = d.get(Calendar.DAY_OF_MONTH)
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                { view, year, monthOfYear, dayOfMonth ->
-                    binding.selectedDate.text =
-                        (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-                },
-                year,
-                month,
-                day
-            )
-            datePickerDialog.show()
-        }
+    }
 
-        bdViewModel.submitUIEvent(BirthdayEvent.SaveUserBirth(note.name))
-        bdViewModel.submitUIEvent(BirthdayEvent.SaveUserDescription(note.description))
-        bdViewModel.submitUIEvent(BirthdayEvent.SaveBirthDate(note.date))
+    private fun setNoteValues(note: NoteModel) {
+        binding.user.setText(note.name)
+        binding.noteDescriprion.setText(note.description)
+        binding.selectedDate.setText(note.date)
+    }
 
+    private fun setTextWatchers() {
         binding.selectedDate.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -127,21 +153,12 @@ class BirthdayFragment : Fragment() {
                 }
             }
         })
-        binding.btnSaveBd.setOnClickListener {
-            bdViewModel.submitUIEvent(BirthdayEvent.SaveBirth(note.id))
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .replace(
-                    R.id.fragment_container,
-                    ListFragment()
-                )
-                .commit()
-        }
+    }
 
-        binding.btnCancelBd.setOnClickListener {
-            bdViewModel.submitUIEvent(BirthdayEvent.Exit)
-        }
+    private fun submitUiEventsUser(note: NoteModel) {
+        bdViewModel.submitUIEvent(BirthdayEvent.SaveUserBirth(note.name))
+        bdViewModel.submitUIEvent(BirthdayEvent.SaveUserDescription(note.description))
+        bdViewModel.submitUIEvent(BirthdayEvent.SaveBirthDate(note.date))
     }
 
     private fun getEmptyBd(): NoteModel {

@@ -54,12 +54,8 @@ class ListFragment : Fragment() {
                     .addToBackStack("")
                     .commit()
             }
-
-
         }
-
     )
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,17 +71,14 @@ class ListFragment : Fragment() {
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-            binding.loader.isVisible = state.isLoading
-            binding.addNew.isVisible = !state.isLoading
-            binding.recView.isVisible = !state.isLoading
-            if (state.errorText.isNotBlank())
-                Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
-            adapter.submitList(state.notesList)
+            setElements(state)
         }
+        setButtonsClicks()
+    }
+
+    private fun setButtonsClicks() {
         binding.addNew.setOnClickListener {
-            binding.addNote.isVisible = !binding.addNote.isVisible
-            binding.addBd.isVisible = !binding.addBd.isVisible
-            binding.addNew.rotation = if (binding.addNote.isVisible) 45f else 0f
+            setVisibilityElements()
         }
         binding.addNote.setOnClickListener {
             requireActivity()
@@ -112,6 +105,21 @@ class ListFragment : Fragment() {
         binding.deleteAll.setOnClickListener {
             onShowDeleteDialogAll()
         }
+    }
+
+    private fun setVisibilityElements() {
+        binding.addNote.isVisible = !binding.addNote.isVisible
+        binding.addBd.isVisible = !binding.addBd.isVisible
+        binding.addNew.rotation = if (binding.addNote.isVisible) 45f else 0f
+    }
+
+    private fun setElements(state: ListViewState) {
+        binding.loader.isVisible = state.isLoading
+        binding.addNew.isVisible = !state.isLoading
+        binding.recView.isVisible = !state.isLoading
+        if (state.errorText.isNotBlank())
+            Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
+        adapter.submitList(state.notesList)
     }
 
 
