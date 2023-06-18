@@ -1,12 +1,16 @@
 package com.example.homework.data.models.model.noteRepository
 
+import androidx.room.Entity
 import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.util.Resource
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 
 interface Repository {
-    suspend fun getAll(): Resource<List<NoteEntity>>
-    suspend fun create(entity: NoteEntity): Resource<Long>
-    suspend fun delete(id: Long): Resource<Unit>
-    suspend fun deleteAll(): Resource<Unit>
-    suspend fun changeDate(date: String, id: Long): Resource<Unit>
+     fun getAll(): Observable<Resource<List<NoteEntity>>>
+     fun create(entity: NoteEntity): Observable<Resource<Long>> //CANT DO SINGLE
+     fun delete(id: Long): Observable<Resource<Unit>>
+     fun deleteAll(): Observable<Resource<Unit>>
+     fun changeDate(date: String, id: Long): Observable<Resource<Long>>
 }

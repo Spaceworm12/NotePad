@@ -1,5 +1,6 @@
 package com.example.homework.presentation.detail
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,12 +12,16 @@ import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.launch
 
 
 class NoteViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(NoteViewState())
     val viewStateObs: LiveData<NoteViewState> get() = _viewState
     var viewState: NoteViewState
@@ -24,6 +29,7 @@ class NoteViewModel(
         set(value) {
             _viewState.value = value
         }
+
     fun submitUIEvent(event: NoteEvent) {
         handleUIEvent(event)
     }
@@ -54,41 +60,51 @@ class NoteViewModel(
             viewState = viewState.copy(exit = true)
         }
     }
+
+    @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
-        viewModelScope.launch {
-            val result = repo.create(
-                Mapper.transformToData(
-                    NoteModel(
-                        id = id,
-                        name = viewState.userTitle,
-                        description = viewState.userDescription,
-                        type = NoteType.NOTE_TYPE,
-                        date = viewState.userDate
-                    )
+        repo.create(
+            Mapper.transformToData(
+                NoteModel(
+                    id = id,
+                    name = viewState.userTitle,
+                    description = viewState.userDescription,
+                    type = NoteType.NOTE_TYPE,
+                    date = viewState.userDate
                 )
             )
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> viewState = viewState.copy(exit = true)
+                    is Resource.Error -> viewState = viewState.copy(
+                        errorText = result.error.message ?: ""
+                    )
+                }
+            }
+            .addTo(disposables)
+    }
 
-            when (result) {
-                is Resource.Success -> {
-                    viewState=viewState.copy(exit = true)
-                }
-                is Resource.Error -> {
-                    viewState=viewState.copy(errorText = result.message?:"ERROR")
-                }
-            }
-        }
-    }
     private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            when (val result = repo.delete(id)) {
-                is Resource.Success -> {
-                    goBack()
-                }
-                is Resource.Error -> {
-                    viewState=viewState.copy(errorText = result.message?:"ERROR")
+        repo.delete(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> viewState = viewState.copy(exit = true)
+                    is Resource.Error -> viewState = viewState.copy(
+                        errorText = result.error.message ?: ""
+                    )
                 }
             }
-        }
+            .addTo(disposables)
     }
+
+    override fun onCleared() {
+        disposables.clear()
+    }
+
 }
 

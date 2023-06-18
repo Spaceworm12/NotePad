@@ -3,18 +3,20 @@ package com.example.homework.presentation.recycler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.DbNotes
 import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.util.Resource
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 
 class ListViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())
     val errorText = MutableLiveData<String>()
     val viewStateObs: LiveData<ListViewState> get() = _viewState
@@ -42,66 +44,80 @@ class ListViewModel(
     }
 
     private fun getListNotes() {
-        viewModelScope.launch {
-            viewState = viewState.copy(isLoading = true)
-            when (val result = repo.getAll()) {
-                is Resource.Success -> {
-                    viewState = viewState.copy(
-                        notesList = Mapper.transformToPresentation(result.data ?: emptyList()),
-                        isLoading = false
-                    )
-                }
-                is Resource.Error -> {
-                    viewState =
-                        viewState.copy(isLoading = false, errorText = result.message ?: "error")
+        viewState = viewState.copy(isLoading = true)
+        val result = repo.getAll()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> {}
+                    is Resource.Data -> {
+                        viewState = viewState.copy(
+                            notesList = Mapper.transformToPresentation(result.data ?: emptyList()),
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Error -> {
+                        viewState =
+                            viewState.copy(isLoading = false, errorText = "error")
+                    }
                 }
             }
-        }
+            .addTo(disposables)
     }
 
     private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            viewState = viewState.copy(isLoading = true)
-            when (val result = repo.delete(id)) {
-                is Resource.Success -> {
-                    getListNotes()
-                }
-                is Resource.Error -> {
-                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
+        viewState = viewState.copy(isLoading = true)
+        val result = repo.delete(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> {}
+                    is Resource.Data -> {
+                        getListNotes()
+                    }
+                    is Resource.Error -> {
+                        viewState = viewState.copy(isLoading = false, errorText = "err")
+                    }
                 }
             }
-        }
     }
 
     private fun deleteAll() {
-        viewModelScope.launch {
-            viewState = viewState.copy(isLoading = true)
-            when (val result = repo.deleteAll()) {
-                is Resource.Success -> {
-                    getListNotes()
-                }
-                is Resource.Error -> {
-                    viewState = viewState.copy(isLoading = false, errorText = result.message ?: "")
+        viewState = viewState.copy(isLoading = true)
+        val result = repo.deleteAll()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> {}
+                    is Resource.Data -> {
+                        getListNotes()
+                    }
+                    is Resource.Error -> {
+                        viewState = viewState.copy(isLoading = false, errorText = "err")
+                    }
                 }
             }
-        }
     }
 
     private fun changeDate(date: String, id: Long) {
-
-        viewModelScope.launch {
-            val result = repo.changeDate(
-                date, id
-            )
-            when (result) {
-                is Resource.Success -> {
-                    getListNotes()
-                }
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "CAN NOTE ADD DATE")
+        val result = repo.changeDate(
+            date, id
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> {}
+                    is Resource.Data -> {
+                        getListNotes()
+                    }
+                    is Resource.Error -> {
+                        errorText.postValue("CAN NOTE ADD DATE")
+                    }
                 }
             }
-        }
+    }
+
+    override fun onCleared() {
+        disposables.clear()
     }
 }
 

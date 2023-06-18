@@ -11,12 +11,16 @@ import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.launch
 
 
 class BirthdayViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
+    private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(BirthdayViewState())
     val viewStateObs: LiveData<BirthdayViewState> get() = _viewState
     var viewState: BirthdayViewState
@@ -46,7 +50,6 @@ class BirthdayViewModel(
     }
 
     private fun saveNewBd(id: Long) {
-        viewModelScope.launch {
             val result = repo.create(
                 Mapper.transformToData(
                     NoteModel(
@@ -58,8 +61,11 @@ class BirthdayViewModel(
                     )
                 )
             )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
             when (result) {
-                is Resource.Success -> {
+                is Resource.Loading -> {}
+                is Resource.Data -> {
                     viewState = viewState.copy(exit = true)
                 }
                 is Resource.Error -> {
@@ -67,6 +73,10 @@ class BirthdayViewModel(
                 }
             }
         }
+                .addTo(disposables)
+    }
+    override fun onCleared() {
+        disposables.clear()
     }
 }
 
