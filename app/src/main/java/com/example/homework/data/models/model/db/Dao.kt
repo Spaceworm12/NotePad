@@ -1,6 +1,5 @@
 package com.example.homework.data.models.model.db
 
-import android.provider.ContactsContract.RawContacts.Data
 import androidx.room.*
 import androidx.room.Dao
 import com.example.homework.data.models.model.db.entity.NoteEntity
