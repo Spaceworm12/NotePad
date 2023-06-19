@@ -44,7 +44,7 @@ class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository
     }
 
     override fun changeDate(date: String, id: Long): Observable<Resource<Long>> {
-        return dao.changeDate(date, id)
+        return dao.changeDate(date,id)
             .toObservable()
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)

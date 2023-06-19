@@ -21,7 +21,7 @@ interface Dao {
     fun delete(id: Long) : Completable
 
     @Query("UPDATE all_notes SET date = :date WHERE id = :id")
-    fun changeDate(date: String, id: Long) : Single<Resource<Long>>
+    fun changeDate(date: String, id: Long) : Single<Resource<Int>>
 }
 
 
