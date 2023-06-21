@@ -1,5 +1,6 @@
 package com.example.homework.data.models.model.noteRepository
 
+import androidx.core.graphics.isWideGamut
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
 import com.example.homework.data.models.model.db.entity.NoteEntity
@@ -22,6 +23,7 @@ class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository
     override fun create(entity: NoteEntity): Observable<Resource<Long>> {
         return dao.create(entity)
             .toObservable()
+            .map<Resource<Long>> { Resource.Data(it) }
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())
@@ -46,6 +48,7 @@ class RepositoryImplement(private val dao: Dao, private val db: Db) : Repository
     override fun changeDate(date: String, id: Long): Observable<Resource<Long>> {
         return dao.changeDate(date,id)
             .toObservable()
+            .map<Resource<Long>>{Resource.Data(it.toLong())}
             .onErrorReturn { Resource.Error(it) }
             .startWith(Resource.Loading)
             .subscribeOn(Schedulers.io())

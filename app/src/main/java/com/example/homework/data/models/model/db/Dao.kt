@@ -15,13 +15,13 @@ interface Dao {
     fun getAll(): Observable<List<NoteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun create(example: NoteEntity): Single<Resource<Long>>
+    fun create(example: NoteEntity): Single<Long>
 
     @Query("DELETE FROM all_notes WHERE id = :id")
     fun delete(id: Long) : Completable
 
     @Query("UPDATE all_notes SET date = :date WHERE id = :id")
-    fun changeDate(date: String, id: Long) : Single<Resource<Int>>
+    fun changeDate(date: String, id: Long) : Single<Int>
 }
 
 
