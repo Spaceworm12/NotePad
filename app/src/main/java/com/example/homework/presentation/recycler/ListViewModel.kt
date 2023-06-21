@@ -8,9 +8,13 @@ import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.util.Resource
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class ListViewModel(
@@ -40,6 +44,7 @@ class ListViewModel(
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
             is ListEvents.DeleteAll -> deleteAll()
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
+            is ListEvents.CheckTime -> startTimeDetection()
         }
     }
 
@@ -114,6 +119,24 @@ class ListViewModel(
                     }
                 }
             }
+    }
+    private fun startTimeDetection() {
+        Observable.interval(5000L, TimeUnit.MILLISECONDS)
+            .timeInterval()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { showTime() }
+            .addTo(disposables)
+    }
+    private fun showTime() {
+        val time = getCurrentDateTime().toString("HH:mm:ss")
+        viewState = viewState.copy(time = time)
+    }
+    private fun getCurrentDateTime(): Date {
+        return Calendar.getInstance().time
+    }
+    private fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
+        val formatter = SimpleDateFormat(format, locale)
+        return formatter.format(this)
     }
 
     override fun onCleared() {

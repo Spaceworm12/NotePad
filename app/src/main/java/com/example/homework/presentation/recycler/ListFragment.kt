@@ -68,8 +68,10 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.submitUIEvent(ListEvents.GetNotes)
+        viewModel.submitUIEvent(ListEvents.CheckTime)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
+
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             setElements(state)
         }
@@ -140,7 +142,7 @@ class ListFragment : Fragment() {
             .setMessage(getString(R.string.delete_dialog_title))
             .setCancelable(true)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.submitUIEvent(ListEvents.DeleteAll())
+                viewModel.submitUIEvent(ListEvents.DeleteAll)
             }
             .setNegativeButton(getString(R.string.no)) { _, _ -> }
             .create()
