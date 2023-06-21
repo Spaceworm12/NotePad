@@ -7,8 +7,8 @@ data class ListViewState(
     val notesList: List<NoteModel> = emptyList(),
     val isLoading: Boolean = false,
     val errorText: String = "",
-    val time: String="time"
 ) {
+
     fun getEmptyNote(): NoteModel {
         return NoteModel(
             id = 0,

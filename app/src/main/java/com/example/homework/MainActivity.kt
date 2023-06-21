@@ -3,25 +3,28 @@ package com.example.homework
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.databinding.ActivityMainBinding
 import com.example.homework.presentation.recycler.ListFragment
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
+import com.example.homework.presentation.recycler.ListViewModel
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
-
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
     private lateinit var binding: ActivityMainBinding
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.viewStateObs.observe(this) { state ->
+            Toast.makeText(this, state.time, Toast.LENGTH_SHORT).show()
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,4 +36,5 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 }

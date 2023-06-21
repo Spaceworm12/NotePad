@@ -68,10 +68,8 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.submitUIEvent(ListEvents.GetNotes)
-        viewModel.submitUIEvent(ListEvents.CheckTime)
         binding.recView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recView.adapter = adapter
-
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
             setElements(state)
         }
