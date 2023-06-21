@@ -21,10 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Observable.interval(5000L, TimeUnit.MILLISECONDS)
-            .timeInterval()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show() }
+//        Observable.interval(5000L, TimeUnit.MILLISECONDS)
+//            .timeInterval()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show() }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -28,10 +28,6 @@ class MainViewModel : ViewModel() {
 
     private fun showTime(state: MainViewState) {
         val date = getCurrentDateTime().toString("HH:mm:ss")
-        if (viewState != viewState.copy(time = date)) {
-            Toast.makeText(this,"date",Toast.LENGTH_SHORT)
-        }else{
-            Toast.makeText(this,"WTF",Toast.LENGTH_SHORT)
         }
     }
 }
