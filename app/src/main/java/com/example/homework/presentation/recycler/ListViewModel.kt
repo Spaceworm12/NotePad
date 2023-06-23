@@ -18,6 +18,7 @@ class ListViewModel(
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())
+    // private
     val errorText = MutableLiveData<String>()
     val viewStateObs: LiveData<ListViewState> get() = _viewState
     var viewState: ListViewState
@@ -45,6 +46,7 @@ class ListViewModel(
 
     private fun getListNotes() {
         viewState = viewState.copy(isLoading = true)
+        //Не используется запись в переменную
         val result = repo.getAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -67,6 +69,7 @@ class ListViewModel(
 
     private fun deleteNote(id: Long) {
         viewState = viewState.copy(isLoading = true)
+        //Не используется запись в переменную
         val result = repo.delete(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -84,6 +87,7 @@ class ListViewModel(
 
     private fun deleteAll() {
         viewState = viewState.copy(isLoading = true)
+        //Не используется запись в переменную
         val result = repo.deleteAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -100,6 +104,7 @@ class ListViewModel(
     }
 
     private fun changeDate(date: String, id: Long) {
+        //Не используется запись в переменную
         val result = repo.changeDate(
             date, id
         ).observeOn(AndroidSchedulers.mainThread())

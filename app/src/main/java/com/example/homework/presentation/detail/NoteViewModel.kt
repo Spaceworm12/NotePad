@@ -77,6 +77,7 @@ class NoteViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
+                    //Загрузка
                     Resource.Loading -> {}
                     is Resource.Data -> viewState = viewState.copy(exit = true)
                     is Resource.Error -> viewState = viewState.copy(
@@ -92,6 +93,8 @@ class NoteViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
+                    //У тебя явно объявляется запуск Loading в блоке .startWith(Resource.Loading),
+                    // можно было и загрузку обработать по человечески
                     Resource.Loading -> {}
                     is Resource.Data -> viewState = viewState.copy(exit = true)
                     is Resource.Error -> viewState = viewState.copy(
