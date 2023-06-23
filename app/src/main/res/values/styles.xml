@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyButtonStyle" parent="@android:style/TextAppearance.Medium">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="MainButtonStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:background">@drawable/thief</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="SecondButtonStyle" parent="@android:style/TextAppearance.Medium">
+    <item name="android:layout_width">100dp</item>
+    <item name="android:layout_height">90dp</item>
+    <item name="android:layout_margin">16dp</item>
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:background">@drawable/thief</item>
         <item name="android:textColor">@color/black</item>
@@ -22,6 +31,17 @@
     <item name="android:layout_marginBottom">10dp</item>
     <item name="android:layout_marginEnd">10dp</item>
     <item name="android:layout_marginStart">10dp</item>
+    </style>
+    <style name="DatePickerDialog" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorAccent">@color/custom</item>
+    </style>
+    <style name="main_button" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_margin">16dp</item>
     </style>
 
 

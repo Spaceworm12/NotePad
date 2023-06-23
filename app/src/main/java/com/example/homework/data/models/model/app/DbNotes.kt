@@ -21,6 +21,7 @@ class DbNotes : Application() {
             checkDb()
             return db!!.dao()
         }
+
         fun getDb(): Db {
             checkDb()
             return db!!
@@ -35,10 +36,7 @@ class DbNotes : Application() {
                 db = builder
                     .allowMainThreadQueries()
                     .build()
-
             }
         }
     }
-
-
 }

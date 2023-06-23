@@ -1,5 +1,7 @@
 package com.example.homework.presentation.detail
 
+import android.annotation.SuppressLint
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,79 +10,103 @@ import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.launch
 
 
 class NoteViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
-    private val userTitle = MutableLiveData<String>()
-    private val userDescription = MutableLiveData<String>()
-    val errorText = MutableLiveData<String>()
-
-    val exit = MutableLiveData(false)
+    private val disposables = CompositeDisposable()
+    private val _viewState = MutableLiveData(NoteViewState())
+    val viewStateObs: LiveData<NoteViewState> get() = _viewState
+    var viewState: NoteViewState
+        get() = _viewState.value!!
+        set(value) {
+            _viewState.value = value
+        }
 
     fun submitUIEvent(event: NoteEvent) {
         handleUIEvent(event)
     }
 
     private fun handleUIEvent(event: NoteEvent) {
+        eventsAction(event)
+    }
+
+    private fun eventsAction(event: NoteEvent) {
+        eventsActions(event)
+    }
+
+    private fun eventsActions(event: NoteEvent) {
         when (event) {
-            is NoteEvent.SaveUserTitle -> userTitle.postValue(event.text)
-            is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
+            is NoteEvent.SaveUserTitle -> viewState = viewState.copy(userTitle = event.text)
+            is NoteEvent.SaveUserDescription -> viewState =
+                viewState.copy(userDescription = event.text)
+            is NoteEvent.SaveUserDate -> viewState = viewState.copy(userDate = event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
             NoteEvent.Exit -> goBack()
-            NoteEvent.Error -> errorText.postValue("")
+            NoteEvent.Error -> viewState = viewState.copy(errorText = "ERROR")
         }
     }
 
     private fun goBack() {
         viewModelScope.launch {
-            exit.postValue(true)
+            viewState = viewState.copy(exit = true)
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
-
-        viewModelScope.launch {
-            val result = repo.create(
-                Mapper.transformToData(
-                    NoteModel(
-                        id = id,
-                        name = userTitle.value ?: "Empty title",
-                        description = userDescription.value ?: "Empty Description"
-                    )
+        repo.create(
+            Mapper.transformToData(
+                NoteModel(
+                    id = id,
+                    name = viewState.userTitle,
+                    description = viewState.userDescription,
+                    type = NoteType.NOTE_TYPE,
+                    date = viewState.userDate
                 )
             )
-
-            when (result) {
-                is Resource.Success -> {
-                    exit.postValue(true)
-
-                }
-
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    //Загрузка
+                    Resource.Loading -> {}
+                    is Resource.Data -> viewState = viewState.copy(exit = true)
+                    is Resource.Error -> viewState = viewState.copy(
+                        errorText = result.error.message ?: ""
+                    )
                 }
             }
-        }
+            .addTo(disposables)
     }
 
-
     private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            when (val result = repo.delete(id)) {
-                is Resource.Success -> {
-                    goBack()
-
-                }
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
+        repo.delete(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    //У тебя явно объявляется запуск Loading в блоке .startWith(Resource.Loading),
+                    // можно было и загрузку обработать по человечески
+                    Resource.Loading -> {}
+                    is Resource.Data -> viewState = viewState.copy(exit = true)
+                    is Resource.Error -> viewState = viewState.copy(
+                        errorText = result.error.message ?: ""
+                    )
                 }
             }
-        }
+            .addTo(disposables)
+    }
+
+    override fun onCleared() {
+        disposables.clear()
     }
 
 }

@@ -1,7 +1,10 @@
 package com.example.homework.util
 
-sealed class Resource<T>(val data: T? = null, val message: String? = null) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
-
+sealed class Resource<out T> {
+    data class Data<T>(val data: T) : Resource<T>()
+    data class Error(val error: Throwable) : Resource<Nothing>()
+    object Loading : Resource<Nothing>()
+    companion object {
+        val Success: Resource<Unit> = Data(Unit)
+    }
 }

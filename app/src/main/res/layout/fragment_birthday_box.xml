@@ -6,12 +6,12 @@
     android:clickable="true"
     android:focusable="true"
     xmlns:toots="http://schemas.android.com/tools"
-    android:background="@drawable/thief"
+    android:background="@drawable/thief_blue"
     style="@style/Elements">
 
 
     <TextView
-        android:id="@+id/note_name"
+        android:id="@+id/username"
         android:textCursorDrawable="@color/black"
         style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="0dp"
@@ -26,11 +26,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        toots:text = "text"/>
+        toots:text = "name"/>
 
 
     <TextView
-        android:id="@+id/note_id"
+        android:id="@+id/bd_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -38,8 +38,20 @@
         android:paddingEnd="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/note_name"
-        toots:text = "text"/>
+        app:layout_constraintTop_toBottomOf="@id/username"
+        toots:text = "id"/>
+
+    <TextView
+        android:id="@+id/bd_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="18dp"
+        android:paddingEnd="40dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        toots:text="date" />
 
 
 

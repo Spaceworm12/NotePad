@@ -16,4 +16,24 @@
     <string name="delete_dialog_title">Delete this note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="date">Date</string>
+    <string name="saveBd">save</string>
+    <string name="cancel">cancel</string>
+    <string name="user">user</string>
+    <string name="add_bd">add_bd</string>
+    <string name="add_note">add_note</string>
+    <string name="delete_all">DELETE ALL</string>
+    <string name="bd">BD</string>
+    <string name="note">NOTE</string>
+    <string name="plus_chain">+</string>
+    <string name="birthday">birthday</string>
+    <string name="open">OPEN</string>
+    <string name="birthday_add">BIRTHDAY</string>
+    <string name="description">Description</string>
+    <string name="birthday_new">Add Birthday</string>
+    <string name="open_note">Open Note</string>
+    <string name="description_note">Description</string>
+    <string name="description_birthday">description</string>
+    <string name="date_birthday">Date</string>
 </resources>

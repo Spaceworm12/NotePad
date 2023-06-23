@@ -1,5 +1,6 @@
 package com.example.homework.presentation.detail
 
+import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.databinding.FragmentNoteBinding
 import com.example.homework.presentation.model.NoteModel
-import com.example.homework.presentation.recycler.NotesFragment
-
+import com.example.homework.presentation.model.NoteType
+import com.example.homework.presentation.recycler.ListFragment
+import java.util.*
 
 class NoteFragment : Fragment() {
 
@@ -50,12 +52,22 @@ class NoteFragment : Fragment() {
                 KEY_NOTE,
                 NoteModel::class.java
             ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
+        setValues(note)
+        setTextWatchers()
+        setClicks(note)
+        observeViewModel()
+    }
 
+    private fun setValues(note: NoteModel) {
         binding.noteName.setText(note.name)
         binding.noteDescriprion.setText(note.description)
+        binding.bdDate.setText(note.date)
         noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(note.name))
         noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(note.description))
+        noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(note.date))
+    }
 
+    private fun setTextWatchers() {
         binding.noteName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -69,7 +81,6 @@ class NoteFragment : Fragment() {
                 }
             }
         })
-
         binding.noteDescriprion.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -83,7 +94,27 @@ class NoteFragment : Fragment() {
                 }
             }
         })
+    }
 
+    private fun setClicks(note: NoteModel) {
+        binding.bdDate.setOnClickListener {
+            val d = Calendar.getInstance()
+            val year = d.get(Calendar.YEAR)
+            val month = d.get(Calendar.MONTH)
+            val day = d.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    val s = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                    binding.bdDate.text = s
+                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(s))
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
         binding.btnSave.setOnClickListener {
             noteViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
             requireActivity()
@@ -91,13 +122,9 @@ class NoteFragment : Fragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    NotesFragment()
+                    ListFragment()
                 )
                 .commit()
-        }
-        noteViewModel.exit.observe(viewLifecycleOwner) { isExit ->
-            if (isExit)
-                requireActivity().supportFragmentManager.popBackStackImmediate()
         }
         binding.btnBack.setOnClickListener {
             noteViewModel.submitUIEvent(NoteEvent.Exit)
@@ -109,33 +136,33 @@ class NoteFragment : Fragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    NotesFragment()
+                    ListFragment()
                 )
                 .commit()
-
-
         }
-        noteViewModel.errorText.observe(viewLifecycleOwner) {
-            if (it.isNotBlank()){
-                Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+    }
+
+    private fun observeViewModel() {
+        noteViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
+            if (state.exit)
+                requireActivity().supportFragmentManager.popBackStackImmediate()
+            if (state.errorText.isNotBlank()) {
+                Toast.makeText(context, "ERR%$@", Toast.LENGTH_SHORT).show()
                 noteViewModel.submitUIEvent(NoteEvent.Error)
             }
         }
     }
 
-
     private fun getEmptyNote(): NoteModel {
-        return NoteModel(
-            id = 0,
-            name = "",
-            description = ""
-        )
-    }
+    return NoteModel(
+        id = 0,
+        name = "",
+        description = "",
+        type = NoteType.NOTE_TYPE,
+        date = ""
+    )
+}
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
 
 
