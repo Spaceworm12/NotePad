@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel.viewStateObs.observe(this) { state ->
-            Toast.makeText(this, state.currentTime, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, state.correctCurrentTime, Toast.LENGTH_SHORT).show()
         }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

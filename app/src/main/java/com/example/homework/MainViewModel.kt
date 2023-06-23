@@ -3,12 +3,11 @@ package com.example.homework
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.homework.util.getCurrentDateTimeAsString
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MainViewModel : ViewModel() {
@@ -34,18 +33,10 @@ class MainViewModel : ViewModel() {
     }
 
     private fun showTime() {
-        val time = getCurrentDateTime().toString("HH:mm:ss")
+        val time = getCurrentDateTimeAsString()
         viewState = viewState.copy(currentTime = time)
     }
 
-    private fun getCurrentDateTime(): Date {
-        return Calendar.getInstance().time
-    }
-
-    private fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
-        val formatter = SimpleDateFormat(format, locale)
-        return formatter.format(this)
-    }
     override fun onCleared() {
         disposables.clear()
     }
