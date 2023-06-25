@@ -8,4 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="custom">#D8C133</color>
+    <color name="light_blue">#30C8BB</color>
+    <color name="dark_blue">#20636C</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="dark_purple">#FF3700B3</color>
+    <color name="yellow">#DAD603</color>
+    <color name="orange">#B36C02</color>
+    <color name="light_purple">#7E48BC</color>
 </resources>

@@ -51,7 +51,9 @@
         <item name="colorAccent">@color/yellow</item>
         <item name="colorButtonNormal">@color/orange</item>
     </style>
-
+    <style name="StatusBarTheme" parent="Theme.MaterialComponents.DayNight">
+    <item name="android:statusBarColor">@color/orange</item>
+</style>
 
 
 </resources>
