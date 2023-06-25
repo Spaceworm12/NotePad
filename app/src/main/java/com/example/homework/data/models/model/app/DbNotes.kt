@@ -1,6 +1,7 @@
 package com.example.homework.data.models.model.app
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
@@ -16,6 +17,7 @@ class DbNotes : Application() {
     companion object {
         private var appInstance: DbNotes? = null
         private var db: Db? = null
+        private var sharedPreferences: SharedPreferences? = null
 
         fun dao(): Dao {
             checkDb()
@@ -37,6 +39,13 @@ class DbNotes : Application() {
                     .allowMainThreadQueries()
                     .build()
             }
+        }
+        fun getSettings(): SharedPreferences {
+            if (sharedPreferences == null) {
+                sharedPreferences =
+                    appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
+            }
+            return sharedPreferences!!
         }
     }
 }
