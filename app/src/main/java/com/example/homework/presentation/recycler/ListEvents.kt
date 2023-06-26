@@ -6,5 +6,6 @@ sealed class ListEvents {
     class DeleteNote(val id: Long) : ListEvents()
     object DeleteAll : ListEvents()
     class SaveUserDate(val date: String, val id: Long) : ListEvents()
+    class CheckTheme():ListEvents()
 
 }

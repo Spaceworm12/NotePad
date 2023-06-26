@@ -7,6 +7,7 @@ data class ListViewState(
     val notesList: List<NoteModel> = emptyList(),
     val isLoading: Boolean = false,
     val errorText: String = "",
+    val theme: String="",
 ) {
 
     fun getEmptyNote(): NoteModel {

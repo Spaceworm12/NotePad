@@ -1,9 +1,7 @@
 package com.example.homework.presentation.recycler
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,13 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentListNotesBinding
+import com.example.homework.presentation.SwitchTheme.SelectThemeFragment
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailBd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
+private const val THEME_CODE = "THEME_CODE"
 
 class ListFragment : Fragment() {
 
@@ -74,6 +73,24 @@ class ListFragment : Fragment() {
             setElements(state)
         }
         setButtonsClicks()
+        setHasOptionsMenu(true)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.context_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                parentFragmentManager.beginTransaction().replace(
+                    R.id.fragment_container,
+                    SelectThemeFragment()
+                )
+                    .commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setButtonsClicks() {
