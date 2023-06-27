@@ -30,8 +30,7 @@ class SelectThemeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.mainTheme.isChecked = state.currentTheme == R.style.Theme_Homework
+        binding.mainTheme.isChecked = statecurrentTheme == R.style.Theme_Homework
         binding.btnBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }

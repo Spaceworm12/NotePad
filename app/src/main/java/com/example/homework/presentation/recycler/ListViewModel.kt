@@ -105,7 +105,6 @@ class ListViewModel(
     }
 
     private fun changeDate(date: String, id: Long) {
-        //Не используется запись в переменную
         val result = repo.changeDate(
             date, id
         ).observeOn(AndroidSchedulers.mainThread())
