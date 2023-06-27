@@ -1,5 +1,6 @@
 package com.example.homework.presentation.SwitchTheme
 
+import android.widget.RadioButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 private const val THEME_CODE = "THEME_CODE"
 private const val SELECTED_POSITION = "SELECTED_POSITION"
 
-class SelectThemeViewModel() : ViewModel() {
+class SelectThemeViewModel : ViewModel() {
     private val _viewState = MutableLiveData(SelectThemeViewState())
     val viewStateObs: LiveData<SelectThemeViewState> get() = _viewState
     var viewState: SelectThemeViewState
@@ -32,14 +33,13 @@ class SelectThemeViewModel() : ViewModel() {
         when (event) {
             is SelectThemeEvents.SwitchTheme -> switchTheme(event.theme)
             is SelectThemeEvents.Exit -> goBack()
+//            is SelectThemeEvents.CheckIn -> checkIn()
         }
     }
 
     private fun switchTheme(theme: Int) {
         DbNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
     }
-
-
 
     private fun goBack() {
         viewModelScope.launch {
