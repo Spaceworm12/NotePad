@@ -6,8 +6,7 @@ import com.example.homework.presentation.model.NoteType
 data class ListViewState(
     val notesList: List<NoteModel> = emptyList(),
     val isLoading: Boolean = false,
-    val errorText: String = "",
-    val theme: String="",
+    val errorText: String = ""
 ) {
 
     fun getEmptyNote(): NoteModel {

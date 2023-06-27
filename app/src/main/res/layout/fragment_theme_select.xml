@@ -14,7 +14,7 @@
         android:gravity="center"
         android:background="@drawable/thief"
         android:layout_margin="20dp"
-        android:padding="12dp"
+        android:padding="21dp"
         android:textSize="20sp"
         android:textAllCaps="true"
         android:text="@string/select_theme"
@@ -62,4 +62,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_theme" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:background="@drawable/thief"
+        android:gravity="center"
+        android:text="@string/go_back"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        toots:ignore="UnknownIdInLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>

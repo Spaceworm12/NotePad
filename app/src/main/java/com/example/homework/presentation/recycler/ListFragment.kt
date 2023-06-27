@@ -82,7 +82,7 @@ class ListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                parentFragmentManager.beginTransaction().replace(
+                parentFragmentManager.beginTransaction().add(
                     R.id.fragment_container,
                     SelectThemeFragment()
                 )

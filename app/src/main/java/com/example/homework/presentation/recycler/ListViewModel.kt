@@ -13,15 +13,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
-private const val THEME_CODE = "THEME_CODE"
+
 
 class ListViewModel(
     private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())
-    private val theme = MutableLiveData(ListViewState())
-    // private
     val errorText = MutableLiveData<String>()
     val viewStateObs: LiveData<ListViewState> get() = _viewState
     var viewState: ListViewState
@@ -44,29 +42,12 @@ class ListViewModel(
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
             is ListEvents.DeleteAll -> deleteAll()
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
-            is ListEvents.CheckTheme -> checkTheme()
         }
     }
-    private fun checkTheme() {
-        viewState = viewState.copy(isLoading = true)
-        val result = DbNotes.getSettings().getString(THEME_CODE, )
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> {}
-                    is Resource.Data -> {
-                        getListNotes()
-                    }
-                    is Resource.Error -> {
-                        viewState = viewState.copy(isLoading = false, errorText = "err")
-                    }
-                }
-            }
-    }
+
 
     private fun getListNotes() {
         viewState = viewState.copy(isLoading = true)
-        //Не используется запись в переменную
         val result = repo.getAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
