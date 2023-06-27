@@ -1,48 +1,50 @@
 package com.example.homework.presentation.SwitchTheme
 
-import android.widget.RadioButton
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework.R
 import com.example.homework.data.models.model.app.DbNotes
-import com.example.homework.presentation.detail.NoteEvent
-import com.example.homework.presentation.detail.NoteViewState
-import com.example.homework.util.Resource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.launch
 
 private const val THEME_CODE = "THEME_CODE"
+private const val SELECTED_POSITION = "SELECTED_POSITION"
 
 class SelectThemeViewModel() : ViewModel() {
     private val _viewState = MutableLiveData(SelectThemeViewState())
-    val viewStateObs: LiveData<NoteViewState> get() = _viewState
-    var viewState: NoteViewState
+    val viewStateObs: LiveData<SelectThemeViewState> get() = _viewState
+    var viewState: SelectThemeViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
-    fun submitUIEvent(event: SelectThemeEvent) {
+
+    fun submitUIEvent(event: SelectThemeEvents) {
         handleUIEvent(event)
     }
 
-    private fun handleUIEvent(event: SelectThemeEvent) {
+    private fun handleUIEvent(event: SelectThemeEvents) {
         setEvents(event)
     }
 
-    private fun setEvents(event: SelectThemeEvent) {
+    private fun setEvents(event: SelectThemeEvents) {
         when (event) {
-            is SelectThemeEvent.CheckTheme -> checkTheme()
-            is SelectThemeEvent.Exit -> viewState=viewState.copy(exit = true)
+            is SelectThemeEvents.SwitchTheme -> switchTheme(event.theme)
+            is SelectThemeEvents.Exit -> goBack()
         }
     }
 
-    private fun checkTheme(r:RadioButton) {
-        r.isChecked = DbNotes.getSettings().edit().putInt(THEME_CODE, R.style.Theme_Homework).apply()
+    private fun switchTheme(theme: Int) {
+        DbNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
     }
 
+
+
+    private fun goBack() {
+        viewModelScope.launch {
+            viewState = viewState.copy(exit = true)
+        }
     }
+}
+

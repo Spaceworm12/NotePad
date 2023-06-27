@@ -17,7 +17,7 @@ class DbNotes : Application() {
     companion object {
         private var appInstance: DbNotes? = null
         private var db: Db? = null
-        private var sharedPreferences: SharedPreferences? = null
+        private var sharedPreferencesTheme: SharedPreferences? = null
 
         fun dao(): Dao {
             checkDb()
@@ -40,12 +40,13 @@ class DbNotes : Application() {
                     .build()
             }
         }
-        fun getSettings(): SharedPreferences {
-            if (sharedPreferences == null) {
-                sharedPreferences =
+
+        fun getSettingsTheme(): SharedPreferences {
+            if (sharedPreferencesTheme == null) {
+                sharedPreferencesTheme =
                     appInstance!!.applicationContext.getSharedPreferences("THEME", MODE_PRIVATE)
             }
-            return sharedPreferences!!
+            return sharedPreferencesTheme!!
         }
     }
 }
