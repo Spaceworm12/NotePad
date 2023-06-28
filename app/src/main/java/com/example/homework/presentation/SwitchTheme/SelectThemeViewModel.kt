@@ -21,6 +21,12 @@ class SelectThemeViewModel : ViewModel() {
             _viewState.value = value
         }
 
+    init {
+        viewState = viewState.copy(
+            currentTheme = DbNotes.getSettingsTheme().getInt(THEME_CODE, R.style.Theme_Homework)
+        )
+    }
+
     fun submitUIEvent(event: SelectThemeEvents) {
         handleUIEvent(event)
     }
@@ -33,12 +39,20 @@ class SelectThemeViewModel : ViewModel() {
         when (event) {
             is SelectThemeEvents.SwitchTheme -> switchTheme(event.theme)
             is SelectThemeEvents.Exit -> goBack()
-//            is SelectThemeEvents.CheckIn -> checkIn()
+            is SelectThemeEvents.CheckIn -> checkIn(event.theme)
         }
     }
 
     private fun switchTheme(theme: Int) {
         DbNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
+    }
+
+    private fun checkIn(btn:RadioButton):Boolean {
+        if (btn == R.style.Theme_Homework) {
+      return true
+        } else if (theme == R.style.Theme_Second) {
+           return true
+        }
     }
 
     private fun goBack() {
