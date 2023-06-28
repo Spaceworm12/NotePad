@@ -1,21 +1,14 @@
-package com.example.homework.presentation.SwitchTheme
+package com.example.homework.presentation.selectTheme
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
-import com.example.homework.data.models.model.app.DbNotes
 import com.example.homework.databinding.FragmentThemeSelectBinding
 import com.example.homework.presentation.recycler.ListFragment
-import com.example.homework.presentation.recycler.ListViewState
-
-private const val THEME_CODE = "THEME_CODE"
-private const val SELECTED_POSITION = "SELECTED_POSITION"
 
 class SelectThemeFragment : Fragment() {
 
@@ -37,10 +30,9 @@ class SelectThemeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-            setElements(state)
+            setElements(state.currentTheme)
         }
-        checkIn()
-        binding.mainTheme.setOnClickListener {
+        binding.firstTheme.setOnClickListener {
             viewModel.submitUIEvent(SelectThemeEvents.SwitchTheme(R.style.Theme_Homework))
             requireActivity().recreate()
         }
@@ -48,6 +40,11 @@ class SelectThemeFragment : Fragment() {
             viewModel.submitUIEvent(SelectThemeEvents.SwitchTheme(R.style.Theme_Second))
             requireActivity().recreate()
         }
+        binding.thirdTheme.setOnClickListener {
+            viewModel.submitUIEvent(SelectThemeEvents.SwitchTheme(R.style.Theme_Third))
+            requireActivity().recreate()
+        }
+
         binding.btnBack.setOnClickListener {
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -55,20 +52,11 @@ class SelectThemeFragment : Fragment() {
                 .commit()
         }
     }
-    private fun checkIn() {
-        if (DbNotes.getSettingsTheme().getInt(THEME_CODE, 1) == R.style.Theme_Homework) {
-            binding.mainTheme.isChecked = true
-        } else if (DbNotes.getSettingsTheme().getInt(THEME_CODE, 1) == R.style.Theme_Second) {
-            binding.secondTheme.isChecked = true
-        }
-    }
-    private fun setElements(state: SelectThemeViewState) {
-        binding.mainTheme.isChecked = true
-        binding.secondTheme.isChecked = true
-        binding.recView.isVisible = !state.isLoading
-        if (state.errorText.isNotBlank())
-            Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
-        adapter.submitList(state.notesList)
+
+    private fun setElements(currentTheme: Int) {
+        binding.firstTheme.isChecked = currentTheme == R.style.Theme_Homework
+        binding.secondTheme.isChecked = currentTheme == R.style.Theme_Second
+        binding.thirdTheme.isChecked = currentTheme == R.style.Theme_Third
     }
 
     override fun onDestroyView() {

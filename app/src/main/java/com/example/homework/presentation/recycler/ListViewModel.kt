@@ -1,6 +1,5 @@
 package com.example.homework.presentation.recycler
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

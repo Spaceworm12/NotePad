@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/main_theme"
+                android:id="@+id/first_theme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/thief"

@@ -9,14 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentListNotesBinding
-import com.example.homework.presentation.SwitchTheme.SelectThemeFragment
+import com.example.homework.presentation.selectTheme.SelectThemeFragment
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailBd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.ListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-private const val THEME_CODE = "THEME_CODE"
 
 class ListFragment : Fragment() {
 
@@ -86,6 +85,7 @@ class ListFragment : Fragment() {
                     R.id.fragment_container,
                     SelectThemeFragment()
                 )
+                    .addToBackStack("")
                     .commit()
                 true
             }
