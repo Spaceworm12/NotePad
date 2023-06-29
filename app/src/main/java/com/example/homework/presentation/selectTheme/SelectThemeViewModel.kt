@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework.R
-import com.example.homework.data.models.model.app.DbNotes
+import com.example.homework.data.models.model.app.AppNotes
 import kotlinx.coroutines.launch
 
 private const val THEME_CODE = "THEME_CODE"
@@ -21,7 +21,7 @@ class SelectThemeViewModel : ViewModel() {
 
     init {
         viewState = viewState.copy(
-            currentTheme = DbNotes.getSettingsTheme().getInt(THEME_CODE, R.style.Theme_Homework)
+            currentTheme = AppNotes.getSettingsTheme().getInt(THEME_CODE, R.style.Theme_Homework)
         )
     }
 
@@ -41,7 +41,7 @@ class SelectThemeViewModel : ViewModel() {
     }
 
     private fun switchTheme(theme: Int) {
-        DbNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
+        AppNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
         viewState = viewState.copy(currentTheme = theme)
     }
 

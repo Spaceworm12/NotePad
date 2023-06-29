@@ -3,7 +3,7 @@ package com.example.homework.presentation.recycler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.homework.data.models.model.app.DbNotes
+import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.data.models.model.noteRepository.Repository
 import com.example.homework.data.models.model.noteRepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.addTo
 
 
 class ListViewModel(
-    private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
+    private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())

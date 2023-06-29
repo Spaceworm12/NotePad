@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.homework.data.models.model.app.DbNotes
+import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.databinding.ActivityMainBinding
 import com.example.homework.presentation.recycler.ListFragment
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setTheme(DbNotes.getSettingsTheme().getInt(THEME_CODE, R.style.Theme_Homework))
+        setTheme(AppNotes.getSettingsTheme().getInt(THEME_CODE, R.style.Theme_Homework))
 
         if (savedInstanceState == null) {
             supportFragmentManager

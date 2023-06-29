@@ -7,7 +7,7 @@ import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
 import com.example.homework.data.models.model.db.entity.TABLE_NOTES
 
-class DbNotes : Application() {
+class AppNotes : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -15,7 +15,7 @@ class DbNotes : Application() {
     }
 
     companion object {
-        private var appInstance: DbNotes? = null
+        private var appInstance: AppNotes? = null
         private var db: Db? = null
         private var sharedPreferencesTheme: SharedPreferences? = null
 
