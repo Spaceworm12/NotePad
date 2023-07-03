@@ -1,5 +1,6 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.dialogs
+package com.example.homework.presentation.composefutures.dialogs
 
+import NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,16 +13,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.buttons.DialogButton
-import ru.lesson.fragmentsample.R
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
+import com.example.homework.R
+import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.buttons.DialogBtn
 
 
 @Composable
 fun DefaultDialog(
     title: String,
-    massage: String = "",
+    message: String = "",
     negativeButtonText: String = "",
     positiveButtonText: String = "",
     negativeButtonColor: Color? = null,
@@ -38,43 +38,43 @@ fun DefaultDialog(
         Column(
             modifier = Modifier
                 .background(
-                    color = AppTheme.colors.primary,
-                    shape = RoundedCornerShape(AppTheme.dimens.sideMargin)
+                    color = NotesTheme.colors.primary,
+                    shape = RoundedCornerShape(NotesTheme.dimens.sideMargin)
                 )
                 .padding(
-                    end = AppTheme.dimens.sideMargin,
-                    start = AppTheme.dimens.sideMargin,
-                    top = AppTheme.dimens.sideMargin
+                    end = NotesTheme.dimens.sideMargin,
+                    start = NotesTheme.dimens.sideMargin,
+                    top = NotesTheme.dimens.sideMargin
                 )
         ) {
             Text(
                 text = title,
-                style = AppTheme.typography.subtitle1,
+                style = NotesTheme.typography.subtitle1,
                 modifier = Modifier
-                    .padding(bottom = AppTheme.dimens.sideMargin)
+                    .padding(bottom = NotesTheme.dimens.sideMargin)
                     .fillMaxWidth()
             )
 
-            if (massage.isNotBlank())
-                Text(text = massage, style = AppTheme.typography.body1, modifier = Modifier.fillMaxWidth())
+            if (message.isNotBlank())
+                Text(text = message, style = NotesTheme.typography.body1, modifier = Modifier.fillMaxWidth())
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = AppTheme.dimens.contentMargin),
+                    .padding(end = NotesTheme.dimens.contentMargin),
                 horizontalArrangement = Arrangement.End,
             ) {
-                DialogButton(
+                DialogBtn(
                     text = negativeButtonText.ifBlank { stringResource(R.string.no) },
                     isEnabled = isEnabled,
                     onClick = { if (onNegativeClick != null) onNegativeClick.invoke() else dismiss.invoke() },
-                    color = negativeButtonColor ?: AppTheme.colors.secondary
+                    color = negativeButtonColor ?: NotesTheme.colors.secondary
                 )
-                DialogButton(
+                DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.yes) },
                     isEnabled = isEnabled,
                     onClick = { onPositiveClick.invoke() },
-                    color = positiveButtonColor ?: AppTheme.colors.secondary
+                    color = positiveButtonColor ?: NotesTheme.colors.secondary
                 )
             }
         }
@@ -84,10 +84,10 @@ fun DefaultDialog(
 @Preview(name = "DefaultDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun DefaultDialogPreview() {
-    FragmentSampleTheme() {
+    ThemeSettings {
         DefaultDialog(
             title = "Уверен?",
-            massage = "Раз уверен жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст.",
+            message = "Раз уверен жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст.",
             onPositiveClick = {}
         ) {}
     }

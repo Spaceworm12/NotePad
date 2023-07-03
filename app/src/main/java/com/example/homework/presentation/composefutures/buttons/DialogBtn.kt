@@ -1,4 +1,4 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.buttons
+package com.example.homework.presentation.composefutures.buttons
 
 
 import NotesTheme
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.homework.presentation.composefutures.ThemeSettings
 
 @Composable
-fun DiaglogBtn(
+fun DialogBtn(
     modifier: Modifier = Modifier,
     text: String,
     isEnabled: Boolean = true,
@@ -51,8 +51,8 @@ fun DiaglogBtn(
 private fun DialogBtnPreview() {
     ThemeSettings() {
         Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
-            DiaglogBtn(text = "Text1") {}
-            DiaglogBtn(text = "Text2", isEnabled = false) {}
+            DialogBtn(text = "Text1") {}
+            DialogBtn(text = "Text2", isEnabled = false) {}
         }
     }
 }

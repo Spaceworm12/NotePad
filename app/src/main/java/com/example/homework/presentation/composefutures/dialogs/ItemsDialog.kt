@@ -1,5 +1,6 @@
-package ru.lesson.fragmentsample.presentation.composecomponents.dialogs
+package com.example.homework.presentation.composefutures.dialogs
 
+import NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,9 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import ru.lesson.fragmentsample.presentation.composecomponents.AppTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.FragmentSampleTheme
-import ru.lesson.fragmentsample.presentation.composecomponents.buttons.DialogButton
+import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.buttons.DialogBtn
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -44,26 +44,26 @@ fun ItemsDialog(
         Column(
             modifier = Modifier
                 .background(
-                    color = AppTheme.colors.primary,
-                    shape = RoundedCornerShape(AppTheme.dimens.sideMargin)
+                    color = NotesTheme.colors.primary,
+                    shape = RoundedCornerShape(NotesTheme.dimens.sideMargin)
                 )
                 .padding(
-                    top = if (title.isBlank() && subTitle.isBlank()) 0.dp else AppTheme.dimens.sideMargin,
-                    bottom = if (negativeButtonText.isNotBlank()) 0.dp else AppTheme.dimens.sideMargin,
-                    start = AppTheme.dimens.sideMargin,
-                    end = AppTheme.dimens.sideMargin
+                    top = if (title.isBlank() && subTitle.isBlank()) 0.dp else NotesTheme.dimens.sideMargin,
+                    bottom = if (negativeButtonText.isNotBlank()) 0.dp else NotesTheme.dimens.sideMargin,
+                    start = NotesTheme.dimens.sideMargin,
+                    end = NotesTheme.dimens.sideMargin
                 )
         ) {
             if (title.isNotBlank())
                 Text(
                     text = title,
-                    style = AppTheme.typography.subtitle1,
-                    modifier = Modifier.padding(bottom = AppTheme.dimens.halfContentMargin)
+                    style = NotesTheme.typography.subtitle1,
+                    modifier = Modifier.padding(bottom = NotesTheme.dimens.halfContentMargin)
                 )
 
 
             if (subTitle.isNotBlank())
-                Text(text = subTitle, style = AppTheme.typography.caption, color = AppTheme.colors.notEnabled)
+                Text(text = subTitle, style = NotesTheme.typography.caption, color = NotesTheme.colors.notEnabled)
 
             (items.indices).forEach { index ->
 
@@ -77,13 +77,13 @@ fun ItemsDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = if (index == 0) AppTheme.dimens.contentMargin
-                                else AppTheme.dimens.halfContentMargin
+                                top = if (index == 0) NotesTheme.dimens.contentMargin
+                                else NotesTheme.dimens.halfContentMargin
                             )
                     ) {
                         Text(
                             text = items[index],
-                            style = AppTheme.typography.body1,
+                            style = NotesTheme.typography.body1,
                             color = Color.Black,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Start
@@ -98,7 +98,7 @@ fun ItemsDialog(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    DialogButton(
+                    DialogBtn(
                         text = negativeButtonText,
                         onClick = { dismiss.invoke() }
                     )
@@ -110,13 +110,13 @@ fun ItemsDialog(
 @Preview(name = "ItemsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ItemsDialogPreview() {
-    FragmentSampleTheme() {
+    ThemeSettings() {
         ItemsDialog(
-            "Добавьте фото",
+            "Добавьте собаку",
             "При добавлении файлов, пользователь должен учитывать ограничения, все добавленные файлы не должны превышать 10 Мб.",
             "Закрыть",
             true,
-            arrayOf("Добавить фото", "Добавить видео", "Выбрать файл"),
+            arrayOf("Сделать собаку", "Добавить собаку", "Выбрать собаку"),
             {},
             {}
         )
