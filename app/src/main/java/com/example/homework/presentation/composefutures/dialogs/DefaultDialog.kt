@@ -55,8 +55,11 @@ fun DefaultDialog(
                     .fillMaxWidth()
             )
 
-            if (message.isNotBlank())
-                Text(text = message, style = NotesTheme.typography.body1, modifier = Modifier.fillMaxWidth())
+            if (message.isNotBlank()) Text(
+                text = message,
+                style = NotesTheme.typography.body1,
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Row(
                 modifier = Modifier
@@ -72,7 +75,7 @@ fun DefaultDialog(
                 )
                 DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.yes) },
-                    isEnabled = isEnabled,
+                    isEnabled = !isEnabled,
                     onClick = { onPositiveClick.invoke() },
                     color = positiveButtonColor ?: NotesTheme.colors.secondary
                 )
@@ -85,10 +88,8 @@ fun DefaultDialog(
 @Composable
 private fun DefaultDialogPreview() {
     ThemeSettings {
-        DefaultDialog(
-            title = "Уверен?",
-            message = "Раз уверен жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст.",
-            onPositiveClick = {}
-        ) {}
+        DefaultDialog(title = "Уверен?",
+            message = "Ну жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст. А вообще иди в сраку. Делать тебе тут нечго и вообще андроид не для тебя.",
+            onPositiveClick = {}) {}
     }
 }
