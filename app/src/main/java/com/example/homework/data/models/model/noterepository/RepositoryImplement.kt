@@ -1,6 +1,5 @@
-package com.example.homework.data.models.model.noteRepository
+package com.example.homework.data.models.model.noterepository
 
-import androidx.core.graphics.isWideGamut
 import com.example.homework.data.models.model.db.Dao
 import com.example.homework.data.models.model.db.Db
 import com.example.homework.data.models.model.db.entity.NoteEntity

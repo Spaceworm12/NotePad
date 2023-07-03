@@ -1,4 +1,4 @@
-package com.example.homework.presentation.selectTheme
+package com.example.homework.presentation.selecttheme
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

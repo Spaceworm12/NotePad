@@ -1,4 +1,4 @@
-package com.example.homework.presentation.detailBd
+package com.example.homework.presentation.detailbd
 
 
 data class BirthdayViewState(

@@ -1,11 +1,8 @@
-package com.example.homework.data.models.model.noteRepository
+package com.example.homework.data.models.model.noterepository
 
-import androidx.room.Entity
 import com.example.homework.data.models.model.db.entity.NoteEntity
 import com.example.homework.util.Resource
-import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 
 interface Repository {
      fun getAll(): Observable<Resource<List<NoteEntity>>>

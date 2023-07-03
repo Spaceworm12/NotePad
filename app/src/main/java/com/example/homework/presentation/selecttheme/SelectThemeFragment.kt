@@ -1,4 +1,4 @@
-package com.example.homework.presentation.selectTheme
+package com.example.homework.presentation.selecttheme
 
 import android.os.Bundle
 import android.view.LayoutInflater

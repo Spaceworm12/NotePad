@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.AppNotes
-import com.example.homework.data.models.model.noteRepository.Repository
-import com.example.homework.data.models.model.noteRepository.RepositoryImplement
+import com.example.homework.data.models.model.noterepository.Repository
+import com.example.homework.data.models.model.noterepository.RepositoryImplement
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType

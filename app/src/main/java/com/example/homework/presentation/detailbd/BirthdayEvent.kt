@@ -1,4 +1,4 @@
-package com.example.homework.presentation.detailBd
+package com.example.homework.presentation.detailbd
 
 sealed class BirthdayEvent {
     class SaveUserBirth(val text: String) : BirthdayEvent()

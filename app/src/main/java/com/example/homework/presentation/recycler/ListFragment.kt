@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
 import com.example.homework.databinding.FragmentListNotesBinding
-import com.example.homework.presentation.selectTheme.SelectThemeFragment
+import com.example.homework.presentation.selecttheme.SelectThemeFragment
 import com.example.homework.presentation.detail.NoteFragment
-import com.example.homework.presentation.detailBd.BirthdayFragment
+import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.adapter.ListAdapter
