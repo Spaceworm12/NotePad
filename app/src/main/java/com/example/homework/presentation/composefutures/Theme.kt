@@ -10,7 +10,7 @@ import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
-//const val THEME_CODE = "THEME_CODE"
+const val THEME_CODE = "THEME_CODE"
 const val FIRST_THEME = 0
 const val SECOND_THEME = 1
 const val THIRD_THEME = 2

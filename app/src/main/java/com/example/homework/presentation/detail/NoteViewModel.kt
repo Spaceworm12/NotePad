@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.data.models.model.noterepository.Repository
 import com.example.homework.data.models.model.noterepository.RepositoryImplement
+import com.example.homework.presentation.composefutures.FIRST_THEME
+import com.example.homework.presentation.composefutures.THEME_CODE
+import com.example.homework.presentation.composefutures.toolbarsandloader.LoaderBlock
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -22,6 +25,7 @@ class NoteViewModel(
     private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
+    private val currentTheme = MutableLiveData(FIRST_THEME)
     private val _viewState = MutableLiveData(NoteViewState())
     val viewStateObs: LiveData<NoteViewState> get() = _viewState
     var viewState: NoteViewState
@@ -29,6 +33,10 @@ class NoteViewModel(
         set(value) {
             _viewState.value = value
         }
+
+    init {
+        currentTheme.postValue(AppNotes.getSettingsTheme().getInt(THEME_CODE, FIRST_THEME))
+    }
 
     fun submitUIEvent(event: NoteEvent) {
         handleUIEvent(event)
@@ -52,12 +60,19 @@ class NoteViewModel(
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
             NoteEvent.Exit -> goBack()
             NoteEvent.Error -> viewState = viewState.copy(errorText = "ERROR")
+            NoteEvent.Loading -> loaderOn()
         }
     }
 
     private fun goBack() {
         viewModelScope.launch {
             viewState = viewState.copy(exit = true)
+        }
+    }
+    private fun loaderOn(){
+        viewModelScope.launch {
+            viewState=viewState.copy(switchLoader = true)
+            LoaderBlock(text = "ABOBA")
         }
     }
 
@@ -76,11 +91,10 @@ class NoteViewModel(
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    //Загрузка
-                    Resource.Loading -> {}
-                    is Resource.Data -> viewState = viewState.copy(exit = true)
-                    is Resource.Error -> viewState = viewState.copy(
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(switchLoader = true)
+                    is Resource.Data -> viewState.copy(exit = true)
+                    is Resource.Error -> viewState.copy(
                         errorText = result.error.message ?: ""
                     )
                 }
@@ -93,9 +107,7 @@ class NoteViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    //У тебя явно объявляется запуск Loading в блоке .startWith(Resource.Loading),
-                    // можно было и загрузку обработать по человечески
-                    Resource.Loading -> {}
+                    is Resource.Loading -> viewState.copy(switchLoader = true)
                     is Resource.Data -> viewState = viewState.copy(exit = true)
                     is Resource.Error -> viewState = viewState.copy(
                         errorText = result.error.message ?: ""

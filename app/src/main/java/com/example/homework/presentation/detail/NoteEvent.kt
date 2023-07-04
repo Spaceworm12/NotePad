@@ -6,6 +6,7 @@ sealed class NoteEvent {
     class SaveNote(val id: Long) : NoteEvent()
     class SaveUserDate(val text: String) : NoteEvent()
     class DeleteNote(val id: Long) : NoteEvent()
+    object Loading:NoteEvent()
     object Exit : NoteEvent()
     object Error : NoteEvent()
 }

@@ -2,24 +2,21 @@ package com.example.homework.presentation.detail
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
-import com.example.homework.databinding.FragmentNoteBinding
+import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.ListFragment
 import java.util.*
 
-class NoteFragment : Fragment() {
+class NoteFragment : ComposeFragment() {
 
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
@@ -31,22 +28,13 @@ class NoteFragment : Fragment() {
         }
     }
 
-    private var _binding: FragmentNoteBinding? = null
-    private val binding get() = _binding!!
     private val noteViewModel: NoteViewModel by lazy {
         ViewModelProvider(this)[NoteViewModel::class.java]
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNoteBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    @Composable
+    override fun GetContent() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val note =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
                 KEY_NOTE,
@@ -59,9 +47,12 @@ class NoteFragment : Fragment() {
     }
 
     private fun setValues(note: NoteModel) {
-        binding.noteName.setText(note.name)
-        binding.noteDescriprion.setText(note.description)
-        binding.bdDate.setText(note.date)
+        val userTitle = noteViewModel.exampleModel.observeAsState().value ?: return
+        val currentTheme = noteViewModel.currentTheme.observeAsState().value ?: return
+        val exit = noteViewModel.exit.observeAsState().value ?: return
+//        binding.noteName.setText(note.name)
+//        binding.noteDescriprion.setText(note.description)
+//        binding.bdDate.setText(note.date)
         noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(note.name))
         noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(note.description))
         noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(note.date))
@@ -154,14 +145,14 @@ class NoteFragment : Fragment() {
     }
 
     private fun getEmptyNote(): NoteModel {
-    return NoteModel(
-        id = 0,
-        name = "",
-        description = "",
-        type = NoteType.NOTE_TYPE,
-        date = ""
-    )
-}
+        return NoteModel(
+            id = 0,
+            name = "",
+            description = "",
+            type = NoteType.NOTE_TYPE,
+            date = ""
+        )
+    }
 
 }
 
