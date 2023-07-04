@@ -99,7 +99,7 @@ class ListFragment : ComposeFragment() {
                         bottom = NotesTheme.dimens.sideMargin
                     ),
                 backgroundColor = NotesTheme.colors.secondary,
-                onClick = { goToDetails() }
+                onClick = { goToDetails(state.getEmptyNote()) }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_black),
@@ -213,29 +213,27 @@ class ListFragment : ComposeFragment() {
         ) { viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(false)) }
     }
 
-    private fun goToDetails(note: NoteModel? = null) {
-        if (note != null) {
-            if (note.type == NoteType.NOTE_TYPE) {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.fragment_container,
-                        NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
-                    )
-                    .addToBackStack("")
-                    .commit()
-            } else {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.fragment_container,
-                        BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
-                    )
-                    .addToBackStack("")
-                    .commit()
-            }
+    private fun goToDetails(note: NoteModel) {
+        if (note.type == NoteType.NOTE_TYPE) {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                )
+                .addToBackStack("")
+                .commit()
+        } else {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                )
+                .addToBackStack("")
+                .commit()
         }
 
     }
