@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
+import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.presentation.composefutures.*
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
@@ -262,10 +263,11 @@ class ListFragment : ComposeFragment() {
 
 
             val state = ListViewState(
-                notesList = listOf(model, model, model),
+                notesList = listOf(model, secondModel, model),
                 isShowDeleteDialog = false,
                 isLoading = false,
-                errorText = ""
+                errorText = "",
+                isShowSettingsDialog = true
 
             )
 

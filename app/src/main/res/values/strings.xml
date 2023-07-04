@@ -9,9 +9,12 @@
     <string name="password">password</string>
     <string name="go_back">go back</string>
     <string name="add">ADD</string>
+    <string name="detail_note">Заметка</string>
     <string name="descriptionnote">DescriptionNote</string>
     <string name="namenote">NameNote</string>
     <string name="save">SAVE</string>
+    <string name="input_note_name">Введите название заметки</string>
+    <string name="input_description_hint">Введите текст заметки</string>
     <string name="deleteNote">DELETE</string>
     <string name="delete_dialog_title">Delete this note?</string>
     <string name="yes">Yes</string>

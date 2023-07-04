@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class NoteModel(
     val id: Long,
-    val name: String,
+    var name: String,
     var description: String,
     val type: NoteType,
     var date: String

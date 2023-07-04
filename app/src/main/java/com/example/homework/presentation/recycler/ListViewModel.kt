@@ -58,7 +58,7 @@ class ListViewModel(
 
     private fun getListNotes() {
         viewState = viewState.copy(isLoading = true)
-        val result = repo.getAll()
+        repo.getAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
