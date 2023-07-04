@@ -17,8 +17,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="pick_date">Pick Date</string>
+    <string name="list_fragment_title">Список заметок</string>
     <string name="date">Date</string>
     <string name="saveBd">save</string>
+    <string name="set_theme">Чекай темы</string>
     <string name="cancel">cancel</string>
     <string name="user">user</string>
     <string name="add_bd">add_bd</string>

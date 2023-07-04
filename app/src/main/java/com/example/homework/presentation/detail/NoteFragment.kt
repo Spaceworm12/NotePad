@@ -5,12 +5,24 @@ import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.ComposeFragment
+import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.toolbarsandloader.LoaderBlock
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.ListFragment
@@ -34,21 +46,128 @@ class NoteFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-
+        noteViewModel.viewState = noteViewModel.viewState.copy(loading = true)
         val note =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
                 KEY_NOTE,
                 NoteModel::class.java
             ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
+        noteViewModel.viewState = noteViewModel.viewState.copy(loading = false)
         setValues(note)
         setTextWatchers()
         setClicks(note)
         observeViewModel()
+
+        ThemeSettings(themeCode = noteViewModel.viewState.currentTheme) {
+            DetailNote(note = note, exit = true)
+
+        }
+    }
+
+    @Composable
+    private fun DetailNote(note: NoteModel, exit: Boolean) {
+
+        if (exit) goBack()
+
+        var currentName by remember { mutableStateOf("") }
+        currentName = currentName.ifBlank { item.name }
+
+        var currentDescription by remember { mutableStateOf("") }
+        currentDescription = currentDescription.ifBlank { item.description }
+
+
+        Column(modifier = Modifier.background(AppTheme.colors.background)) {
+
+            Toolbar(
+                title = stringResource(id = R.string.detail_fragment),
+                onBackClick = { goBack() }
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = AppTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
+                    )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = currentName,
+                    onValueChange = {
+                        currentName = it
+                        item.name = it
+                        viewModel.submitUIEvent(DetailEvent.SetItem(item))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.label_hint),
+                            style = AppTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = AppTheme.colors.secondary
+                    ),
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+                    .padding(AppTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = AppTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(AppTheme.dimens.contentMargin)
+                    )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxSize(),
+                    value = currentDescription,
+                    onValueChange = {
+                        currentDescription = it
+                        item.description = it
+                        viewModel.submitUIEvent(DetailEvent.SetItem(item))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.description_hint),
+                            style = AppTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = AppTheme.colors.secondary
+                    ),
+                )
+            }
+
+            PrimaryButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.save),
+                isEnabled = currentName.isNotBlank() && currentDescription.isNotBlank()
+            ) {
+                viewModel.submitUIEvent(DetailEvent.SaveItem(item.id))
+            }
+
+        }
+
     }
 
     private fun setValues(note: NoteModel) {
-        val userTitle = noteViewModel.viewState.userTitle.observeAsState().value ?: return
-        val currentTheme = noteViewModel.currentTheme.observeAsState().value ?: return
+        note.name = noteViewModel.viewState.userTitle.observeAsState().value ?: return
+        noteViewModel.viewState = note.observeAsState().value ?: return
+        val currentTheme = currentTheme.observeAsState().value ?: return
         val exit = noteViewModel.exit.observeAsState().value ?: return
 //        binding.noteName.setText(note.name)
 //        binding.noteDescriprion.setText(note.description)
@@ -135,6 +254,8 @@ class NoteFragment : ComposeFragment() {
 
     private fun observeViewModel() {
         noteViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
+            if (state.loading)
+                LoaderBlock(text = "ABOBA")
             if (state.exit)
                 requireActivity().supportFragmentManager.popBackStackImmediate()
             if (state.errorText.isNotBlank()) {

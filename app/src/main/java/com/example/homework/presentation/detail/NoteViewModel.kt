@@ -24,6 +24,7 @@ class NoteViewModel(
     private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
+    val exampleNote = MutableLiveData<NoteModel>()
     private val currentTheme = MutableLiveData(FIRST_THEME)
     private val _viewState = MutableLiveData(NoteViewState())
     val viewStateObs: LiveData<NoteViewState> get() = _viewState
@@ -59,7 +60,7 @@ class NoteViewModel(
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
             NoteEvent.Exit -> goBack()
             NoteEvent.Error -> viewState = viewState.copy(errorText = "ERROR")
-//            NoteEvent.Loading -> {}
+            //           NoteEvent.Loading -> {}
         }
     }
 
@@ -69,12 +70,6 @@ class NoteViewModel(
             viewState = viewState.copy(exit = true)
         }
     }
-//    private fun loaderOn(): NoteViewState {
-//        viewModelScope.launch {
-//            viewState=viewState.copy(switchLoader = true)
-//            LoaderBlock(text = "ABOBA",)
-//        }
-//    }
 
     @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
@@ -91,11 +86,11 @@ class NoteViewModel(
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-               when (result) {
-                    Resource.Loading -> {}
-                    is Resource.Data -> viewState.copy(exit = true)
+                when (result) {
+                    Resource.Loading -> viewState = viewState.copy(loading = true)
+                    is Resource.Data -> viewState.copy(exit = true, loading = false)
                     is Resource.Error -> viewState.copy(
-                        errorText = result.error.message ?: ""
+                        errorText = result.error.message ?: "", loading = false
                     )
 
                 }
@@ -108,7 +103,7 @@ class NoteViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    is Resource.Loading -> viewState=viewState.copy(loading = true)
+                    is Resource.Loading -> viewState = viewState.copy(loading = true)
                     is Resource.Data -> viewState = viewState.copy(exit = true, loading = false)
                     is Resource.Error -> viewState = viewState.copy(
                         errorText = result.error.message ?: "", loading = false

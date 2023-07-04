@@ -1,195 +1,278 @@
 package com.example.homework.presentation.recycler
 
-import android.os.Bundle
+import NotesTheme
+import android.content.res.Configuration
 import android.view.*
 import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Api
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.homework.R
-import com.example.homework.databinding.FragmentListNotesBinding
-import com.example.homework.presentation.selecttheme.SelectThemeFragment
+import com.example.homework.presentation.composefutures.*
+import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
+import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
+import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.example.homework.presentation.recycler.adapter.ListAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class ListFragment : Fragment() {
+class ListFragment : ComposeFragment() {
 
-    private var _binding: FragmentListNotesBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: ListViewModel by lazy {
         ViewModelProvider(this)[ListViewModel::class.java]
     }
 
-    private val adapter = ListAdapter(
-        longClickListener = { id ->
-            onShowDeleteDialog(id)
-        },
-        clickListener = {
-            if (it.type == NoteType.NOTE_TYPE) {
-                BirthdayDyalog(
-                    note = it,
-                    openNote = { note -> openNote(note) },
-                    saveDate = { id, date -> saveDate(id, date) }).show(parentFragmentManager, "")
+    @Composable
+    override fun GetContent() {
+        val state = viewModel.viewStateObs.observeAsState().value ?: return
+        ThemeSettings(themeCode = state.currentTheme) {
+            ListNotesScreen(state)
+        }
+    }
+
+    @Composable
+    private fun ListNotesScreen(state: ListViewState) {
+
+        if (state.errorText.isNotBlank())
+            Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
+
+        if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
+
+        if (state.isShowSettingsDialog) SettingsDialog()
+
+        Column(modifier = Modifier.background(NotesTheme.colors.background)) {
+
+            Toolbar(
+                title = stringResource(id = R.string.list_fragment_title),
+                isBackArrowVisible = false,
+                actions = {
+                    IconButton(onClick = {
+                        viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(true))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Api,
+                            contentDescription = "select theme"
+                        )
+                    }
+                },
+                onBackClick = { }
+            )
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+
+                items(
+                    items = state.notesList
+                ) { item: NoteModel ->
+                    when (item.type) {
+                        NoteType.BIRTHDAY_TYPE -> SecondItem(item)
+                        NoteType.NOTE_TYPE -> Item(item)
+                    }
+                }
+            }
+
+        }
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(
+                        end = NotesTheme.dimens.sideMargin,
+                        bottom = NotesTheme.dimens.sideMargin
+                    ),
+                backgroundColor = NotesTheme.colors.secondary,
+                onClick = { goToDetails() }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_black),
+                    contentDescription = null,
+                    tint = NotesTheme.colors.background
+                )
+            }
+        }
+
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    private fun Item(note: NoteModel) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(NotesTheme.dimens.contentMargin)
+                .combinedClickable(
+                    onClick = { goToDetails(note) },
+                    onLongClick = {
+                        viewModel.submitUIEvent(
+                            ListEvents.ShowDeleteDialog(
+                                true,
+                                note.id
+                            )
+                        )
+                    },
+                ),
+            shape = RoundedCornerShape(NotesTheme.dimens.contentMargin),
+            backgroundColor = NotesTheme.colors.primary,
+            elevation = NotesTheme.dimens.halfContentMargin
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(NotesTheme.dimens.contentMargin)
+            ) {
+                Text(text = note.name, style = NotesTheme.typography.h6)
+                Text(text = note.description, style = NotesTheme.typography.body1)
+            }
+        }
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    private fun SecondItem(note: NoteModel) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(NotesTheme.dimens.halfContentMargin)
+                .combinedClickable(
+                    onClick = { goToDetails(note) },
+                    onLongClick = {
+                        viewModel.submitUIEvent(
+                            ListEvents.ShowDeleteDialog(
+                                true,
+                                note.id
+                            )
+                        )
+                    },
+                ),
+            shape = RoundedCornerShape(NotesTheme.dimens.halfContentMargin),
+            backgroundColor = NotesTheme.colors.secondary,
+            elevation = NotesTheme.dimens.contentMargin
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(NotesTheme.dimens.contentMargin)
+            ) {
+                Text(text = note.name, style = NotesTheme.typography.h6)
+                Text(text = note.description, style = NotesTheme.typography.body1)
+            }
+        }
+    }
+
+    @Composable
+    private fun DeleteDialog(id: Long) {
+        DefaultDialog(
+            title = stringResource(id = R.string.delete),
+            onPositiveClick = {
+                if (id != -1L) viewModel.submitUIEvent(ListEvents.DeleteNote(id))
+                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
+            },
+            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
+        }
+    }
+
+    @Composable
+    private fun SettingsDialog() {
+
+        val items = arrayOf(
+            stringResource(id = R.string.first_theme),
+            stringResource(id = R.string.second_theme),
+            stringResource(id = R.string.third_theme),
+        )
+
+        ItemsDialog(
+            title = stringResource(R.string.set_theme),
+            items = items,
+            onItemClick = { position ->
+                when (position) {
+                    0 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(FIRST_THEME))
+                    1 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(SECOND_THEME))
+                    2 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(THIRD_THEME))
+                }
+            }
+        ) { viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(false)) }
+    }
+
+    private fun goToDetails(note: NoteModel? = null) {
+        if (note != null) {
+            if (note.type == NoteType.NOTE_TYPE) {
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.fragment_container,
+                        NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                    )
+                    .addToBackStack("")
+                    .commit()
             } else {
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.enter_fragment,
-                        R.anim.exit_fragment,
-                        R.anim.enter_fragment_in,
-                        R.anim.exit_fragment_out
-                    )
-                    .add(
+                    .replace(
                         R.id.fragment_container,
-                        BirthdayFragment.newInstance(it)
+                        BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
                     )
                     .addToBackStack("")
                     .commit()
             }
         }
-    )
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentListNotesBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.submitUIEvent(ListEvents.GetNotes)
-        binding.recView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.recView.adapter = adapter
-        viewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-            setElements(state)
-        }
-        setButtonsClicks()
-        setHasOptionsMenu(true)
-    }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.context_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.settings -> {
-                parentFragmentManager.beginTransaction().add(
-                    R.id.fragment_container,
-                    SelectThemeFragment()
-                )
-                    .addToBackStack("")
-                    .commit()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+    @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Composable
+    private fun RecyclerScreenPreview() {
+        ThemeSettings() {
 
-    private fun setButtonsClicks() {
-        binding.addNew.setOnClickListener {
-            setVisibilityElements()
-        }
-        binding.addNote.setOnClickListener {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .add(
-                    R.id.fragment_container,
-                    NoteFragment.newInstance(viewModel.viewState.getEmptyNote())
-                )
-                .addToBackStack("")
-                .commit()
-        }
-        binding.addBd.setOnClickListener {
-            requireActivity()
-                .supportFragmentManager
-                .beginTransaction()
-                .add(
-                    R.id.fragment_container,
-                    BirthdayFragment.newInstance(viewModel.viewState.getEmptyBirth())
-                )
-                .addToBackStack("")
-                .commit()
-        }
-        binding.deleteAll.setOnClickListener {
-            onShowDeleteDialogAll()
-        }
-    }
-
-    private fun setVisibilityElements() {
-        binding.addNote.isVisible = !binding.addNote.isVisible
-        binding.addBd.isVisible = !binding.addBd.isVisible
-        binding.addNew.rotation = if (binding.addNote.isVisible) 45f else 0f
-    }
-
-    private fun setElements(state: ListViewState) {
-        binding.loader.isVisible = state.isLoading
-        binding.addNew.isVisible = !state.isLoading
-        binding.recView.isVisible = !state.isLoading
-        if (state.errorText.isNotBlank())
-            Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
-        adapter.submitList(state.notesList)
-    }
-
-
-    private fun onShowDeleteDialog(id: Long) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(getString(R.string.delete_dialog_title))
-            .setCancelable(true)
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.submitUIEvent(ListEvents.DeleteNote(id))
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> }
-            .create()
-            .show()
-    }
-
-    private fun onShowDeleteDialogAll() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(getString(R.string.delete_dialog_title))
-            .setCancelable(true)
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.submitUIEvent(ListEvents.DeleteAll)
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> }
-            .create()
-            .show()
-    }
-
-    private fun openNote(note: NoteModel) {
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(
-                R.anim.enter_fragment,
-                R.anim.exit_fragment,
-                R.anim.enter_fragment_in,
-                R.anim.exit_fragment_out
+            val model = NoteModel(
+                id = 0,
+                name = "Заметка",
+                description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
+                        "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
+                type = NoteType.BIRTHDAY_TYPE,
+                date = "25.01.22"
             )
-            .add(
-                R.id.fragment_container,
-                NoteFragment.newInstance(note)
+
+            val secondModel = NoteModel(
+                id = 2,
+                name = "Заметка нотка",
+                description = "без собак без собак без собак",
+                type = NoteType.NOTE_TYPE,
+                date = "01.01.01"
             )
-            .addToBackStack("")
-            .commit()
+
+
+            val state = ListViewState(
+                notesList = listOf(model, model, model),
+                isShowDeleteDialog = false,
+                isLoading = false,
+                errorText = ""
+
+            )
+
+            ListNotesScreen(state)
+        }
     }
-
-    fun saveDate(id: Long, s: String) {
-
-        viewModel.submitUIEvent(ListEvents.SaveUserDate(s, id))
-
-    }
-
 
 }
-
-
-

@@ -1,6 +1,8 @@
 package com.example.homework.presentation.detail
 
+import androidx.lifecycle.MutableLiveData
 import com.example.homework.presentation.composefutures.FIRST_THEME
+import com.example.homework.presentation.model.NoteModel
 
 data class NoteViewState(
     val userTitle: String = "",
@@ -11,3 +13,5 @@ data class NoteViewState(
     val currentTheme: Int = FIRST_THEME,
     val loading: Boolean = false,
 )
+
+

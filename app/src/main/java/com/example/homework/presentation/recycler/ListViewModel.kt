@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.data.models.model.noterepository.Repository
 import com.example.homework.data.models.model.noterepository.RepositoryImplement
+import com.example.homework.presentation.composefutures.FIRST_THEME
+import com.example.homework.presentation.composefutures.THEME_CODE
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,19 +15,23 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 
-
 class ListViewModel(
     private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())
-    val errorText = MutableLiveData<String>()
     val viewStateObs: LiveData<ListViewState> get() = _viewState
     var viewState: ListViewState
         get() = _viewState.value!!
         set(value) {
             _viewState.value = value
         }
+
+    init {
+        viewState = viewState.copy(
+            currentTheme = AppNotes.getSettingsTheme().getInt(THEME_CODE, FIRST_THEME)
+        )
+    }
 
     fun submitUIEvent(event: ListEvents) {
         handleUIEvent(event)
@@ -41,6 +47,11 @@ class ListViewModel(
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
             is ListEvents.DeleteAll -> deleteAll()
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
+            is ListEvents.ChangeTheme -> setTheme(event.themeCode)
+            is ListEvents.ShowDeleteDialog -> viewState =
+                viewState.copy(isShowDeleteDialog = event.itsShow, deletableNoteId = event.id)
+            is ListEvents.ShowSettingsDialog -> viewState =
+                viewState.copy(isShowSettingsDialog = event.itsShow)
         }
     }
 
@@ -68,56 +79,53 @@ class ListViewModel(
     }
 
     private fun deleteNote(id: Long) {
-        viewState = viewState.copy(isLoading = true)
-        //Не используется запись в переменную
-        val result = repo.delete(id)
+        repo.delete(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    is Resource.Loading -> {}
-                    is Resource.Data -> {
-                        getListNotes()
-                    }
-                    is Resource.Error -> {
-                        viewState = viewState.copy(isLoading = false, errorText = "err")
-                    }
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> getListNotes()
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = "err")
                 }
             }
+            .addTo(disposables)
     }
 
     private fun deleteAll() {
-        viewState = viewState.copy(isLoading = true)
-        //Не используется запись в переменную
-        val result = repo.deleteAll()
+        repo.deleteAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    is Resource.Loading -> {}
-                    is Resource.Data -> {
-                        getListNotes()
-                    }
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> getListNotes()
                     is Resource.Error -> {
-                        viewState = viewState.copy(isLoading = false, errorText = "err")
+                        viewState = viewState.copy(
+                            isLoading = false,
+                            errorText = result.error.message ?: ""
+                        )
                     }
                 }
             }
+            .addTo(disposables)
     }
 
     private fun changeDate(date: String, id: Long) {
-        val result = repo.changeDate(
-            date, id
-        ).observeOn(AndroidSchedulers.mainThread())
+     repo.changeDate(date, id)
+         .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    is Resource.Loading -> {}
-                    is Resource.Data -> {
-                        getListNotes()
-                    }
-                    is Resource.Error -> {
-                        errorText.postValue("CAN NOTE ADD DATE")
-                    }
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> getListNotes()
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = result.error.message ?: "")
                 }
-            }
+            }.addTo(disposables)
+    }
+
+    private fun setTheme(theme: Int) {
+        AppNotes.getSettingsTheme().edit().putInt(THEME_CODE, theme).apply()
+        viewState = viewState.copy(currentTheme = theme, isShowSettingsDialog = false)
     }
 
     override fun onCleared() {
