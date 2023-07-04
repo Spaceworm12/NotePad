@@ -46,13 +46,15 @@ class NoteFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        noteViewModel.viewState = noteViewModel.viewState.copy(loading = true)
         val note =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
                 KEY_NOTE,
                 NoteModel::class.java
             ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
-        noteViewModel.viewState = noteViewModel.viewState.copy(loading = false)
+
+        noteViewModel.submitUIEvent(NoteEvent.SetNote(note))
+        val noteExample = noteViewModel.
+
         setValues(note)
         setTextWatchers()
         setClicks(note)
@@ -264,6 +266,7 @@ class NoteFragment : ComposeFragment() {
             }
         }
     }
+    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
 
     private fun getEmptyNote(): NoteModel {
         return NoteModel(

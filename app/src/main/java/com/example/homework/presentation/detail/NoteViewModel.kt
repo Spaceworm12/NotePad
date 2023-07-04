@@ -24,15 +24,10 @@ class NoteViewModel(
     private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
-    val exampleNote = MutableLiveData<NoteModel>()
+    private val noteExample = MutableLiveData<NoteModel>()
+    private val loading: Boolean=false
     private val currentTheme = MutableLiveData(FIRST_THEME)
-    private val _viewState = MutableLiveData(NoteViewState())
-    val viewStateObs: LiveData<NoteViewState> get() = _viewState
-    var viewState: NoteViewState
-        get() = _viewState.value!!
-        set(value) {
-            _viewState.value = value
-        }
+    private val exit = MutableLiveData(false)
 
     init {
         currentTheme.postValue(AppNotes.getSettingsTheme().getInt(THEME_CODE, FIRST_THEME))
@@ -52,24 +47,12 @@ class NoteViewModel(
 
     private fun eventsActions(event: NoteEvent) {
         when (event) {
-            is NoteEvent.SaveUserTitle -> viewState = viewState.copy(userTitle = event.text)
-            is NoteEvent.SaveUserDescription -> viewState =
-                viewState.copy(userDescription = event.text)
-            is NoteEvent.SaveUserDate -> viewState = viewState.copy(userDate = event.text)
-            is NoteEvent.SaveNote -> saveNewNote(id = event.id)
-            is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-            NoteEvent.Exit -> goBack()
-            NoteEvent.Error -> viewState = viewState.copy(errorText = "ERROR")
-            //           NoteEvent.Loading -> {}
+            is NoteEvent.SaveNote -> saveNewNote(id=event.id)
+            is NoteEvent.SetNote ->noteExample.postValue(event.note)
         }
     }
 
 
-    private fun goBack() {
-        viewModelScope.launch {
-            viewState = viewState.copy(exit = true)
-        }
-    }
 
     @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
