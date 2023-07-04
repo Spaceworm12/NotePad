@@ -10,7 +10,6 @@ import com.example.homework.data.models.model.noterepository.Repository
 import com.example.homework.data.models.model.noterepository.RepositoryImplement
 import com.example.homework.presentation.composefutures.FIRST_THEME
 import com.example.homework.presentation.composefutures.THEME_CODE
-import com.example.homework.presentation.composefutures.toolbarsandloader.LoaderBlock
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -60,21 +59,22 @@ class NoteViewModel(
             is NoteEvent.DeleteNote -> deleteNote(id = event.id)
             NoteEvent.Exit -> goBack()
             NoteEvent.Error -> viewState = viewState.copy(errorText = "ERROR")
-            NoteEvent.Loading -> loaderOn()
+//            NoteEvent.Loading -> {}
         }
     }
+
 
     private fun goBack() {
         viewModelScope.launch {
             viewState = viewState.copy(exit = true)
         }
     }
-    private fun loaderOn(){
-        viewModelScope.launch {
-            viewState=viewState.copy(switchLoader = true)
-            LoaderBlock(text = "ABOBA")
-        }
-    }
+//    private fun loaderOn(): NoteViewState {
+//        viewModelScope.launch {
+//            viewState=viewState.copy(switchLoader = true)
+//            LoaderBlock(text = "ABOBA",)
+//        }
+//    }
 
     @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
@@ -91,12 +91,13 @@ class NoteViewModel(
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                viewState = when (result) {
-                    is Resource.Loading -> viewState.copy(switchLoader = true)
+               when (result) {
+                    Resource.Loading -> {}
                     is Resource.Data -> viewState.copy(exit = true)
                     is Resource.Error -> viewState.copy(
                         errorText = result.error.message ?: ""
                     )
+
                 }
             }
             .addTo(disposables)
@@ -107,10 +108,10 @@ class NoteViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
-                    is Resource.Loading -> viewState.copy(switchLoader = true)
-                    is Resource.Data -> viewState = viewState.copy(exit = true)
+                    is Resource.Loading -> viewState=viewState.copy(loading = true)
+                    is Resource.Data -> viewState = viewState.copy(exit = true, loading = false)
                     is Resource.Error -> viewState = viewState.copy(
-                        errorText = result.error.message ?: ""
+                        errorText = result.error.message ?: "", loading = false
                     )
                 }
             }

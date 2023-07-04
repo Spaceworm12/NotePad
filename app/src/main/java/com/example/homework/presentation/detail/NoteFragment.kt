@@ -47,7 +47,7 @@ class NoteFragment : ComposeFragment() {
     }
 
     private fun setValues(note: NoteModel) {
-        val userTitle = noteViewModel.exampleModel.observeAsState().value ?: return
+        val userTitle = noteViewModel.viewState.userTitle.observeAsState().value ?: return
         val currentTheme = noteViewModel.currentTheme.observeAsState().value ?: return
         val exit = noteViewModel.exit.observeAsState().value ?: return
 //        binding.noteName.setText(note.name)
