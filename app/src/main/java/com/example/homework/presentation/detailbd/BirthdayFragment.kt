@@ -1,13 +1,27 @@
 package com.example.homework.presentation.detailbd
 
+import NotesTheme
 import android.os.Build
-import android.widget.Toast
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import com.example.homework.R
 import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
+import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.model.NoteModel
@@ -34,19 +48,137 @@ class BirthdayFragment : ComposeFragment() {
     override fun GetContent() {
         val note =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
-                NoteFragment.KEY_NOTE,
+                KEY_NOTE,
                 NoteModel::class.java
-            ) ?: getEmptyNote() else requireArguments().getParcelable(NoteFragment.KEY_NOTE) ?: getEmptyNote()
+            ) ?: getEmptyBirthdayNote() else requireArguments().getParcelable(KEY_NOTE)
+                ?: getEmptyBirthdayNote()
 
-        viewModel.submitUIEvent(NoteEvent.SetNote(note))
-        val noteExample = viewModel.noteExample.observeAsState().value ?: return
-        val currentTheme = viewModel.currentTheme.observeAsState().value ?: return
-        val exit = viewModel.exit.observeAsState().value ?: return
+        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
+        val bdNoteExample = bdViewModel.bdNoteExample.observeAsState().value ?: return
+        val currentTheme = bdViewModel.currentTheme.observeAsState().value ?: return
+        val exit = bdViewModel.exit.observeAsState().value ?: return
 
         ThemeSettings(themeCode = currentTheme) {
-            DetailNote(noteExample, exit)
+            DetailBd(bdNoteExample, exit)
         }
     }
+
+    @Composable
+    private fun DetailBd(note: NoteModel, exit: Boolean) {
+
+        if (exit) goBack()
+
+        var currentName by remember { mutableStateOf("") }
+        currentName = currentName.ifBlank { note.name }
+
+        var currentDescription by remember { mutableStateOf("") }
+        currentDescription = currentDescription.ifBlank { note.description }
+
+        var currentDate by remember { mutableStateOf("") }
+        currentDate = currentDate.ifBlank { note.date }
+
+
+        Column(modifier = Modifier.background(NotesTheme.colors.background)) {
+
+            Toolbar(
+                title = stringResource(id = R.string.detail_note_date),
+                onBackClick = { goBack() }
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(NotesTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = NotesTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
+                    )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = currentName,
+                    onValueChange = {
+                        currentName = it
+                        note.name = it
+                        viewModel.submitUIEvent(NoteEvent.SetNote(note))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.input_note_name),
+                            style = NotesTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = NotesTheme.colors.secondary
+                    ),
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+                    .padding(NotesTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = NotesTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
+                    )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxSize(),
+                    value = currentDescription,
+                    onValueChange = {
+                        currentDescription = it
+                        note.description = it
+                        note.date = it
+                        viewModel.submitUIEvent(NoteEvent.SetNote(note))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.input_description_hint),
+                            style = NotesTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = NotesTheme.colors.secondary
+                    ),
+                )
+            }
+
+            PrimaryBtn(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.save),
+                isEnabled = currentName.isNotBlank() && currentDescription.isNotBlank()
+            ) {
+                bdViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
+            }
+
+        }
+
+    }
+
+    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+    private fun getEmptyBirthdayNote(): NoteModel {
+        return NoteModel(
+            id = 0,
+            name = "",
+            description = "",
+            type = NoteType.BIRTHDAY_TYPE,
+            date = "Date"
+        )
+    }
+}
+
 
 //        override fun onCreateView(
 //            inflater: LayoutInflater, container: ViewGroup?,
@@ -106,17 +238,17 @@ class BirthdayFragment : ComposeFragment() {
 //            }
 //        }
 
-        private fun viewStateObsSet() {
-            bdViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-                if (state.exit) {
-                    requireActivity().supportFragmentManager.popBackStackImmediate()
-                }
-                if (state.errorText.isNotBlank()) {
-                    Toast.makeText(context, "ERROR!!", Toast.LENGTH_SHORT).show()
-                    bdViewModel.submitUIEvent(BirthdayEvent.Error)
-                }
-            }
-        }
+//        private fun viewStateObsSet() {
+//            bdViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
+//                if (state.exit) {
+//                    requireActivity().supportFragmentManager.popBackStackImmediate()
+//                }
+//                if (state.errorText.isNotBlank()) {
+//                    Toast.makeText(context, "ERROR!!", Toast.LENGTH_SHORT).show()
+//                    bdViewModel.submitUIEvent(BirthdayEvent.Error)
+//                }
+//            }
+//        }
 
 //        private fun setNoteValues(note: NoteModel) {
 //            binding.user.setText(note.name)
@@ -173,18 +305,9 @@ class BirthdayFragment : ComposeFragment() {
 //            bdViewModel.submitUIEvent(BirthdayEvent.SaveBirthDate(note.date))
 //        }
 
-        private fun getEmptyBirthdayNote(): NoteModel {
-            return NoteModel(
-                id = 0,
-                name = "",
-                description = "",
-                type = NoteType.BIRTHDAY_TYPE,
-                date = "Date"
-            )
-        }
 
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
-    }
+//        override fun onDestroyView() {
+//            super.onDestroyView()
+//            _binding = null
+//        }
+//    }
