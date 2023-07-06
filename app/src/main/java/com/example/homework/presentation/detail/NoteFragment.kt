@@ -165,7 +165,43 @@ class NoteFragment : ComposeFragment() {
 
     }
 
-    //    private fun setValues(note: NoteModel) {
+    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+
+    private fun getEmptyNote(): NoteModel {
+        return NoteModel(
+            id = 0,
+            name = "",
+            description = "",
+            type = NoteType.NOTE_TYPE,
+            date = ""
+        )
+    }
+
+    @Preview(name = "NoteScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Composable
+    private fun NoteScreenPreview() {
+        ThemeSettings() {
+
+            val model = NoteModel(
+                id = 0,
+                name = "Заметка про Димку",
+                description = "Димка, ниче не получится! Ты собака, я собака, ты собака, " +
+                        "я собака, ты собака, я собака, ты собака.",
+                date = "21.02.22",
+                type = NoteType.NOTE_TYPE
+            )
+
+            DetailNote(
+                note = model,
+                exit = false
+            )
+        }
+    }
+
+}
+
+
+//    private fun setValues(note: NoteModel) {
 //        note.name = noteViewModel.viewState.userTitle.observeAsState().value ?: return
 //        noteViewModel.viewState = note.observeAsState().value ?: return
 //        val currentTheme = currentTheme.observeAsState().value ?: return
@@ -265,40 +301,6 @@ class NoteFragment : ComposeFragment() {
 //            }
 //        }
 //    }
-    private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
-
-    private fun getEmptyNote(): NoteModel {
-        return NoteModel(
-            id = 0,
-            name = "",
-            description = "",
-            type = NoteType.NOTE_TYPE,
-            date = ""
-        )
-    }
-
-    @Preview(name = "NoteScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
-    @Composable
-    private fun NoteScreenPreview() {
-        ThemeSettings() {
-
-            val model = NoteModel(
-                id = 0,
-                name = "Заметка про Димку",
-                description = "Димка, ниче не получится! Ты собака, я собака, ты собака, " +
-                        "я собака, ты собака, я собака, ты собака.",
-                date = "21.02.22",
-                type = NoteType.NOTE_TYPE
-            )
-
-            DetailNote(
-                note = model,
-                exit = false
-            )
-        }
-    }
-
-}
 
 
 

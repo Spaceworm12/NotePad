@@ -1,6 +1,8 @@
 package com.example.homework.presentation.detailbd
 
 import NotesTheme
+import android.content.res.Configuration
+import android.graphics.Shader
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,7 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +26,6 @@ import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
-import com.example.homework.presentation.detail.NoteEvent
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -59,12 +62,12 @@ class BirthdayFragment : ComposeFragment() {
         val exit = bdViewModel.exit.observeAsState().value ?: return
 
         ThemeSettings(themeCode = currentTheme) {
-            DetailBd(bdNoteExample, exit)
+            DetailBirthdayNote(bdNoteExample, exit)
         }
     }
 
     @Composable
-    private fun DetailBd(note: NoteModel, exit: Boolean) {
+    private fun DetailBirthdayNote(note: NoteModel, exit: Boolean) {
 
         if (exit) goBack()
 
@@ -81,8 +84,10 @@ class BirthdayFragment : ComposeFragment() {
         Column(modifier = Modifier.background(NotesTheme.colors.background)) {
 
             Toolbar(
-                title = stringResource(id = R.string.detail_note_date),
-                onBackClick = { goBack() }
+                title = stringResource(id = R.string.detail_bdnote_toolbar),
+                subtitle = stringResource(id = R.string.detail_bdnote_subtoolbar),
+                onBackClick = { goBack()
+                }
             )
 
             Box(
@@ -101,7 +106,7 @@ class BirthdayFragment : ComposeFragment() {
                     onValueChange = {
                         currentName = it
                         note.name = it
-                        viewModel.submitUIEvent(NoteEvent.SetNote(note))
+                        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
                         Text(
@@ -137,7 +142,7 @@ class BirthdayFragment : ComposeFragment() {
                         currentDescription = it
                         note.description = it
                         note.date = it
-                        viewModel.submitUIEvent(NoteEvent.SetNote(note))
+                        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
                         Text(
@@ -160,7 +165,7 @@ class BirthdayFragment : ComposeFragment() {
                 text = stringResource(id = R.string.save),
                 isEnabled = currentName.isNotBlank() && currentDescription.isNotBlank()
             ) {
-                bdViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
+                bdViewModel.submitUIEvent(BirthdayEvent.SaveBirthdayNote(note.id))
             }
 
         }
@@ -176,6 +181,26 @@ class BirthdayFragment : ComposeFragment() {
             type = NoteType.BIRTHDAY_TYPE,
             date = "Date"
         )
+    }
+
+
+    @Preview(name = "BirthdayNoteScreen", uiMode = Configuration.UI_MODE_NIGHT_MASK)
+    @Composable
+    private fun BirthdayNoteScreenPreview() {
+        ThemeSettings() {
+
+            val model = NoteModel(
+                id = 5,
+                name = "BIRTHDAY",
+                description = "dsdasdasdasdas",
+                date = "00.00.00",
+                type = NoteType.BIRTHDAY_TYPE,
+            )
+            DetailBirthdayNote(
+                note = model,
+                exit = false
+            )
+        }
     }
 }
 
@@ -311,3 +336,4 @@ class BirthdayFragment : ComposeFragment() {
 //            _binding = null
 //        }
 //    }
+

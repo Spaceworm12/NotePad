@@ -10,7 +10,8 @@
     <string name="go_back">go back</string>
     <string name="add">ADD</string>
     <string name="detail_note">Заметка</string>
-    <string name="detail_note_date">Заметка c датой</string>
+    <string name="detail_bdnote_toolbar">Событие</string>
+    <string name="detail_bdnote_subtoolbar">Добавление даты, описания</string>
     <string name="descriptionnote">DescriptionNote</string>
     <string name="namenote">NameNote</string>
     <string name="save">SAVE</string>
