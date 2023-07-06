@@ -2,23 +2,24 @@ package com.example.homework.presentation.detailbd
 
 import NotesTheme
 import android.content.res.Configuration
-import android.graphics.Shader
 import android.os.Build
+import android.widget.CalendarView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
@@ -29,6 +30,8 @@ import com.example.homework.presentation.composefutures.toolbarsandloader.Toolba
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class BirthdayFragment : ComposeFragment() {
@@ -71,8 +74,8 @@ class BirthdayFragment : ComposeFragment() {
 
         if (exit) goBack()
 
-        var currentName by remember { mutableStateOf("") }
-        currentName = currentName.ifBlank { note.name }
+        var currentTitle by remember { mutableStateOf("") }
+        currentTitle = currentTitle.ifBlank { note.name }
 
         var currentDescription by remember { mutableStateOf("") }
         currentDescription = currentDescription.ifBlank { note.description }
@@ -96,21 +99,142 @@ class BirthdayFragment : ComposeFragment() {
                     .padding(NotesTheme.dimens.halfContentMargin)
                     .border(
                         width = 1.dp,
-                        color = NotesTheme.colors.secondaryVariant,
+                        color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
                     )
             ) {
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = currentName,
+                    value = currentTitle,
                     onValueChange = {
-                        currentName = it
+                        currentTitle = it
                         note.name = it
                         bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.input_note_name),
+                            style = NotesTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = NotesTheme.colors.primary
+                    ),
+                )
+            }
+            @Composable
+            fun DatePicker(onDateSelected: (LocalDate) -> Unit, onDismissRequest: () -> Unit) {
+                val selDate = remember { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    mutableStateOf(LocalDate.now())
+                } else {
+                    TODO("VERSION.SDK_INT < O")
+                }
+                }
+
+                //todo - add strings to resource after POC
+                Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
+                    Column(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .background(
+                                color = MaterialTheme.colors.surface,
+                                shape = RoundedCornerShape(size = 16.dp)
+                            )
+                    ) {
+                        Column(
+                            Modifier
+                                .defaultMinSize(minHeight = 72.dp)
+                                .fillMaxWidth()
+                                .background(
+                                    color = MaterialTheme.colors.primary,
+                                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                                )
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                text = "Select date".toUpperCase(Locale.ENGLISH),
+                                style = MaterialTheme.typography.caption,
+                                color = MaterialTheme.colors.onPrimary
+                            )
+
+                            Spacer(modifier = Modifier.size(24.dp))
+
+                            Text(
+                                text = selDate.value.format(DateTimeFormatter.ofPattern("MMM d, YYYY")),
+                                style = MaterialTheme.typography.h4,
+                                color = MaterialTheme.colors.onPrimary
+                            )
+
+                            Spacer(modifier = Modifier.size(16.dp))
+                        }
+
+//                        CustomCalendarView(onDateSelected = {
+//                            selDate.value = it
+//                        })
+
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .align(Alignment.End)
+                                .padding(bottom = 16.dp, end = 16.dp)
+                        ) {
+                            TextButton(
+                                onClick = onDismissRequest
+                            ) {
+                                //TODO - hardcode string
+                                Text(
+                                    text = "Cancel",
+                                    style = MaterialTheme.typography.button,
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                            }
+
+                            TextButton(
+                                onClick = {
+                                    onDateSelected(selDate.value)
+                                    onDismissRequest()
+                                }
+                            ) {
+                                //TODO - hardcode string
+                                Text(
+                                    text = "OK",
+                                    style = MaterialTheme.typography.button,
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                            }
+
+                        }
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.4f)
+                    .padding(NotesTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = NotesTheme.colors.secondaryVariant,
+                        shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
+                    )
+            ) {
+                TextField(
+                    modifier = Modifier.fillMaxSize(),
+                    value = currentDescription,
+                    onValueChange = {
+                        currentDescription = it
+                        note.description = it
+                        note.date = it
+                        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.input_description_hint),
                             style = NotesTheme.typography.body1
                         )
                     },
@@ -163,7 +287,7 @@ class BirthdayFragment : ComposeFragment() {
             PrimaryBtn(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.save),
-                isEnabled = currentName.isNotBlank() && currentDescription.isNotBlank()
+                isEnabled = currentTitle.isNotBlank() && currentDescription.isNotBlank()
             ) {
                 bdViewModel.submitUIEvent(BirthdayEvent.SaveBirthdayNote(note.id))
             }
