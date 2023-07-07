@@ -109,6 +109,42 @@ class ListFragment : ComposeFragment() {
                 )
             }
         }
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(
+                        end = NotesTheme.dimens.sideMargin,
+                        bottom = NotesTheme.dimens.sideMargin
+                    ),
+                backgroundColor = NotesTheme.colors.secondary,
+                onClick = { goToDetails(state.getEmptyNote()) }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_black),
+                    contentDescription = null,
+                    tint = NotesTheme.colors.background
+                )
+            }
+        }
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(
+                        end = NotesTheme.dimens.sideMargin,
+                        bottom = NotesTheme.dimens.sideMargin
+                    ),
+                backgroundColor = NotesTheme.colors.secondary,
+                onClick = { goToDetails(state.getEmptyNote()) }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_black),
+                    contentDescription = null,
+                    tint = NotesTheme.colors.background
+                )
+            }
+        }
 
     }
 
@@ -231,7 +267,7 @@ class ListFragment : ComposeFragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                    BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyBirth())
                 )
                 .addToBackStack("")
                 .commit()
@@ -267,7 +303,7 @@ class ListFragment : ComposeFragment() {
                 isShowDeleteDialog = false,
                 isLoading = false,
                 errorText = "",
-                isShowSettingsDialog = true
+                isShowSettingsDialog = false
 
             )
 

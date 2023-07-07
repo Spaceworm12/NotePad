@@ -1,37 +1,34 @@
 package com.example.homework.presentation.detailbd
 
 import NotesTheme
+import android.app.DatePickerDialog
 import android.content.res.Configuration
 import android.os.Build
-import android.widget.CalendarView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.buttons.HorizontalBtn
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
 class BirthdayFragment : ComposeFragment() {
@@ -126,126 +123,12 @@ class BirthdayFragment : ComposeFragment() {
                     ),
                 )
             }
-            @Composable
-            fun DatePicker(onDateSelected: (LocalDate) -> Unit, onDismissRequest: () -> Unit) {
-                val selDate = remember { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    mutableStateOf(LocalDate.now())
-                } else {
-                    TODO("VERSION.SDK_INT < O")
-                }
-                }
-
-                //todo - add strings to resource after POC
-                Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
-                    Column(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .background(
-                                color = MaterialTheme.colors.surface,
-                                shape = RoundedCornerShape(size = 16.dp)
-                            )
-                    ) {
-                        Column(
-                            Modifier
-                                .defaultMinSize(minHeight = 72.dp)
-                                .fillMaxWidth()
-                                .background(
-                                    color = MaterialTheme.colors.primary,
-                                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                                )
-                                .padding(16.dp)
-                        ) {
-                            Text(
-                                text = "Select date".toUpperCase(Locale.ENGLISH),
-                                style = MaterialTheme.typography.caption,
-                                color = MaterialTheme.colors.onPrimary
-                            )
-
-                            Spacer(modifier = Modifier.size(24.dp))
-
-                            Text(
-                                text = selDate.value.format(DateTimeFormatter.ofPattern("MMM d, YYYY")),
-                                style = MaterialTheme.typography.h4,
-                                color = MaterialTheme.colors.onPrimary
-                            )
-
-                            Spacer(modifier = Modifier.size(16.dp))
-                        }
-
-//                        CustomCalendarView(onDateSelected = {
-//                            selDate.value = it
-//                        })
-
-                        Spacer(modifier = Modifier.size(8.dp))
-
-                        Row(
-                            modifier = Modifier
-                                .align(Alignment.End)
-                                .padding(bottom = 16.dp, end = 16.dp)
-                        ) {
-                            TextButton(
-                                onClick = onDismissRequest
-                            ) {
-                                //TODO - hardcode string
-                                Text(
-                                    text = "Cancel",
-                                    style = MaterialTheme.typography.button,
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                            }
-
-                            TextButton(
-                                onClick = {
-                                    onDateSelected(selDate.value)
-                                    onDismissRequest()
-                                }
-                            ) {
-                                //TODO - hardcode string
-                                Text(
-                                    text = "OK",
-                                    style = MaterialTheme.typography.button,
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                            }
-
-                        }
-                    }
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.4f)
-                    .padding(NotesTheme.dimens.halfContentMargin)
-                    .border(
-                        width = 1.dp,
-                        color = NotesTheme.colors.secondaryVariant,
-                        shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
-                    )
+            HorizontalBtn(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.select_date),
+                isEnabled = true,
             ) {
-                TextField(
-                    modifier = Modifier.fillMaxSize(),
-                    value = currentDescription,
-                    onValueChange = {
-                        currentDescription = it
-                        note.description = it
-                        note.date = it
-                        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
-                    },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.input_description_hint),
-                            style = NotesTheme.typography.body1
-                        )
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        cursorColor = NotesTheme.colors.secondary
-                    ),
-                )
+                showDatePicker()
             }
 
             Box(
@@ -306,6 +189,25 @@ class BirthdayFragment : ComposeFragment() {
             date = "Date"
         )
     }
+    private fun showDatePicker() {
+        val picker = MaterialDatePicker.Builder.datePicker().build()
+        activity?.let {
+            val x = Calendar.getInstance()
+                val y = x.get(Calendar.YEAR)
+                val m = x.get(Calendar.MONTH)
+                val d = x.get(Calendar.DAY_OF_MONTH)
+                val datePickerDialog = DatePickerDialog(
+                    requireContext(),
+                    { view, year, monthOfYear, dayOfMonth ->
+                            (dayOfMonth.toString()+ "-" + (monthOfYear + 1) + "-" + year)
+                    },
+                    y,
+                    m,
+                    d
+                )
+                datePickerDialog.show()
+            }
+        }
 
 
     @Preview(name = "BirthdayNoteScreen", uiMode = Configuration.UI_MODE_NIGHT_MASK)
@@ -315,8 +217,8 @@ class BirthdayFragment : ComposeFragment() {
 
             val model = NoteModel(
                 id = 5,
-                name = "BIRTHDAY",
-                description = "dsdasdasdasdas",
+                name = "",
+                description = "",
                 date = "00.00.00",
                 type = NoteType.BIRTHDAY_TYPE,
             )
