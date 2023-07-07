@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Api
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.runtime.*
@@ -96,6 +97,29 @@ class ListFragment : ComposeFragment() {
                 }
             }
 
+        }
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
+
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(
+                        start = NotesTheme.dimens.sideMargin,
+                        end = NotesTheme.dimens.sideMargin,
+                        bottom = NotesTheme.dimens.sideMargin
+                    ),
+                backgroundColor = NotesTheme.colors.secondary,
+                onClick = { ListEvents.DeleteAll
+                    Toast.makeText(requireContext(),"Все записи удалены",Toast.LENGTH_SHORT).show()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Удалить всё",
+                    tint = NotesTheme.colors.background
+                )
+            }
         }
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {

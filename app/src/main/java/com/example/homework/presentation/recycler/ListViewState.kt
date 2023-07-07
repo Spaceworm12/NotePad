@@ -30,7 +30,7 @@ data class ListViewState(
             name = "",
             description = "",
             type = NoteType.BIRTHDAY_TYPE,
-            date = "Date"
+            date = ""
         )
     }
 
