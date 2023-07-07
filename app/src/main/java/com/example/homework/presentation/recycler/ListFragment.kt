@@ -4,6 +4,9 @@ import NotesTheme
 import android.content.res.Configuration
 import android.view.*
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -14,16 +17,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Api
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.NoteAdd
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
-import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.presentation.composefutures.*
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
@@ -49,6 +54,8 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
+
+        var isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
@@ -93,6 +100,8 @@ class ListFragment : ComposeFragment() {
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
 
+            val fabSize = 56.dp
+
             FloatingActionButton(
                 modifier = Modifier
                     .padding(
@@ -100,7 +109,9 @@ class ListFragment : ComposeFragment() {
                         bottom = NotesTheme.dimens.sideMargin
                     ),
                 backgroundColor = NotesTheme.colors.secondary,
-                onClick = { goToDetails(state.getEmptyNote()) }
+                onClick = {
+                    isVisibleNow.value = !isVisibleNow.value
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_black),
@@ -108,44 +119,49 @@ class ListFragment : ComposeFragment() {
                     tint = NotesTheme.colors.background
                 )
             }
-        }
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
 
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(
-                        end = NotesTheme.dimens.sideMargin,
-                        bottom = NotesTheme.dimens.sideMargin
-                    ),
-                backgroundColor = NotesTheme.colors.secondary,
-                onClick = { goToDetails(state.getEmptyNote()) }
+            AnimatedVisibility(
+                visible = isVisibleNow.value,
+                enter = slideInVertically(),
+                exit = shrinkVertically()
             ) {
-                Icon(
-                    painter = painterResource(id = android.R.drawable.btn_star),
-                    contentDescription = null,
-                    tint = NotesTheme.colors.background
-                )
+                FloatingActionButton(
+                    modifier = Modifier
+                        .offset(y = (-fabSize) - NotesTheme.dimens.sideMargin)
+                        .padding(
+                            end = NotesTheme.dimens.sideMargin,
+                            bottom = NotesTheme.dimens.sideMargin
+                        ),
+                    backgroundColor = NotesTheme.colors.secondary,
+                    onClick = { goToDetails(state.getEmptyNote()) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Event,
+                        contentDescription = "Событие",
+                        tint = NotesTheme.colors.background
+                    )
+                }
+            }
+
+            AnimatedVisibility(visible = isVisibleNow.value) {
+                FloatingActionButton(
+                    modifier = Modifier
+                        .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
+                        .padding(
+                            end = NotesTheme.dimens.sideMargin,
+                            bottom = NotesTheme.dimens.sideMargin
+                        ),
+                    backgroundColor = NotesTheme.colors.secondary,
+                    onClick = { goToDetails(state.getEmptyBirth()) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.NoteAdd,
+                        contentDescription = "Заметка",
+                        tint = NotesTheme.colors.background
+                    )
+                }
             }
         }
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
-
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(
-                        end = NotesTheme.dimens.sideMargin,
-                        bottom = NotesTheme.dimens.sideMargin
-                    ),
-                backgroundColor = NotesTheme.colors.secondary,
-                onClick = { goToDetails(state.getEmptyNote()) }
-            ) {
-                Icon(
-                    painter = painterResource(id = android.R.drawable.checkbox_on_background),
-                    contentDescription = null,
-                    tint = NotesTheme.colors.background
-                )
-            }
-        }
-
     }
 
     @OptIn(ExperimentalFoundationApi::class)
