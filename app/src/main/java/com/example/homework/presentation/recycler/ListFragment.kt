@@ -109,7 +109,7 @@ class ListFragment : ComposeFragment() {
                 )
             }
         }
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
 
             FloatingActionButton(
                 modifier = Modifier
@@ -121,7 +121,7 @@ class ListFragment : ComposeFragment() {
                 onClick = { goToDetails(state.getEmptyNote()) }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add_black),
+                    painter = painterResource(id = android.R.drawable.btn_star),
                     contentDescription = null,
                     tint = NotesTheme.colors.background
                 )
@@ -139,7 +139,7 @@ class ListFragment : ComposeFragment() {
                 onClick = { goToDetails(state.getEmptyNote()) }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add_black),
+                    painter = painterResource(id = android.R.drawable.checkbox_on_background),
                     contentDescription = null,
                     tint = NotesTheme.colors.background
                 )
