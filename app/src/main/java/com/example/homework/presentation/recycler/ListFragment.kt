@@ -1,6 +1,7 @@
 package com.example.homework.presentation.recycler
 
 import NotesTheme
+import android.app.AlertDialog
 import android.content.res.Configuration
 import android.view.*
 import android.widget.Toast
@@ -56,7 +57,9 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
 
-        var isVisibleNow = remember { mutableStateOf(false) }
+        val openDeleteDialog = remember { mutableStateOf(false) }
+
+        val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
@@ -110,7 +113,38 @@ class ListFragment : ComposeFragment() {
                         bottom = NotesTheme.dimens.sideMargin
                     ),
                 backgroundColor = NotesTheme.colors.secondary,
-                onClick = { ListEvents.DeleteAll
+                onClick = {
+                    if (openDeleteDialog.value) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                openDeleteDialog.value = false
+                            },
+                            title = {
+                                Text(text = "Вы действительно хотите удалить все записи?")
+                            },
+                            buttons = {
+                                Row(
+                                    modifier = Modifier.padding(all = 8.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Button(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onClick = { openDeleteDialog.value = false }
+                                    ) {
+                                        Text("Dismiss")
+                                    },
+                                    Button(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onClick = { openDeleteDialog.value = false }
+                                    ) {
+                                        Text("Dismiss")
+                                    }
+                                }
+
+                            }
+                        )
+                    }
+                    ListEvents.DeleteAll
                     Toast.makeText(requireContext(),"Все записи удалены",Toast.LENGTH_SHORT).show()
                 }
             ) {
