@@ -50,6 +50,8 @@ class ListViewModel(
             is ListEvents.ChangeTheme -> setTheme(event.themeCode)
             is ListEvents.ShowDeleteDialog -> viewState =
                 viewState.copy(isShowDeleteDialog = event.itsShow, deletableNoteId = event.id)
+            is ListEvents.ClearAll -> viewState =
+                viewState.copy(isShowDeleteAllDialog = event.itsShow)
             is ListEvents.ShowSettingsDialog -> viewState =
                 viewState.copy(isShowSettingsDialog = event.itsShow)
         }

@@ -1,7 +1,6 @@
 package com.example.homework.presentation.recycler
 
 import NotesTheme
-import android.app.AlertDialog
 import android.content.res.Configuration
 import android.view.*
 import android.widget.Toast
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
@@ -57,8 +57,6 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
 
-        val openDeleteDialog = remember { mutableStateOf(false) }
-
         val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
@@ -67,6 +65,7 @@ class ListFragment : ComposeFragment() {
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
 
         if (state.isShowSettingsDialog) SettingsDialog()
+        if (state.isShowDeleteAllDialog) ClearAllNotes()
 
         Column(modifier = Modifier.background(NotesTheme.colors.background)) {
 
@@ -104,7 +103,6 @@ class ListFragment : ComposeFragment() {
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
 
-
             FloatingActionButton(
                 modifier = Modifier
                     .padding(
@@ -114,43 +112,12 @@ class ListFragment : ComposeFragment() {
                     ),
                 backgroundColor = NotesTheme.colors.secondary,
                 onClick = {
-                    if (openDeleteDialog.value) {
-                        AlertDialog(
-                            onDismissRequest = {
-                                openDeleteDialog.value = false
-                            },
-                            title = {
-                                Text(text = "Вы действительно хотите удалить все записи?")
-                            },
-                            buttons = {
-                                Row(
-                                    modifier = Modifier.padding(all = 8.dp),
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Button(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        onClick = { openDeleteDialog.value = false }
-                                    ) {
-                                        Text("Dismiss")
-                                    },
-                                    Button(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        onClick = { openDeleteDialog.value = false }
-                                    ) {
-                                        Text("Dismiss")
-                                    }
-                                }
-
-                            }
-                        )
-                    }
-                    ListEvents.DeleteAll
-                    Toast.makeText(requireContext(),"Все записи удалены",Toast.LENGTH_SHORT).show()
+                    viewModel.submitUIEvent(ListEvents.ClearAll(true))
                 }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Удалить всё",
+                    contentDescription = stringResource(id = R.string.delete_all),
                     tint = NotesTheme.colors.background
                 )
             }
@@ -300,6 +267,23 @@ class ListFragment : ComposeFragment() {
             },
             onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
         }
+    }
+    @Composable
+    private fun ClearAllNotes() {
+            DefaultDialog(
+                title = stringResource(id = R.string.delete_all),
+                negativeButtonText= stringResource(id = R.string.cancel),
+                positiveButtonText = stringResource(id = R.string.yes),
+                onPositiveClick = {
+                    viewModel.submitUIEvent(ListEvents.DeleteAll)
+                    Toast.makeText(requireContext(), R.string.all_notes_delete, Toast.LENGTH_SHORT)
+                        .show()
+                    viewModel.submitUIEvent(ListEvents.ClearAll(false))
+                },
+                onNegativeClick = {
+                    viewModel.submitUIEvent(ListEvents.ClearAll(false))
+                })
+            {}
     }
 
     @Composable

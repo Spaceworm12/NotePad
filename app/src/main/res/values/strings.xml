@@ -32,6 +32,7 @@
     <string name="add_bd">Событие</string>
     <string name="add_note">Заметка</string>
     <string name="delete_all">Удалить все записи</string>
+    <string name="delete_all_question">Удалить все записи?</string>
     <string name="bd">BD</string>
     <string name="note">Заметка</string>
     <string name="plus_chain">+</string>
@@ -50,4 +51,5 @@
     <string name="second_theme">Вторая тема</string>
     <string name="second_theme_select">Second Theme</string>
     <string name="third_theme">Третья тема</string>
+    <string name="all_notes_delete">Все заметки удалены</string>
 </resources>

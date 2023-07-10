@@ -75,7 +75,7 @@ fun DefaultDialog(
                 )
                 DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.yes) },
-                    isEnabled = !isEnabled,
+                    isEnabled = isEnabled,
                     onClick = { onPositiveClick.invoke() },
                     color = positiveButtonColor ?: NotesTheme.colors.secondary
                 )

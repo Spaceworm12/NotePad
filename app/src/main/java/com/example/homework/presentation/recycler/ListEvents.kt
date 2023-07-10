@@ -8,6 +8,7 @@ sealed class ListEvents {
     class SaveUserDate(val date: String, val id: Long) : ListEvents()
     class ShowSettingsDialog(val itsShow: Boolean) : ListEvents()
     class ShowDeleteDialog(val itsShow: Boolean, val id: Long) : ListEvents()
+    class ClearAll(val itsShow: Boolean) : ListEvents()
     class ChangeTheme(val themeCode: Int) : ListEvents()
 
 }
