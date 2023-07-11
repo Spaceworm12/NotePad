@@ -67,13 +67,12 @@ class TrainingScreen() : ComposeFragment() {
                     ).clickable(onClick = { click.value++ })
                     .background(Color.Red),
                 contentAlignment = Alignment.Center
-
             ) {
                 Text(
                     text = click.value.toString(),
                     textAlign = TextAlign.Center,
-                    textDecoration = TextDecoration.LineThrough,
-                    fontSize = 28.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = 48.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
