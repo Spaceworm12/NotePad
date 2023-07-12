@@ -63,7 +63,7 @@ class TrainingScreen() : ComposeFragment() {
             Box(
                 modifier = Modifier
                     .background(Color.Yellow)
-                    .fillMaxWidth()
+                    .wrapContentWidth()
                     .height(150.dp)
                     .weight(1f)
                     .border(
@@ -72,7 +72,6 @@ class TrainingScreen() : ComposeFragment() {
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
                     )
             ) {
-                val message = remember { mutableStateOf("123") }
                 Column(modifier = Modifier.fillMaxSize()) {
                     val mContext = LocalContext.current
                     val mYear: Int
@@ -86,15 +85,15 @@ class TrainingScreen() : ComposeFragment() {
                     val mDate = remember { mutableStateOf("") }
                     val mDatePickerDialog = DatePickerDialog(
                         mContext,
-                        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
+                        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
+                            mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
                         }, mYear, mMonth, mDay
                     )
                     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                         Button(onClick = {
                             mDatePickerDialog.show()
-                        }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58)) ) {
-                            Text(text = "Open Date Picker", color = Color.White)
+                        }) {
+                            Text(text = "Open Date Picker")
                         }
                         Spacer(modifier = Modifier.size(100.dp))
                         Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
