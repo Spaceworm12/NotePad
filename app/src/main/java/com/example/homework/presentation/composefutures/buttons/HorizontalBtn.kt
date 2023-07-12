@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonElevation
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import com.example.homework.presentation.composefutures.ThemeSettings
 fun HorizontalBtn(
     modifier: Modifier = Modifier,
     text: String,
+    elevation:ButtonElevation = ButtonDefaults.elevation(),
     isEnabled: Boolean = true,
     minWidth: Dp = 120.dp,
     minHeight: Dp = 38.dp,
@@ -32,7 +34,8 @@ fun HorizontalBtn(
 ) {
     with(NotesTheme.dimens) {
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(bottom = bottomPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center

@@ -16,7 +16,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -40,15 +43,15 @@ fun Toolbar(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = title,
-                    style = NotesTheme.typography.h6
+                    style = TextStyle(shadow = Shadow(color=Color.Gray, Offset(10.0f, 12.5f), 1.0f))
                 )
                 if (subtitle?.isNotBlank() == true) {
                     Text(
+                        style = TextStyle(shadow = Shadow(color=NotesTheme.colors.rippleColor,Offset(10.0f, 12.5f), 1.0f)),
                         modifier = Modifier.fillMaxWidth(),
                         text = subtitle,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = NotesTheme.typography.body1,
                         color = Color.Gray
                     )
                 }
