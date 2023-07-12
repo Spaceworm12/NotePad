@@ -4,6 +4,7 @@ import NotesTheme
 import android.app.DatePickerDialog
 import android.content.res.Configuration
 import android.os.Build
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -122,12 +124,31 @@ class BirthdayFragment : ComposeFragment() {
                     ),
                 )
             }
+            val mContext = LocalContext.current
+            val mYear: Int
+            val mMonth: Int
+            val mDay: Int
+            val mCalendar = Calendar.getInstance()
+            mYear = mCalendar.get(Calendar.YEAR)
+            mMonth = mCalendar.get(Calendar.MONTH)
+            mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+            mCalendar.time = Date()
+            val mDate = remember { mutableStateOf("") }
+            val mDatePickerDialog = DatePickerDialog(
+                mContext,
+                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
+                    mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
+                }, mYear, mMonth, mDay
+            )
             HorizontalBtn(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.select_date),
                 isEnabled = true,
             ) {
-                showDatePicker()
+                mDatePickerDialog.show()
+                currentTitle = currentTitle +" "+ mDate.value
+                currentDate = mDate.value
+                bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
             }
 
             Box(
