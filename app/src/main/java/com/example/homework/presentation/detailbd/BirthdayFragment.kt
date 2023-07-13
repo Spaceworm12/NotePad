@@ -38,7 +38,7 @@ class BirthdayFragment : ComposeFragment() {
     companion object {
         private const val KEY_NOTE = "KEY_NOTE"
 
-        fun newInstance(note: NoteModel) = NoteFragment().apply {
+        fun newInstance(note: NoteModel) = BirthdayFragment().apply {
             arguments = bundleOf(
                 KEY_NOTE to note
             )
@@ -140,7 +140,7 @@ class BirthdayFragment : ComposeFragment() {
                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
                     mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
                     currentDate=mDate.value
-                    bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
+                    note.date = currentDate
                 }, mYear, mMonth, mDay
             )
             HorizontalBtn(
@@ -158,17 +158,17 @@ class BirthdayFragment : ComposeFragment() {
                         width = 1.dp,
                         color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
-                    ), contentAlignment = Alignment.Center
+                    ), contentAlignment = Alignment.Center,
             ) {
 
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = false,
-                    value = currentDate,
+                    value = note.date,
                     onValueChange = {
-                        currentDate= it
-                        note.description = it
-                        note.date = it
+                        currentDate = it
+                        note.date = currentDate
+                        bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
                         Text(
@@ -201,8 +201,7 @@ class BirthdayFragment : ComposeFragment() {
                     value = currentDescription,
                     onValueChange = {
                         currentDescription = it
-                        note.description = it
-                        note.date = it
+                        note.description=currentDescription
                         bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {

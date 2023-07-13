@@ -56,6 +56,8 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
 
+        viewModel.submitUIEvent(ListEvents.GetNotes)
+
         val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
@@ -160,7 +162,7 @@ class ListFragment : ComposeFragment() {
                     onClick = { goToDetails(state.getEmptyNote()) }
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Event,
+                        imageVector = Icons.Filled.NoteAdd,
                         contentDescription = "Событие",
                         tint = NotesTheme.colors.background
                     )
@@ -179,7 +181,7 @@ class ListFragment : ComposeFragment() {
                     onClick = { goToDetails(state.getEmptyBirth()) }
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.NoteAdd,
+                        imageVector = Icons.Filled.Event,
                         contentDescription = "Заметка",
                         tint = NotesTheme.colors.background
                     )
@@ -253,6 +255,11 @@ class ListFragment : ComposeFragment() {
                 Text(text = note.name, style = NotesTheme.typography.h6)
                 Text(text = note.description, style = NotesTheme.typography.body1)
             }
+            Box(contentAlignment = Alignment.BottomEnd) {
+                Row {
+                    Text(text = note.date)
+                }
+            }
         }
     }
 
@@ -318,7 +325,7 @@ class ListFragment : ComposeFragment() {
                 )
                 .addToBackStack("")
                 .commit()
-            if (note.type == NoteType.BIRTHDAY_TYPE) {
+        } else {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -329,7 +336,6 @@ class ListFragment : ComposeFragment() {
                 .addToBackStack("")
                 .commit()
         }
-            else {}
 
     }
 
