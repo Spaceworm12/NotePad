@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
+import com.example.homework.presentation.composefutures.dialogs.ChangeDialog
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
@@ -64,7 +65,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
 
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
-
+        if (state.isShowChangeDialog) showChangeDialog()
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -93,6 +94,7 @@ class ListFragment : ComposeFragment() {
                 items(
                     items = state.notesList
                 ) { item: NoteModel ->
+                    is
                     when (item.type) {
                         NoteType.BIRTHDAY_TYPE -> SecondItem(item)
                         NoteType.NOTE_TYPE -> Item(item)
@@ -267,6 +269,29 @@ class ListFragment : ComposeFragment() {
     private fun DeleteDialog(id: Long) {
         DefaultDialog(
             title = stringResource(id = R.string.delete),
+            onPositiveClick = {
+                if (id != -1L) viewModel.submitUIEvent(ListEvents.DeleteNote(id))
+                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
+            },
+            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
+        }
+    }
+    @Composable
+    private fun showChangeDialog() {
+        val items = arrayOf("Открыть","Изменить дату","Удалить")
+        ItemsDialog(
+            title = "Выберите действие",
+            items=items,
+            onNegativeClick = {},
+            onItemClick = { position ->
+                when (position) {
+                    0 -> {goToDetails(position)}
+                    1 -> {DeleteDialog(id = items.get(position))}
+/                2 -> viewModel.submitUIEvent(ListEvents.DeleteNote())
+                }
+            }
+        ) { viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(false)) }
+    }
             onPositiveClick = {
                 if (id != -1L) viewModel.submitUIEvent(ListEvents.DeleteNote(id))
                 viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))

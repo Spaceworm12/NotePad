@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
@@ -171,9 +172,10 @@ class BirthdayFragment : ComposeFragment() {
                         bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
-                        Text(
+                        Text(modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.date_birthday),
-                            style = NotesTheme.typography.body1
+                            textAlign = TextAlign.Center,
+                            style = NotesTheme.typography.body1,
                         )
                     },
                     colors = TextFieldDefaults.textFieldColors(

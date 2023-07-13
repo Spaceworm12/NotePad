@@ -9,6 +9,7 @@ data class ListViewState(
     val errorText: String = "",
     val isShowDeleteDialog: Boolean = false,
     val isShowSettingsDialog: Boolean = false,
+    val isShowChangeDialog: Boolean = false,
     val isShowDeleteAllDialog:Boolean = false,
     val currentTheme: Int = 0,
     val deletableNoteId: Long = -1L,
