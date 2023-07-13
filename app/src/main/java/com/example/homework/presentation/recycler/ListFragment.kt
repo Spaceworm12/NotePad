@@ -318,7 +318,7 @@ class ListFragment : ComposeFragment() {
                 )
                 .addToBackStack("")
                 .commit()
-        } else {
+            if (note.type == NoteType.BIRTHDAY_TYPE) {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -329,6 +329,7 @@ class ListFragment : ComposeFragment() {
                 .addToBackStack("")
                 .commit()
         }
+            else {}
 
     }
 

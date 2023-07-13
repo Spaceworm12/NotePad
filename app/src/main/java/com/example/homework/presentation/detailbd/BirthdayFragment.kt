@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -138,6 +139,8 @@ class BirthdayFragment : ComposeFragment() {
                 mContext,
                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
                     mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
+                    currentDate=mDate.value
+                    bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                 }, mYear, mMonth, mDay
             )
             HorizontalBtn(
@@ -146,11 +149,42 @@ class BirthdayFragment : ComposeFragment() {
                 isEnabled = true,
             ) {
                 mDatePickerDialog.show()
-                currentTitle = currentTitle +" "+ mDate.value
-                currentDate = mDate.value
-                bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(NotesTheme.dimens.halfContentMargin)
+                    .border(
+                        width = 1.dp,
+                        color = NotesTheme.colors.secondary,
+                        shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
+                    ), contentAlignment = Alignment.Center
+            ) {
 
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = false,
+                    value = currentDate,
+                    onValueChange = {
+                        currentDate= it
+                        note.description = it
+                        note.date = it
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.date_birthday),
+                            style = NotesTheme.typography.body1
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        cursorColor = NotesTheme.colors.primary
+                    ),
+                )
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
