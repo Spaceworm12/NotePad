@@ -14,13 +14,14 @@
     <string name="detail_bdnote_subtoolbar">Добавление даты, описания</string>
     <string name="descriptionnote">Описание</string>
     <string name="namenote">Тема</string>
-    <string name="save">Сохранить</string>
     <string name="select_date">Выберите дату</string>
     <string name="input_note_name">Введите название заметки</string>
     <string name="input_description_hint">Введите текст заметки</string>
     <string name="deleteNote">Удалить</string>
     <string name="delete_dialog_title">Удалить заметку?</string>
     <string name="yes">Да</string>
+    <string name="save">Сохранить</string>
+    <string name="dismiss">Отменить</string>
     <string name="no">Нет</string>
     <string name="pick_date">Выбор даты</string>
     <string name="list_fragment_title">Список заметок</string>

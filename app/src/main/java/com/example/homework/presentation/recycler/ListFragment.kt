@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
+import com.example.homework.presentation.composefutures.dialogs.DateAddDialog
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
@@ -64,6 +65,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
         if (state.isShowChangeDialog) showChangeDialog(state.currentNote!!)
+        if (state.isShowDateAddDialog)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -277,6 +279,18 @@ class ListFragment : ComposeFragment() {
             onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
         viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false,-1))}
     }
+    @Composable
+    private fun ChangeDateDialog(note:NoteModel) {
+        DateAddDialog(
+            title = "братишка выбери дату",
+            currentDate = note.date.ifBlank { currentDate },
+            onPositiveClick = {
+               note.date=
+            },
+            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false)) }) {
+
+           viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false))} }
+
 
     @Composable
     private fun deleteNoteDialog(note: NoteModel) {

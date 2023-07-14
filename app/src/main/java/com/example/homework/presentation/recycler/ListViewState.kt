@@ -10,12 +10,13 @@ data class ListViewState(
     val isShowDeleteDialog: Boolean = false,
     val isShowSettingsDialog: Boolean = false,
     val isShowChangeDialog: Boolean = false,
-    val isShowDeleteAllDialog:Boolean = false,
+    val isShowDeleteAllDialog: Boolean = false,
     val currentTheme: Int = 0,
     val deletableNoteId: Long = -1L,
     val currentNote: NoteModel? = null,
+    val isShowDateAddDialog: Boolean = false,
 
-) {
+    ) {
 
     fun getEmptyNote(): NoteModel {
         return NoteModel(

@@ -51,6 +51,7 @@ class ListViewModel(
             is ListEvents.SaveCurrentNote -> viewState = viewState.copy(currentNote = event.note)
             is ListEvents.ShowChangeDialog -> viewState =
                 viewState.copy(isShowChangeDialog = event.itsShow)
+            is ListEvents.ShowDateAddDialog -> viewState = viewState.copy(isShowDateAddDialog = event.itsShow)
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
             is ListEvents.ChangeTheme -> setTheme(event.themeCode)
             is ListEvents.ShowDeleteDialog -> viewState =
