@@ -9,6 +9,7 @@ import com.example.homework.data.models.model.noterepository.RepositoryImplement
 import com.example.homework.presentation.composefutures.FIRST_THEME
 import com.example.homework.presentation.composefutures.THEME_CODE
 import com.example.homework.presentation.model.Mapper
+import com.example.homework.presentation.model.NoteModel
 import com.example.homework.util.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -45,7 +46,11 @@ class ListViewModel(
         when (event) {
             is ListEvents.GetNotes -> getListNotes()
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
+            is ListEvents.DeleteNoteModel -> deleteNoteModel(event.note)
             is ListEvents.DeleteAll -> deleteAll()
+            is ListEvents.SaveCurrentNote -> viewState = viewState.copy(currentNote = event.note)
+            is ListEvents.ShowChangeDialog -> viewState =
+                viewState.copy(isShowChangeDialog = event.itsShow)
             is ListEvents.SaveUserDate -> changeDate(date = event.date, id = event.id)
             is ListEvents.ChangeTheme -> setTheme(event.themeCode)
             is ListEvents.ShowDeleteDialog -> viewState =
@@ -94,6 +99,20 @@ class ListViewModel(
             .addTo(disposables)
     }
 
+    private fun deleteNoteModel(note: NoteModel) {
+        repo.delete(note.id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
+                    is Resource.Data -> getListNotes()
+                    is Resource.Error -> viewState =
+                        viewState.copy(isLoading = false, errorText = "err")
+                }
+            }
+            .addTo(disposables)
+    }
+
     private fun deleteAll() {
         repo.deleteAll()
             .observeOn(AndroidSchedulers.mainThread())
@@ -113,8 +132,8 @@ class ListViewModel(
     }
 
     private fun changeDate(date: String, id: Long) {
-     repo.changeDate(date, id)
-         .observeOn(AndroidSchedulers.mainThread())
+        repo.changeDate(date, id)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 when (result) {
                     is Resource.Loading -> viewState = viewState.copy(isLoading = true)

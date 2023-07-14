@@ -13,6 +13,7 @@ data class ListViewState(
     val isShowDeleteAllDialog:Boolean = false,
     val currentTheme: Int = 0,
     val deletableNoteId: Long = -1L,
+    val currentNote: NoteModel? = null,
 
 ) {
 
