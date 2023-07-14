@@ -26,10 +26,10 @@ import java.util.*
 
 @Composable
 fun DateAddDialog(
-    note:NoteModel?=null,
+    note: NoteModel?=null,
+    noteDate:String?=null,
     title: String,
     message: String = "",
-    noteDate:String="",
     negativeButtonText: String = "",
     positiveButtonText: String = "",
     negativeButtonColor: Color? = null,
@@ -39,10 +39,7 @@ fun DateAddDialog(
     onNegativeClick: (() -> Unit)? = null,
     dismiss: () -> Unit,
 
-) {
-    var currentDate by remember { mutableStateOf("") }
-    currentDate = currentDate.ifBlank {note!!.date}
-
+    ) {
     Dialog(
         onDismissRequest = { dismiss.invoke() },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
@@ -76,16 +73,16 @@ fun DateAddDialog(
             mMonth = mCalendar.get(Calendar.MONTH)
             mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
             mCalendar.time = Date()
-            val mDate = remember { mutableStateOf("") }
+            val selectedDate = remember { mutableStateOf("") }
             val mDatePickerDialog = DatePickerDialog(
                 mContext,
                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
-                    mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
+                    selectedDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
                 }, mYear, mMonth, mDay
             )
             HorizontalBtn(
                 modifier = Modifier.fillMaxWidth(),
-                text = mDate.value.ifBlank { noteDate },
+                text = selectedDate.value,
                 isEnabled = true,
             ) {
                 mDatePickerDialog.show()

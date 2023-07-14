@@ -65,7 +65,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
         if (state.isShowChangeDialog) showChangeDialog(state.currentNote!!)
-        if (state.isShowDateAddDialog)
+        if (state.isShowDateAddDialog) ChangeDateDialog(note = state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -283,9 +283,8 @@ class ListFragment : ComposeFragment() {
     private fun ChangeDateDialog(note:NoteModel) {
         DateAddDialog(
             title = "братишка выбери дату",
-            currentDate = note.date.ifBlank { currentDate },
+            noteDate = "22.22.22",
             onPositiveClick = {
-               note.date=
             },
             onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false)) }) {
 
@@ -320,7 +319,7 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
-//                2 -> viewModel.submitUIEvent(ListEvents.DeleteNote())
+                2 -> viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
                 }
             }
         ) {
