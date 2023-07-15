@@ -10,7 +10,7 @@ sealed class ListEvents {
     object DeleteAll : ListEvents()
     class SaveUserDate(val date: String, val id: Long) : ListEvents()
     class ShowSettingsDialog(val itsShow: Boolean) : ListEvents()
-    class ShowDateAddDialog(val itsShow: Boolean) : ListEvents()
+    class ShowDateAddDialog(val itsShow: Boolean, val currentNote: NoteModel) : ListEvents()
     class ShowDeleteDialog(val itsShow: Boolean, val id: Long) : ListEvents()
     class ShowChangeDialog(val itsShow: Boolean) : ListEvents()
     class SaveCurrentNote(val note: NoteModel) : ListEvents()

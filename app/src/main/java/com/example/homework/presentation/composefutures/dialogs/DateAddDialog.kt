@@ -106,7 +106,7 @@ fun DateAddDialog(
                     isEnabled = isEnabled,
                     onClick = { if (onNegativeClick != null) onNegativeClick.invoke() else dismiss.invoke() },
                     color = negativeButtonColor ?: NotesTheme.colors.secondary
-                )
+                ){noteDate=selectedDate.value}
                 DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.save) },
                     isEnabled = isEnabled,
