@@ -44,8 +44,28 @@ fun DateAddDialog(
         onDismissRequest = { dismiss.invoke() },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
     ) {
+        @Composable
+        fun GetNewCalendarValue() {
+            val mContext = LocalContext.current
+            val mYear: Int
+            val mMonth: Int
+            val mDay: Int
+            val mCalendar = Calendar.getInstance()
+            mYear = mCalendar.get(Calendar.YEAR)
+            mMonth = mCalendar.get(Calendar.MONTH)
+            mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+            mCalendar.time = Date()
+            val selectedDate = remember { mutableStateOf("") }
+            val mDatePickerDialog = DatePickerDialog(
+                mContext,
+                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                    selectedDate.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
+                }, mYear, mMonth, mDay
+            ).show()
+        }
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .background(
                     color = NotesTheme.colors.primary,
                     shape = RoundedCornerShape(NotesTheme.dimens.sideMargin)
@@ -63,60 +83,47 @@ fun DateAddDialog(
                     .padding(bottom = NotesTheme.dimens.sideMargin)
                     .fillMaxWidth()
             )
+            val selectedDate = remember { mutableListOf(noteDate) }
 
-            val mContext = LocalContext.current
-            val mYear: Int
-            val mMonth: Int
-            val mDay: Int
-            val mCalendar = Calendar.getInstance()
-            mYear = mCalendar.get(Calendar.YEAR)
-            mMonth = mCalendar.get(Calendar.MONTH)
-            mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-            mCalendar.time = Date()
-            val selectedDate = remember { mutableStateOf("") }
-            val mDatePickerDialog = DatePickerDialog(
-                mContext,
-                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
-                    selectedDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
-                }, mYear, mMonth, mDay
-            )
             HorizontalBtn(
                 modifier = Modifier.fillMaxWidth(),
-                text = selectedDate.value,
+                text = noteDate!!,
                 isEnabled = true,
-            ) {
-                mDatePickerDialog.show()
-            }
-
-            if (message.isNotBlank()) Text(
-                text = message,
-                style = NotesTheme.typography.body1,
-                modifier = Modifier.fillMaxWidth()
+                onClick = {GetNewCalendarValue()}
             )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = NotesTheme.dimens.contentMargin),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                DialogBtn(
-                    modifier = Modifier.padding(end = NotesTheme.dimens.sideMargin),
-                    text = negativeButtonText.ifBlank { stringResource(R.string.dismiss) },
-                    isEnabled = isEnabled,
-                    onClick = { if (onNegativeClick != null) onNegativeClick.invoke() else dismiss.invoke() },
-                    color = negativeButtonColor ?: NotesTheme.colors.secondary
-                ){noteDate=selectedDate.value}
-                DialogBtn(
-                    text = positiveButtonText.ifBlank { stringResource(R.string.save) },
-                    isEnabled = isEnabled,
-                    onClick = { onPositiveClick.invoke() },
-                    color = positiveButtonColor ?: NotesTheme.colors.secondary
+                if (message.isNotBlank()) Text(
+                    text = message,
+                    style = NotesTheme.typography.body1,
+                    modifier = Modifier.fillMaxWidth()
                 )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = NotesTheme.dimens.contentMargin),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    DialogBtn(
+                        modifier = Modifier.padding(end = NotesTheme.dimens.sideMargin),
+                        text = negativeButtonText.ifBlank { stringResource(R.string.dismiss) },
+                        isEnabled = isEnabled,
+                        onClick = { if (onNegativeClick != null) onNegativeClick.invoke() else dismiss.invoke() },
+                        color = negativeButtonColor ?: NotesTheme.colors.secondary
+                    )
+                    DialogBtn(
+                        text = positiveButtonText.ifBlank { stringResource(R.string.save) },
+                        isEnabled = isEnabled,
+                        onClick = { onPositiveClick.invoke() },
+                        color = positiveButtonColor ?: NotesTheme.colors.secondary
+                    )
+                }
             }
         }
     }
 }
+
+
 
 @Preview(name = "DateAddDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
