@@ -281,27 +281,26 @@ class ListFragment : ComposeFragment() {
     }
     @Composable
     private fun ChangeDateDialog(note:NoteModel) {
+        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
         DateAddDialog(
-            title = "братишка выбери дату",
-            noteDate = "22.22.22",
-            onPositiveClick = {
-            },
+            noteDate = note.date.ifBlank {"00.00.00"},
+            onPositiveClick = {viewModel.submitUIEvent(ListEvents.SaveUserDate(note,it,note.id))},
             onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false)) }) {
 
            viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false))} }
 
 
-    @Composable
-    private fun deleteNoteDialog(note: NoteModel) {
-        DefaultDialog(
-            title = stringResource(id = R.string.delete),
-            onPositiveClick = {
-                viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
-                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
-            },
-            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
-        }
-    }
+//    @Composable
+//    private fun deleteNoteDialog(note: NoteModel) {
+//        DefaultDialog(
+//            title = stringResource(id = R.string.delete),
+//            onPositiveClick = {
+//                viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
+//                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
+//            },
+//            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
+//        }
+//    }
 
     @Composable
     private fun showChangeDialog(note: NoteModel) {
@@ -319,7 +318,8 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
-                2 -> viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
+                2 -> {viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
+                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
                 }
             }
         ) {
