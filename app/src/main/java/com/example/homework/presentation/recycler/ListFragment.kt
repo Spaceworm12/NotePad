@@ -39,6 +39,7 @@ import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
+import com.google.android.material.datepicker.MaterialDatePicker
 
 class ListFragment : ComposeFragment() {
 
@@ -56,9 +57,9 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
-
+        var currentDate by remember { mutableStateOf("") }
+        currentDate = currentDate.ifBlank { "" }
         viewModel.submitUIEvent(ListEvents.GetNotes)
-
         val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
@@ -318,8 +319,11 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
-                2 -> {viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
-                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
+                    2-> { val s = showDatePicker(note)
+                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note,note.date,note.id))
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
+//                2 -> {viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
+//                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
                 }
             }
         ) {
@@ -392,6 +396,19 @@ class ListFragment : ComposeFragment() {
             }
 
         }
+    private fun showDatePicker(note:NoteModel):String {
+        val picker = MaterialDatePicker.Builder.datePicker().build()
+        activity?.let {
+            picker.show(it.supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                val newDate = it.toString()
+                note.date = newDate
+
+
+            }
+        }
+        return note.date
+    }
 
         @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
         @Composable
