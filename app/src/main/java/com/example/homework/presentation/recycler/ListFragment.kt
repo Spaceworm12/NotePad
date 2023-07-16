@@ -1,8 +1,10 @@
 package com.example.homework.presentation.recycler
 
 import NotesTheme
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.view.*
+import android.widget.CalendarView
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
@@ -20,18 +22,21 @@ import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.NoteAdd
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
-import com.example.homework.presentation.composefutures.dialogs.DateAddDialog
+import com.example.homework.presentation.composefutures.dialogs.Calendar
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
@@ -58,15 +63,14 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
         var currentDate by remember { mutableStateOf("") }
-        currentDate = currentDate.ifBlank { "" }
         viewModel.submitUIEvent(ListEvents.GetNotes)
         val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
+        if (state.isShowDateAddDialog) showDateDialog(state.isShowDateAddDialog,state.currentNote!!)
         if (state.isShowChangeDialog) showChangeDialog(state.currentNote!!)
-        if (state.isShowDateAddDialog) ChangeDateDialog(note = state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -278,17 +282,49 @@ class ListFragment : ComposeFragment() {
                 viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
             },
             onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
-        viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false,-1))}
+            viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
+        }
     }
-    @Composable
-    private fun ChangeDateDialog(note:NoteModel) {
-        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
-        DateAddDialog(
-            noteDate = note.date.ifBlank {"00.00.00"},
-            onPositiveClick = {viewModel.submitUIEvent(ListEvents.SaveUserDate(note,it,note.id))},
-            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false)) }) {
 
-           viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false))} }
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter",
+        "UnusedMaterialScaffoldPaddingParameter"
+    )
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun showDateDialog(showDateAddDialog: Boolean, currentNote: NoteModel){
+        var date by remember {
+            mutableStateOf("")
+        }
+        Scaffold(
+            topBar = {
+                androidx.compose.material3.TopAppBar(
+                    title = {
+                        androidx.compose.material3.Text(
+                            text = "Выберите дату",
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                )
+            },
+            content = {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    AndroidView(factory = { CalendarView(it) }, update = {
+                        it.setOnDateChangeListener { calendar, year, month, day ->
+                            date = "$day - ${month + 1} - $year"
+                        }
+                    })
+                   Text(text = date)
+                }
+            })
+        currentNote.date = date
+        viewModel.submitUIEvent(ListEvents.SaveUserDate(note = currentNote))
+        viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false,currentNote))
+    }
+
 
 
 //    @Composable
@@ -319,9 +355,12 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
-                    2-> { val s = showDatePicker(note)
-                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note,note.date,note.id))
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
+                    2 -> {
+                        viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true,note))
+                    }
+//                    2-> { val s = showDatePicker(note)
+//                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note))
+//                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
 //                2 -> {viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
 //                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
                 }
@@ -332,71 +371,72 @@ class ListFragment : ComposeFragment() {
     }
 
 
-        @Composable
-        private fun ClearAllNotes() {
-            DefaultDialog(
-                title = stringResource(id = R.string.delete_all),
-                negativeButtonText = stringResource(id = R.string.cancel),
-                positiveButtonText = stringResource(id = R.string.yes),
-                onPositiveClick = {
-                    viewModel.submitUIEvent(ListEvents.DeleteAll)
-                    Toast.makeText(requireContext(), R.string.all_notes_delete, Toast.LENGTH_SHORT)
-                        .show()
-                    viewModel.submitUIEvent(ListEvents.ClearAll(false))
-                },
-                onNegativeClick = {
-                    viewModel.submitUIEvent(ListEvents.ClearAll(false))
-                })
-            {}
-        }
+    @Composable
+    private fun ClearAllNotes() {
+        DefaultDialog(
+            title = stringResource(id = R.string.delete_all),
+            negativeButtonText = stringResource(id = R.string.cancel),
+            positiveButtonText = stringResource(id = R.string.yes),
+            onPositiveClick = {
+                viewModel.submitUIEvent(ListEvents.DeleteAll)
+                Toast.makeText(requireContext(), R.string.all_notes_delete, Toast.LENGTH_SHORT)
+                    .show()
+                viewModel.submitUIEvent(ListEvents.ClearAll(false))
+            },
+            onNegativeClick = {
+                viewModel.submitUIEvent(ListEvents.ClearAll(false))
+            })
+        {}
+    }
 
-        @Composable
-        private fun SettingsDialog() {
+    @Composable
+    private fun SettingsDialog() {
 
-            val items = arrayOf(
-                stringResource(id = R.string.first_theme),
-                stringResource(id = R.string.second_theme),
-                stringResource(id = R.string.third_theme),
-            )
+        val items = arrayOf(
+            stringResource(id = R.string.first_theme),
+            stringResource(id = R.string.second_theme),
+            stringResource(id = R.string.third_theme),
+        )
 
-            ItemsDialog(
-                title = stringResource(R.string.set_theme),
-                items = items,
-                onItemClick = { position ->
-                    when (position) {
-                        0 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(FIRST_THEME))
-                        1 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(SECOND_THEME))
-                        2 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(THIRD_THEME))
-                    }
+        ItemsDialog(
+            title = stringResource(R.string.set_theme),
+            items = items,
+            onItemClick = { position ->
+                when (position) {
+                    0 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(FIRST_THEME))
+                    1 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(SECOND_THEME))
+                    2 -> viewModel.submitUIEvent(ListEvents.ChangeTheme(THIRD_THEME))
                 }
-            ) { viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(false)) }
-        }
-
-        private fun goToDetails(note: NoteModel) {
-            if (note.type == NoteType.NOTE_TYPE) {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.fragment_container,
-                        NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
-                    )
-                    .addToBackStack("")
-                    .commit()
-            } else {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(
-                        R.id.fragment_container,
-                        BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyBirth())
-                    )
-                    .addToBackStack("")
-                    .commit()
             }
+        ) { viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(false)) }
+    }
 
+    private fun goToDetails(note: NoteModel) {
+        if (note.type == NoteType.NOTE_TYPE) {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                )
+                .addToBackStack("")
+                .commit()
+        } else {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyBirth())
+                )
+                .addToBackStack("")
+                .commit()
         }
-    private fun showDatePicker(note:NoteModel):String {
+
+    }
+
+    private fun showDatePicker(note: NoteModel): String {
         val picker = MaterialDatePicker.Builder.datePicker().build()
         activity?.let {
             picker.show(it.supportFragmentManager, picker.toString())
@@ -410,40 +450,40 @@ class ListFragment : ComposeFragment() {
         return note.date
     }
 
-        @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
-        @Composable
-        private fun RecyclerScreenPreview() {
-            ThemeSettings() {
+    @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
+    @Composable
+    private fun RecyclerScreenPreview() {
+        ThemeSettings() {
 
-                val model = NoteModel(
-                    id = 0,
-                    name = "Заметка",
-                    description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
-                            "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
-                    type = NoteType.BIRTHDAY_TYPE,
-                    date = "25.01.22"
-                )
+            val model = NoteModel(
+                id = 0,
+                name = "Заметка",
+                description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
+                        "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
+                type = NoteType.BIRTHDAY_TYPE,
+                date = "25.01.22"
+            )
 
-                val secondModel = NoteModel(
-                    id = 2,
-                    name = "Заметка нотка",
-                    description = "без собак без собак без собак",
-                    type = NoteType.NOTE_TYPE,
-                    date = "01.01.01"
-                )
+            val secondModel = NoteModel(
+                id = 2,
+                name = "Заметка нотка",
+                description = "без собак без собак без собак",
+                type = NoteType.NOTE_TYPE,
+                date = "01.01.01"
+            )
 
 
-                val state = ListViewState(
-                    notesList = listOf(model, secondModel, model),
-                    isShowDeleteDialog = false,
-                    isLoading = false,
-                    errorText = "",
-                    isShowSettingsDialog = false
+            val state = ListViewState(
+                notesList = listOf(model, secondModel, model),
+                isShowDeleteDialog = false,
+                isLoading = false,
+                errorText = "",
+                isShowSettingsDialog = false
 
-                )
+            )
 
-                ListNotesScreen(state)
-            }
+            ListNotesScreen(state)
         }
-
     }
+
+}
