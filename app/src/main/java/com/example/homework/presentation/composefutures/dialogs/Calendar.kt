@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import java.util.*
 
 /**
@@ -63,7 +64,7 @@ fun DatePickerCalendar(
                     .padding(NotesTheme.dimens.sideMargin)
             ) {
                 Text(
-                    text = stringResource(id = R.strings.date_picker_select_date),
+                    text = stringResource(com.example.homework.R.string.select_date),
                     style = NotesTheme.typography.caption,
                     color = Color.White
                 )
@@ -98,11 +99,11 @@ fun DatePickerCalendar(
                     .align(Alignment.End)
                     .padding(bottom = NotesTheme.dimens.sideMargin, end = NotesTheme.dimens.sideMargin)
             ) {
-                PrimaryTextButton(text = stringResource(id = R.string.all_close)) {
+                PrimaryBtn(text = stringResource(com.example.homework.R.string.cancel)) {
                     onDismissRequest.invoke()
                 }
 
-                PrimaryTextButton(text = stringResource(id = R.string.all_ok)) {
+                PrimaryBtn(text = stringResource(com.example.homework.R.string.yes)) {
                     val newDate = currentSelectedDate.value
                     onDateSelected(
                         Date(
