@@ -48,7 +48,7 @@ fun DefaultDialog(
                 )
         ) {
             Text(
-                text = "датка",
+                text = title,
                 style = NotesTheme.typography.subtitle1,
                 modifier = Modifier
                     .padding(bottom = NotesTheme.dimens.sideMargin)

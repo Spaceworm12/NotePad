@@ -1,7 +1,6 @@
 package com.example.homework.presentation.recycler
 
 import NotesTheme
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Build
 import android.view.*
@@ -43,6 +42,7 @@ import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.getCurrentDateTime
 import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
+import java.text.DateFormat
 import java.util.*
 
 class ListFragment : ComposeFragment() {
@@ -51,6 +51,7 @@ class ListFragment : ComposeFragment() {
         ViewModelProvider(this)[ListViewModel::class.java]
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
@@ -59,6 +60,7 @@ class ListFragment : ComposeFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
         var currentDate by remember { mutableStateOf("") }
@@ -275,7 +277,7 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun DeleteDialog(id: Long) {
         DefaultDialog(
-            title = stringResource(id = R.string.delete),
+            title = stringResource(id = R.string.delete_question),
             onPositiveClick = {
                 if (id != -1L) viewModel.submitUIEvent(ListEvents.DeleteNote(id))
                 viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
@@ -285,35 +287,16 @@ class ListFragment : ComposeFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint(
-        "UnusedMaterial3ScaffoldPaddingParameter",
-        "UnusedMaterialScaffoldPaddingParameter"
-    )
     @Composable
     private fun showDateDialog(note: NoteModel) {
         DatePickerCalendar(selectedDate = getCurrentDateTime(), onDateSelected = {
-            note.date = it.toString()
-        }) {
+            note.date =
+                DateFormat.getDateInstance(DateFormat.SHORT).format(it)
             viewModel.submitUIEvent(ListEvents.SaveUserDate(note = note))
             viewModel.submitUIEvent(ListEvents.ShowCalendar(false, note))
             viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
-        }
-
+        }) {}
     }
-
-
-//    @Composable
-//    private fun deleteNoteDialog(note: NoteModel) {
-//        DefaultDialog(
-//            title = stringResource(id = R.string.delete),
-//            onPositiveClick = {
-//                viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
-//                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
-//            },
-//            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
-//        }
-//    }
 
     @Composable
     private fun showChangeDialog(note: NoteModel) {
@@ -334,11 +317,6 @@ class ListFragment : ComposeFragment() {
                     2 -> {
                         viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))
                     }
-//                    2-> { val s = showDatePicker(note)
-//                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note))
-//                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
-//                2 -> {viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true))
-//                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))}
                 }
             }
         ) {
@@ -350,7 +328,7 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ClearAllNotes() {
         DefaultDialog(
-            title = stringResource(id = R.string.delete_all),
+            title = stringResource(id = R.string.delete_all_question),
             negativeButtonText = stringResource(id = R.string.cancel),
             positiveButtonText = stringResource(id = R.string.yes),
             onPositiveClick = {
@@ -412,20 +390,7 @@ class ListFragment : ComposeFragment() {
 
     }
 
-//    private fun showDatePicker(note: NoteModel): String {
-//        val picker = MaterialDatePicker.Builder.datePicker().build()
-//        activity?.let {
-//            picker.show(it.supportFragmentManager, picker.toString())
-//            picker.addOnPositiveButtonClickListener {
-//                val newDate = it.toString()
-//                note.date = newDate
-//
-//
-//            }
-//        }
-//        return note.date
-//    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun RecyclerScreenPreview() {

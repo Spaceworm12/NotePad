@@ -2,6 +2,7 @@
     <string name="app_name">Homework</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_question">Удалить?</string>
     <string name="delete">Удалить</string>
     <string name="update">Обновить</string>
     <string name="app_name_notepad">Блокнот</string>
