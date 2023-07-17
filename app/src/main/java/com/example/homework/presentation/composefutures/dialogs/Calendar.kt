@@ -1,59 +1,191 @@
-package com.example.homework.presentation.composefutures.dialogs
+package ru.x5.core_compose.ui.theme.ui.datepicker
 
-import android.annotation.SuppressLint
+import NotesTheme
+import android.content.res.Configuration
+import android.text.format.DateFormat
 import android.widget.CalendarView
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.homework.presentation.composefutures.ThemeSettings
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import java.util.*
 
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * @param minDate Минимальная дата, которую можно выбрать.
+ * @param maxDate Максимальная дата, которую можно выбрать.
+ * @param onDateSelected Коллбек выбранной даты.
+ * @param onDismissRequest Коллбек закрытия диалога.
+ */
 @Composable
-fun Calendar():String {
-    var date by remember {
-        mutableStateOf("")
-    }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Выберите дату", textAlign = TextAlign.Center) },
-            )
-        },
-        content = {
+fun DatePickerCalendar(
+    selectedDate: Date,
+    minDate: Long? = null,
+    maxDate: Long? = null,
+    onDateSelected: (Date) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    val currentSelectedDate = rememberSaveable { mutableStateOf(selectedDate) }
+
+    Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
+        Column(
+            modifier = Modifier
+                .size(width = 400.dp, height = 600.dp)
+                .wrapContentSize()
+                .background(
+                    color = NotesTheme.colors.primary,
+                    shape = NotesTheme.shapes.medium
+                )
+        ) {
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                Modifier
+                    .defaultMinSize(minHeight = NotesTheme.dimens.contentMargin)
+                    .fillMaxWidth()
+                    .background(
+                        color = NotesTheme.colors.secondary,
+                        shape = RoundedCornerShape(
+                            topStart = NotesTheme.dimens.halfContentMargin,
+                            topEnd = NotesTheme.dimens.halfContentMargin
+                        )
+                    )
+                    .padding(NotesTheme.dimens.sideMargin)
             ) {
-                AndroidView(factory = { CalendarView(it) }, update = {
-                    it.setOnDateChangeListener { calendar, year, month, day ->
-                        date = "$day - ${month + 1} - $year"
-                    }
-                })
-                Text(text = date)
+                Text(
+                    text = stringResource(id = R.strings.date_picker_select_date),
+                    style = NotesTheme.typography.caption,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.size(NotesTheme.dimens.inputsMargin))
+
+                Text(
+                    text = DateFormat.format("dd.MM.yyyy", currentSelectedDate.value).toString(),
+                    style = NotesTheme.typography.h4,
+                    color = Color.White
+                )
             }
-        })
-    return date
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 300.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CustomCalendarView(
+                    currentSelectedDate.value,
+                    minDate,
+                    maxDate,
+                    onDateSelected = {
+                        currentSelectedDate.value = it
+                    }
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(bottom = NotesTheme.dimens.sideMargin, end = NotesTheme.dimens.sideMargin)
+            ) {
+                PrimaryTextButton(text = stringResource(id = R.string.all_close)) {
+                    onDismissRequest.invoke()
+                }
+
+                PrimaryTextButton(text = stringResource(id = R.string.all_ok)) {
+                    val newDate = currentSelectedDate.value
+                    onDateSelected(
+                        Date(
+                            maxOf(
+                                minOf(maxDate ?: Long.MAX_VALUE, newDate.time),
+                                minDate ?: Long.MIN_VALUE
+                            )
+                        )
+                    )
+                    onDismissRequest.invoke()
+                }
+            }
+        }
+    }
 }
 
-
-@Preview
+/**
+ * Используется в [DatePickerCalendar] для создания календаря
+ * @param minDate Минимальная дата, которую можно выбрать.
+ * @param maxDate Максимальная дата, которую можно выбрать.
+ * @param onDateSelected Коллбек выбранной даты.
+ */
 @Composable
-private fun ShowCalendar() {
-    ThemeSettings {
-        Calendar()
+private fun CustomCalendarView(
+    selectedDate: Date,
+    minDate: Long? = null,
+    maxDate: Long? = null,
+    onDateSelected: (Date) -> Unit
+) {
+    // Добавить view в Compose
+    AndroidView(
+        modifier = Modifier.fillMaxWidth(),
+        factory = { context -> CalendarView(context) },
+        update = { view ->
+            view.date = selectedDate.time
+            if (minDate != null)
+                view.minDate = minDate
+            if (maxDate != null)
+                view.maxDate = maxDate
+
+            view.setOnDateChangeListener { _, year, month, dayOfMonth ->
+                onDateSelected(
+                    Calendar
+                        .getInstance()
+                        .apply {
+                            set(year, month, dayOfMonth)
+                        }
+                        .time
+                )
+            }
+        }
+    )
+}
+
+@Preview(name = "DatePicker", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun DatePickerPreview() {
+    NotesTheme {
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
+    }
+}
+
+@Preview(device = Devices.PIXEL_C, widthDp = 800, heightDp = 1280)
+@Composable
+fun DatePickerTabletPreview() {
+    NotesTheme {
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
+    }
+}
+
+@Preview(device = Devices.PIXEL_C, widthDp = 1280, heightDp = 800)
+@Composable
+fun DatePickerLandPreview() {
+    NotesTheme {
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
     }
 }
