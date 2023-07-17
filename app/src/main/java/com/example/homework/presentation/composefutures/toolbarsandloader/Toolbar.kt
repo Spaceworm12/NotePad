@@ -2,20 +2,16 @@ package com.example.homework.presentation.composefutures.toolbarsandloader
 
 import NotesTheme
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -23,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.homework.presentation.composefutures.ThemeSettings
@@ -37,22 +34,23 @@ fun Toolbar(
     onBackClick: () -> Unit
 ) {
     TopAppBar(
-        modifier = Modifier.zIndex(1f),
+        modifier = Modifier.zIndex(1f).height(80.dp).shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)),
         title = {
             Column {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().animateContentSize(),
                     text = title,
-                    style = TextStyle(shadow = Shadow(color=Color.Gray, Offset(10.0f, 12.5f), 1.0f))
+                    style = NotesTheme.typography.body1,
+                    fontSize = TextUnit.Unspecified
                 )
                 if (subtitle?.isNotBlank() == true) {
                     Text(
-                        style = TextStyle(shadow = Shadow(color=NotesTheme.colors.rippleColor,Offset(10.0f, 12.5f), 1.0f)),
+                        style = NotesTheme.typography.subtitle1,
                         modifier = Modifier.fillMaxWidth(),
                         text = subtitle,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.Gray
+                        color = NotesTheme.colors.onPrimary
                     )
                 }
 
