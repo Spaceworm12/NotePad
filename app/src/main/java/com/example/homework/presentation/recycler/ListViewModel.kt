@@ -51,8 +51,8 @@ class ListViewModel(
             is ListEvents.SaveCurrentNote -> viewState = viewState.copy(currentNote = event.note)
             is ListEvents.ShowChangeDialog -> viewState =
                 viewState.copy(isShowChangeDialog = event.itsShow)
-            is ListEvents.ShowDateAddDialog -> viewState = viewState.copy(isShowDateAddDialog = event.itsShow)
-            is ListEvents.SaveUserDate -> changeDate(note=event.note,date = event.note.date, id = event.note.id)
+            is ListEvents.ShowCalendar -> viewState = viewState.copy(isShowCalendar = event.itsShow)
+            is ListEvents.SaveUserDate -> changeDate(date = event.note.date, id = event.note.id)
             is ListEvents.ChangeTheme -> setTheme(event.themeCode)
             is ListEvents.ShowDeleteDialog -> viewState =
                 viewState.copy(isShowDeleteDialog = event.itsShow, deletableNoteId = event.id)
@@ -132,7 +132,7 @@ class ListViewModel(
             .addTo(disposables)
     }
 
-    private fun changeDate(note:NoteModel,date: String, id: Long) {
+    private fun changeDate(date: String, id: Long) {
         repo.changeDate(date, id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

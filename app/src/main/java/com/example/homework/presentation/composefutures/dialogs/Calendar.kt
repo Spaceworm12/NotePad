@@ -137,7 +137,6 @@ private fun CustomCalendarView(
     maxDate: Long? = null,
     onDateSelected: (Date) -> Unit
 ) {
-    // Добавить view в Compose
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { context -> CalendarView(context) },

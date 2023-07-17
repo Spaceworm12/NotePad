@@ -44,6 +44,7 @@ import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.google.android.material.datepicker.MaterialDatePicker
+import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
 
 class ListFragment : ComposeFragment() {
 
@@ -68,7 +69,7 @@ class ListFragment : ComposeFragment() {
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
-        if (state.isShowDateAddDialog) showDateDialog(state.isShowDateAddDialog,state.currentNote!!)
+        if (state.isShowCalendar) showDateDialog(state.currentNote!!)
         if (state.isShowChangeDialog) showChangeDialog(state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
@@ -290,38 +291,15 @@ class ListFragment : ComposeFragment() {
     )
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun showDateDialog(showDateAddDialog: Boolean, currentNote: NoteModel){
-        var date by remember {
-            mutableStateOf("")
+    private fun showDateDialog(note: NoteModel){
+        var noteDate by remember {
+            mutableStateOf(note.date)
         }
-        Scaffold(
-            topBar = {
-                androidx.compose.material3.TopAppBar(
-                    title = {
-                        androidx.compose.material3.Text(
-                            text = "Выберите дату",
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                )
-            },
-            content = {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    AndroidView(factory = { CalendarView(it) }, update = {
-                        it.setOnDateChangeListener { calendar, year, month, day ->
-                            date = "$day - ${month + 1} - $year"
-                        }
-                    })
-                   Text(text = date)
-                }
-            })
-        currentNote.date = date
+      DatePickerCalendar(selectedDate = note.date.to, onDateSelected = ) {
+          
+      }
         viewModel.submitUIEvent(ListEvents.SaveUserDate(note = currentNote))
-        viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(false,currentNote))
+        viewModel.submitUIEvent(ListEvents.ShowCalendar(false,currentNote))
     }
 
 
@@ -355,7 +333,7 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
                     2 -> {
-                        viewModel.submitUIEvent(ListEvents.ShowDateAddDialog(true,note))
+                        viewModel.submitUIEvent(ListEvents.ShowCalendar(true,note))
                     }
 //                    2-> { val s = showDatePicker(note)
 //                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note))
