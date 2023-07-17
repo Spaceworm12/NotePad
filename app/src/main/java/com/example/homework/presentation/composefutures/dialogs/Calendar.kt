@@ -14,13 +14,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import java.util.*
 
@@ -95,15 +96,18 @@ fun DatePickerCalendar(
             }
 
             Row(
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(bottom = NotesTheme.dimens.sideMargin, end = NotesTheme.dimens.sideMargin)
+                modifier = Modifier.wrapContentWidth()
+                    .padding(
+                        bottom = NotesTheme.dimens.sideMargin,
+                        end = NotesTheme.dimens.sideMargin
+                    ), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
             ) {
-                PrimaryBtn(text = stringResource(com.example.homework.R.string.cancel)) {
+                PrimaryBtn(modifier = Modifier.wrapContentWidth(),text = stringResource(com.example.homework.R.string.cancel),) {
                     onDismissRequest.invoke()
                 }
 
-                PrimaryBtn(text = stringResource(com.example.homework.R.string.yes)) {
+                PrimaryBtn(modifier = Modifier.wrapContentWidth(),text = stringResource(com.example.homework.R.string.yes)) {
                     val newDate = currentSelectedDate.value
                     onDateSelected(
                         Date(
@@ -161,7 +165,7 @@ private fun CustomCalendarView(
 @Preview(name = "DatePicker", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun DatePickerPreview() {
-    NotesTheme {
+    ThemeSettings() {
         DatePickerCalendar(
             selectedDate = Calendar.getInstance().time,
             onDateSelected = {},
@@ -169,24 +173,3 @@ fun DatePickerPreview() {
     }
 }
 
-@Preview(device = Devices.PIXEL_C, widthDp = 800, heightDp = 1280)
-@Composable
-fun DatePickerTabletPreview() {
-    NotesTheme {
-        DatePickerCalendar(
-            selectedDate = Calendar.getInstance().time,
-            onDateSelected = {},
-            onDismissRequest = {})
-    }
-}
-
-@Preview(device = Devices.PIXEL_C, widthDp = 1280, heightDp = 800)
-@Composable
-fun DatePickerLandPreview() {
-    NotesTheme {
-        DatePickerCalendar(
-            selectedDate = Calendar.getInstance().time,
-            onDateSelected = {},
-            onDismissRequest = {})
-    }
-}
