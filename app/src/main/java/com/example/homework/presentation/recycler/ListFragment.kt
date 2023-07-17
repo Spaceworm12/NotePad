@@ -2,10 +2,8 @@ package com.example.homework.presentation.recycler
 
 import NotesTheme
 import android.content.res.Configuration
-import android.os.Build
 import android.view.*
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
@@ -51,7 +49,6 @@ class ListFragment : ComposeFragment() {
         ViewModelProvider(this)[ListViewModel::class.java]
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
@@ -60,22 +57,26 @@ class ListFragment : ComposeFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     private fun ListNotesScreen(state: ListViewState) {
-        var currentDate by remember { mutableStateOf("") }
         viewModel.submitUIEvent(ListEvents.GetNotes)
         val isVisibleNow = remember { mutableStateOf(false) }
 
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
-        if (state.isShowCalendar) showDateDialog(state.currentNote!!)
-        if (state.isShowChangeDialog) showChangeDialog(state.currentNote!!)
+        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!)
+        if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
-        Column(modifier = Modifier.background(NotesTheme.colors.background)) {
+        Column(
+            modifier = Modifier.background(
+                NotesTheme.colors.background, shape = RoundedCornerShape(
+                    NotesTheme.dimens.halfContentMargin
+                )
+            )
+        ) {
 
             Toolbar(
                 title = stringResource(id = R.string.list_fragment_title),
@@ -85,6 +86,7 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(true))
                     }) {
                         Icon(
+                            modifier = Modifier.size(40.dp),
                             imageVector = Icons.Filled.Api,
                             contentDescription = "select theme"
                         )
@@ -115,9 +117,10 @@ class ListFragment : ComposeFragment() {
 
             FloatingActionButton(
                 modifier = Modifier
+                    .height(70.dp)
+                    .width(70.dp)
                     .padding(
                         start = NotesTheme.dimens.sideMargin,
-                        end = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
                     ),
                 backgroundColor = NotesTheme.colors.secondary,
@@ -139,6 +142,8 @@ class ListFragment : ComposeFragment() {
 
             FloatingActionButton(
                 modifier = Modifier
+                    .height(70.dp)
+                    .width(70.dp)
                     .padding(
                         end = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -162,7 +167,9 @@ class ListFragment : ComposeFragment() {
             ) {
                 FloatingActionButton(
                     modifier = Modifier
-                        .offset(y = (-fabSize) - NotesTheme.dimens.sideMargin)
+                        .height(70.dp)
+                        .width(70.dp)
+                        .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
                             bottom = NotesTheme.dimens.sideMargin
@@ -181,6 +188,8 @@ class ListFragment : ComposeFragment() {
             AnimatedVisibility(visible = isVisibleNow.value) {
                 FloatingActionButton(
                     modifier = Modifier
+                        .height(70.dp)
+                        .width(70.dp)
                         .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -288,7 +297,7 @@ class ListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun showDateDialog(note: NoteModel) {
+    private fun ShowDateDialog(note: NoteModel) {
         DatePickerCalendar(selectedDate = getCurrentDateTime(), onDateSelected = {
             note.date =
                 DateFormat.getDateInstance(DateFormat.SHORT).format(it)
@@ -299,7 +308,7 @@ class ListFragment : ComposeFragment() {
     }
 
     @Composable
-    private fun showChangeDialog(note: NoteModel) {
+    private fun ShowChangeDialog(note: NoteModel) {
         val items = arrayOf("Открыть", "Удалить", "Изменить дату")
         ItemsDialog(
             title = "Выберите действие",
@@ -372,7 +381,7 @@ class ListFragment : ComposeFragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    NoteFragment.newInstance(note ?: viewModel.viewState.getEmptyNote())
+                    NoteFragment.newInstance(note)
                 )
                 .addToBackStack("")
                 .commit()
@@ -382,7 +391,7 @@ class ListFragment : ComposeFragment() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_container,
-                    BirthdayFragment.newInstance(note ?: viewModel.viewState.getEmptyBirth())
+                    BirthdayFragment.newInstance(note)
                 )
                 .addToBackStack("")
                 .commit()
@@ -390,11 +399,10 @@ class ListFragment : ComposeFragment() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun RecyclerScreenPreview() {
-        ThemeSettings() {
+        ThemeSettings {
 
             val model = NoteModel(
                 id = 0,

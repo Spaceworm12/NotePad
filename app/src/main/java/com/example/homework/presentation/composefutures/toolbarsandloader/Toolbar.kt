@@ -2,6 +2,7 @@ package com.example.homework.presentation.composefutures.toolbarsandloader
 
 import NotesTheme
 import android.content.res.Configuration
+import android.graphics.fonts.FontStyle
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,11 +17,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.homework.presentation.composefutures.ThemeSettings
 
@@ -34,19 +39,20 @@ fun Toolbar(
     onBackClick: () -> Unit
 ) {
     TopAppBar(
-        modifier = Modifier.zIndex(1f).height(80.dp).shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)),
+        modifier = Modifier.height(80.dp).shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)),
         title = {
             Column {
                 Text(
-                    modifier = Modifier.fillMaxWidth().animateContentSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     text = title,
                     style = NotesTheme.typography.body1,
-                    fontSize = TextUnit.Unspecified
+                    fontSize = 20.sp
                 )
                 if (subtitle?.isNotBlank() == true) {
                     Text(
                         style = NotesTheme.typography.subtitle1,
                         modifier = Modifier.fillMaxWidth(),
+                        fontSize = 15.sp,
                         text = subtitle,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

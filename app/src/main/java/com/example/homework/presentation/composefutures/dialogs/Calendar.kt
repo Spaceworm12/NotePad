@@ -58,9 +58,7 @@ fun DatePickerCalendar(
                     .background(
                         color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(
-                            topStart = NotesTheme.dimens.halfContentMargin,
-                            topEnd = NotesTheme.dimens.halfContentMargin
-                        )
+                        NotesTheme.dimens.halfContentMargin)
                     )
                     .padding(NotesTheme.dimens.sideMargin)
             ) {
@@ -96,18 +94,21 @@ fun DatePickerCalendar(
             }
 
             Row(
-                modifier = Modifier.wrapContentWidth()
+                modifier = Modifier
+                    .align(Alignment.End)
                     .padding(
-                        bottom = NotesTheme.dimens.sideMargin,
-                        end = NotesTheme.dimens.sideMargin
+                        bottom = NotesTheme.dimens.contentMargin,
+                        end = NotesTheme.dimens.contentMargin,
+                        start = NotesTheme.dimens.contentMargin,
+                        top = NotesTheme.dimens.contentMargin
                     ), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
-                PrimaryBtn(modifier = Modifier.wrapContentWidth(),text = stringResource(com.example.homework.R.string.cancel),) {
+                PrimaryBtn(modifier=Modifier.padding(end=NotesTheme.dimens.contentMargin),text = stringResource(com.example.homework.R.string.cancel)) {
                     onDismissRequest.invoke()
                 }
 
-                PrimaryBtn(modifier = Modifier.wrapContentWidth(),text = stringResource(com.example.homework.R.string.yes)) {
+                PrimaryBtn(text = stringResource(com.example.homework.R.string.yes)) {
                     val newDate = currentSelectedDate.value
                     onDateSelected(
                         Date(

@@ -3,13 +3,14 @@ package com.example.homework.presentation.detail
 import NotesTheme
 import android.content.res.Configuration
 import android.os.Build
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
+import com.example.homework.presentation.recycler.ListEvents
 
 class NoteFragment : ComposeFragment() {
 
@@ -77,11 +79,18 @@ class NoteFragment : ComposeFragment() {
 
 
         Column(modifier = Modifier.background(NotesTheme.colors.background)) {
-
             Toolbar(
                 title = stringResource(id = R.string.detail_note),
-                onBackClick = { goBack() }
-            )
+                onBackClick = { goBack() },
+                actions = {
+                    IconButton(onClick = {
+                        Toast.makeText(requireContext(),"Здесь можно оставить заметку",Toast.LENGTH_SHORT).show()
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Информация о странице")
+                    }
+                })
+
+
 
             Box(
                 modifier = Modifier
@@ -129,7 +138,9 @@ class NoteFragment : ComposeFragment() {
                     )
             ) {
                 TextField(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = NotesTheme.colors.error),
                     value = currentDescription,
                     onValueChange = {
                         currentDescription = it
