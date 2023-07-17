@@ -3,9 +3,10 @@ package com.example.homework.presentation.recycler
 import NotesTheme
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.os.Build
 import android.view.*
-import android.widget.CalendarView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
@@ -22,17 +23,14 @@ import androidx.compose.material.icons.filled.Api
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.NoteAdd
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
@@ -43,8 +41,9 @@ import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.example.homework.util.getCurrentDateTime
 import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
+import java.util.*
 
 class ListFragment : ComposeFragment() {
 
@@ -286,22 +285,22 @@ class ListFragment : ComposeFragment() {
         }
     }
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter",
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint(
+        "UnusedMaterial3ScaffoldPaddingParameter",
         "UnusedMaterialScaffoldPaddingParameter"
     )
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun showDateDialog(note: NoteModel){
-        var noteDate by remember {
-            mutableStateOf(note.date)
+    private fun showDateDialog(note: NoteModel) {
+        DatePickerCalendar(selectedDate = getCurrentDateTime(), onDateSelected = {
+            note.date = it.toString()
+        }) {
+            viewModel.submitUIEvent(ListEvents.SaveUserDate(note = note))
+            viewModel.submitUIEvent(ListEvents.ShowCalendar(false, note))
+            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
         }
-      DatePickerCalendar(selectedDate = note.date.to, onDateSelected = ) {
-          
-      }
-        viewModel.submitUIEvent(ListEvents.SaveUserDate(note = currentNote))
-        viewModel.submitUIEvent(ListEvents.ShowCalendar(false,currentNote))
-    }
 
+    }
 
 
 //    @Composable
@@ -333,7 +332,7 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
                     }
                     2 -> {
-                        viewModel.submitUIEvent(ListEvents.ShowCalendar(true,note))
+                        viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))
                     }
 //                    2-> { val s = showDatePicker(note)
 //                    viewModel.submitUIEvent(ListEvents.SaveUserDate(note))
@@ -413,19 +412,19 @@ class ListFragment : ComposeFragment() {
 
     }
 
-    private fun showDatePicker(note: NoteModel): String {
-        val picker = MaterialDatePicker.Builder.datePicker().build()
-        activity?.let {
-            picker.show(it.supportFragmentManager, picker.toString())
-            picker.addOnPositiveButtonClickListener {
-                val newDate = it.toString()
-                note.date = newDate
-
-
-            }
-        }
-        return note.date
-    }
+//    private fun showDatePicker(note: NoteModel): String {
+//        val picker = MaterialDatePicker.Builder.datePicker().build()
+//        activity?.let {
+//            picker.show(it.supportFragmentManager, picker.toString())
+//            picker.addOnPositiveButtonClickListener {
+//                val newDate = it.toString()
+//                note.date = newDate
+//
+//
+//            }
+//        }
+//        return note.date
+//    }
 
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
