@@ -31,8 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.util.copy
 import com.example.homework.R
+import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.presentation.composefutures.*
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
@@ -81,7 +81,8 @@ class ListFragment : ComposeFragment() {
         ) {
 
             Toolbar(
-                title = stringResource(id = R.string.list_fragment_title),
+                title = "Список заметок - Тема № "+(AppNotes.getSettingsTheme().getInt(THEME_CODE,0).toString()),
+                stringResource(id = R.string.list_fragment_title),
                 isBackArrowVisible = false,
                 actions = {
                     IconButton(onClick = {
@@ -222,7 +223,8 @@ class ListFragment : ComposeFragment() {
                 .padding(top = 10.dp)
                 .combinedClickable(
                     onClick = {
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true, note))
                     },
                     onLongClick = {
                         viewModel.submitUIEvent(
@@ -259,7 +261,8 @@ class ListFragment : ComposeFragment() {
                 .padding(top = 10.dp)
                 .combinedClickable(
                     onClick = {
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true, note))
                     },
                     onLongClick = {
                         viewModel.submitUIEvent(
@@ -288,7 +291,7 @@ class ListFragment : ComposeFragment() {
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(5.dp)
-                        .padding(end = 15.dp)
+                        .padding(end = 25.dp)
                         .align(Alignment.CenterEnd)
                 ) {
                     Text(
@@ -303,7 +306,7 @@ class ListFragment : ComposeFragment() {
                                 NotesTheme.colors.rippleColor,
                                 shape = RoundedCornerShape(5.dp)
                             )
-                            .padding(top = 10.dp),
+                            .padding(10.dp),
                         text = note.date,
                         color = NotesTheme.colors.onPrimary
                     )
@@ -332,7 +335,7 @@ class ListFragment : ComposeFragment() {
                 DateFormat.getDateInstance(DateFormat.SHORT).format(it)
             viewModel.submitUIEvent(ListEvents.SaveUserDate(note = note))
             viewModel.submitUIEvent(ListEvents.ShowCalendar(false, note))
-            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
+            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
         }) {}
     }
 
@@ -346,11 +349,11 @@ class ListFragment : ComposeFragment() {
                 when (position) {
                     0 -> {
                         goToDetails(note)
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
                     }
                     1 -> {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
                     }
                     2 -> {
                         viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))
@@ -358,7 +361,7 @@ class ListFragment : ComposeFragment() {
                 }
             }
         ) {
-            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false))
+            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
         }
     }
 

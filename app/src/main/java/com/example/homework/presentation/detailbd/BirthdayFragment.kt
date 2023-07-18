@@ -213,7 +213,6 @@ class BirthdayFragment : ComposeFragment() {
                         )
                     },
                     colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent,

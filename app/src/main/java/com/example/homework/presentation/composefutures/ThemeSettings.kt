@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
 const val THEME_CODE = "THEME_CODE"
-const val FIRST_THEME = 0
-const val SECOND_THEME = 1
-const val THIRD_THEME = 2
+const val FIRST_THEME = 1
+const val SECOND_THEME = 2
+const val THIRD_THEME = 3
 
 private val FirstThemePalette = firstColors()
 private val SecondThemePalette = secondColors()
