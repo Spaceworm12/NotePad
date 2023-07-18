@@ -89,8 +89,8 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                .size(40.dp)
-                                .padding(end = 15.dp),
+                                .size(60.dp)
+                                .padding(15.dp),
                             imageVector = Icons.Filled.Api,
                             contentDescription = "select theme"
                         )
