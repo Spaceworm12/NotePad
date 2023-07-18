@@ -84,11 +84,11 @@ fun firstColors(
 )
 
 fun secondColors(
-    primary: Color = Color(0xFF268EF7),
-    primaryVariant: Color = Color(0xFF1B76D3),
-    secondary: Color = Color(0xFF165CA7),
+    primary: Color = Color(0xFF5AACFF),
+    primaryVariant: Color = Color(0xFF2E94FD),
+    secondary: Color = Color(0xFF88A3C0),
     secondaryVariant: Color = Color(0xFFB8BDC9),
-    background: Color = Color(0xFF72798A),
+    background: Color = Color(0xFFCECECE),
     surface: Color = Color(0xFF5C5F64),
     error: Color = Color(0xFF424447),
     onPrimary: Color = Color.Black,
