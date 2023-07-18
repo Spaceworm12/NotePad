@@ -67,7 +67,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
         if (state.isShowCalendar) ShowDateDialog(state.currentNote!!)
-        if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!)
+        if (state.isShowChangeDialog) ShowChangeDialog(note = state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -87,7 +87,9 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(true))
                     }) {
                         Icon(
-                            modifier = Modifier.size(40.dp).padding(end=15.dp),
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(end = 15.dp),
                             imageVector = Icons.Filled.Api,
                             contentDescription = "select theme"
                         )
@@ -97,21 +99,17 @@ class ListFragment : ComposeFragment() {
             )
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(top=10.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp),
             ) {
 
                 items(
                     items = state.notesList
                 ) { item: NoteModel ->
                     when (item.type) {
-                        NoteType.BIRTHDAY_TYPE -> {
-                            viewModel.viewState = viewModel.viewState.copy(currentNote = item)
-                            SecondItem(item)
-                        }
-
-                        NoteType.NOTE_TYPE -> {viewModel.viewState = viewModel.viewState.copy(currentNote = item)
-                            Item(item)}
-
+                        NoteType.BIRTHDAY_TYPE -> SecondItem(item)
+                        NoteType.NOTE_TYPE -> Item(item)
                     }
                 }
             }
@@ -221,10 +219,12 @@ class ListFragment : ComposeFragment() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.contentMargin)
-                .padding(top=10.dp)
+                .padding(top = 10.dp)
                 .combinedClickable(
-                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)},
+                    onClick = {
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                    },
                     onLongClick = {
                         viewModel.submitUIEvent(
                             ListEvents.ShowDeleteDialog(
@@ -257,10 +257,12 @@ class ListFragment : ComposeFragment() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.halfContentMargin)
-                .padding(top=10.dp)
+                .padding(top = 10.dp)
                 .combinedClickable(
-                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)},
+                    onClick = {
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                    },
                     onLongClick = {
                         viewModel.submitUIEvent(
                             ListEvents.ShowDeleteDialog(
@@ -284,12 +286,29 @@ class ListFragment : ComposeFragment() {
                 Text(text = note.description, style = NotesTheme.typography.body1)
             }
             Box(contentAlignment = Alignment.BottomEnd) {
-                Row(modifier = Modifier.wrapContentSize().padding(5.dp).padding(end=15.dp).align(Alignment.CenterEnd)) {
-                    Text(modifier = Modifier.drawBehind {
-                        drawCircle(
-                            color = Color.Black,
-                            radius = this.size.maxDimension
-                        )}.background(NotesTheme.colors.rippleColor, shape = RoundedCornerShape(5.dp)).padding(top=10.dp),text = note.date, color = NotesTheme.colors.onPrimary)
+                Row(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(5.dp)
+                        .padding(end = 15.dp)
+                        .align(Alignment.CenterEnd)
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .drawBehind {
+                                drawCircle(
+                                    color = Color.Black,
+                                    radius = this.size.maxDimension
+                                )
+                            }
+                            .background(
+                                NotesTheme.colors.rippleColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .padding(top = 10.dp),
+                        text = note.date,
+                        color = NotesTheme.colors.onPrimary
+                    )
                 }
             }
         }
@@ -321,7 +340,6 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ShowChangeDialog(note: NoteModel) {
-        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
         val items = arrayOf("Открыть", "Удалить", "Изменить дату")
         ItemsDialog(
             title = "Выберите действие",
