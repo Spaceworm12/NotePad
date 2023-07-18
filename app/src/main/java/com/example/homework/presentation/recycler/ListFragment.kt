@@ -63,7 +63,6 @@ class ListFragment : ComposeFragment() {
     private fun ListNotesScreen(state: ListViewState) {
         viewModel.submitUIEvent(ListEvents.GetNotes)
         val isVisibleNow = remember { mutableStateOf(false) }
-
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
@@ -106,9 +105,13 @@ class ListFragment : ComposeFragment() {
                 ) { item: NoteModel ->
                     when (item.type) {
                         NoteType.BIRTHDAY_TYPE -> {
+                            viewModel.viewState = viewModel.viewState.copy(currentNote = item)
                             SecondItem(item)
                         }
-                        NoteType.NOTE_TYPE -> Item(item)
+
+                        NoteType.NOTE_TYPE -> {viewModel.viewState = viewModel.viewState.copy(currentNote = item)
+                            Item(item)}
+
                     }
                 }
             }
@@ -220,7 +223,8 @@ class ListFragment : ComposeFragment() {
                 .padding(NotesTheme.dimens.contentMargin)
                 .padding(top=10.dp)
                 .combinedClickable(
-                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true)) },
+                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)},
                     onLongClick = {
                         viewModel.submitUIEvent(
                             ListEvents.ShowDeleteDialog(
@@ -249,14 +253,14 @@ class ListFragment : ComposeFragment() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun SecondItem(note: NoteModel) {
-        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.halfContentMargin)
                 .padding(top=10.dp)
                 .combinedClickable(
-                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true)) },
+                    onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
+                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)},
                     onLongClick = {
                         viewModel.submitUIEvent(
                             ListEvents.ShowDeleteDialog(
@@ -285,7 +289,7 @@ class ListFragment : ComposeFragment() {
                         drawCircle(
                             color = Color.Black,
                             radius = this.size.maxDimension
-                        )}.background(NotesTheme.colors.onPrimary, shape = RoundedCornerShape(5.dp)).padding(top=10.dp),text = note.date, color = NotesTheme.colors.onPrimary)
+                        )}.background(NotesTheme.colors.rippleColor, shape = RoundedCornerShape(5.dp)).padding(top=10.dp),text = note.date, color = NotesTheme.colors.onPrimary)
                 }
             }
         }
@@ -317,6 +321,7 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ShowChangeDialog(note: NoteModel) {
+        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
         val items = arrayOf("Открыть", "Удалить", "Изменить дату")
         ItemsDialog(
             title = "Выберите действие",
