@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.util.copy
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.*
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
@@ -67,7 +68,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
         if (state.isShowCalendar) ShowDateDialog(state.currentNote!!)
-        if (state.isShowChangeDialog) ShowChangeDialog(note = state.currentNote!!)
+        if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
 
@@ -110,11 +111,11 @@ class ListFragment : ComposeFragment() {
                     when (item.type) {
                         NoteType.BIRTHDAY_TYPE -> SecondItem(item)
                         NoteType.NOTE_TYPE -> Item(item)
+                        }
                     }
                 }
             }
 
-        }
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
 
@@ -214,7 +215,6 @@ class ListFragment : ComposeFragment() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun Item(note: NoteModel) {
-        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -222,7 +222,6 @@ class ListFragment : ComposeFragment() {
                 .padding(top = 10.dp)
                 .combinedClickable(
                     onClick = {
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
                     },
                     onLongClick = {
@@ -260,7 +259,6 @@ class ListFragment : ComposeFragment() {
                 .padding(top = 10.dp)
                 .combinedClickable(
                     onClick = {
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
                         viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true))
                     },
                     onLongClick = {
