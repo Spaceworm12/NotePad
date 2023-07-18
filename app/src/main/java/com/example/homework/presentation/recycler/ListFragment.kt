@@ -24,6 +24,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,7 +88,7 @@ class ListFragment : ComposeFragment() {
                         viewModel.submitUIEvent(ListEvents.ShowSettingsDialog(true))
                     }) {
                         Icon(
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).padding(end=15.dp),
                             imageVector = Icons.Filled.Api,
                             contentDescription = "select theme"
                         )
@@ -96,7 +98,7 @@ class ListFragment : ComposeFragment() {
             )
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(top=10.dp),
             ) {
 
                 items(
@@ -216,6 +218,7 @@ class ListFragment : ComposeFragment() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.contentMargin)
+                .padding(top=10.dp)
                 .combinedClickable(
                     onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true)) },
                     onLongClick = {
@@ -227,7 +230,7 @@ class ListFragment : ComposeFragment() {
                         )
                     },
                 ),
-            shape = RoundedCornerShape(NotesTheme.dimens.contentMargin),
+            shape = RoundedCornerShape(30.dp),
             backgroundColor = NotesTheme.colors.primary,
             elevation = NotesTheme.dimens.halfContentMargin
         ) {
@@ -235,7 +238,7 @@ class ListFragment : ComposeFragment() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(NotesTheme.dimens.contentMargin)
+                    .padding(10.dp)
             ) {
                 Text(text = note.name, style = NotesTheme.typography.h6)
                 Text(text = note.description, style = NotesTheme.typography.body1)
@@ -251,6 +254,7 @@ class ListFragment : ComposeFragment() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.halfContentMargin)
+                .padding(top=10.dp)
                 .combinedClickable(
                     onClick = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true)) },
                     onLongClick = {
@@ -262,7 +266,7 @@ class ListFragment : ComposeFragment() {
                         )
                     },
                 ),
-            shape = RoundedCornerShape(NotesTheme.dimens.halfContentMargin),
+            shape = RoundedCornerShape(30.dp),
             backgroundColor = NotesTheme.colors.secondary,
             elevation = NotesTheme.dimens.contentMargin,
         ) {
@@ -270,14 +274,18 @@ class ListFragment : ComposeFragment() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(NotesTheme.dimens.contentMargin)
+                    .padding(10.dp)
             ) {
                 Text(text = note.name, style = NotesTheme.typography.h6)
                 Text(text = note.description, style = NotesTheme.typography.body1)
             }
             Box(contentAlignment = Alignment.BottomEnd) {
-                Row {
-                    Text(text = note.date)
+                Row(modifier = Modifier.wrapContentSize().padding(5.dp).padding(end=15.dp).align(Alignment.CenterEnd)) {
+                    Text(modifier = Modifier.drawBehind {
+                        drawCircle(
+                            color = Color.Black,
+                            radius = this.size.maxDimension
+                        )}.background(NotesTheme.colors.onPrimary, shape = RoundedCornerShape(5.dp)).padding(top=10.dp),text = note.date, color = NotesTheme.colors.onPrimary)
                 }
             }
         }
@@ -423,12 +431,7 @@ class ListFragment : ComposeFragment() {
 
 
             val state = ListViewState(
-                notesList = listOf(model, secondModel, model),
-                isShowDeleteDialog = false,
-                isLoading = false,
-                errorText = "",
-                isShowSettingsDialog = false
-
+                notesList = listOf(model, secondModel, model)
             )
 
             ListNotesScreen(state)
