@@ -41,6 +41,8 @@ import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
+import com.example.homework.presentation.recycler.notelistcomponents.DeleteDialog
+import com.example.homework.presentation.recycler.notelistcomponents.NoteItem
 import com.example.homework.util.getCurrentDateTime
 import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
 import java.text.DateFormat
@@ -55,18 +57,24 @@ class ListFragment : ComposeFragment() {
     @Composable
     override fun GetContent() {
         val state = viewModel.viewStateObs.observeAsState().value ?: return
+
+        //Все обращения непрямую к вьюмодели или настройкам делаем вне экрана
+        //При отричовке превью экране не знает ничего об этих сущностях и выдаёт ошибку
+        viewModel.submitUIEvent(ListEvents.GetNotes)
+        val themeCount = AppNotes.getSettingsTheme().getInt(THEME_CODE, 0).toString()
+
         ThemeSettings(themeCode = state.currentTheme) {
-            ListNotesScreen(state)
+            ListNotesScreen(state, themeCount)
         }
     }
 
     @Composable
-    private fun ListNotesScreen(state: ListViewState) {
-        viewModel.submitUIEvent(ListEvents.GetNotes)
+    private fun ListNotesScreen(state: ListViewState, themeCount: String) {
         val isVisibleNow = remember { mutableStateOf(false) }
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
-        if (state.isShowDeleteDialog) DeleteDialog(state.deletableNoteId)
+        if (state.isShowDeleteDialog)
+            DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowCalendar) ShowDateDialog(state.currentNote!!)
         if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
@@ -79,9 +87,9 @@ class ListFragment : ComposeFragment() {
                 )
             )
         ) {
-
             Toolbar(
-                title = "Список заметок - Тема № "+(AppNotes.getSettingsTheme().getInt(THEME_CODE,0).toString()),
+                //TODO: В ресурсы
+                title = "Список заметок - Тема № $themeCount",
                 stringResource(id = R.string.list_fragment_title),
                 isBackArrowVisible = false,
                 actions = {
@@ -90,7 +98,9 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
+                                //TODO: В ресурсы
                                 .size(60.dp)
+                                //TODO: В ресурсы
                                 .padding(15.dp),
                             imageVector = Icons.Filled.Api,
                             contentDescription = "select theme"
@@ -103,6 +113,7 @@ class ListFragment : ComposeFragment() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
+                    //TODO: В ресурсы
                     .padding(top = 10.dp),
             ) {
 
@@ -110,19 +121,21 @@ class ListFragment : ComposeFragment() {
                     items = state.notesList
                 ) { item: NoteModel ->
                     when (item.type) {
-                        NoteType.BIRTHDAY_TYPE -> SecondItem(item)
-                        NoteType.NOTE_TYPE -> Item(item)
-                        }
+                        NoteType.BIRTHDAY_TYPE -> BirthDayItem(item)
+                        NoteType.NOTE_TYPE -> NoteItem(item) { event -> viewModel.submitUIEvent(event) }
                     }
                 }
             }
+        }
 
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
 
             FloatingActionButton(
                 modifier = Modifier
+                    //TODO: В ресурсы
                     .height(70.dp)
+                    //TODO: В ресурсы
                     .width(70.dp)
                     .padding(
                         start = NotesTheme.dimens.sideMargin,
@@ -141,13 +154,17 @@ class ListFragment : ComposeFragment() {
             }
         }
 
+        //TODO: Все Fab-ы вынести в пакет notelistcomponents отдельным компонентом
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
 
+            //TODO: В ресурсы
             val fabSize = 56.dp
 
             FloatingActionButton(
                 modifier = Modifier
+                    //TODO: В ресурсы
                     .height(70.dp)
+                    //TODO: В ресурсы
                     .width(70.dp)
                     .padding(
                         end = NotesTheme.dimens.sideMargin,
@@ -172,7 +189,9 @@ class ListFragment : ComposeFragment() {
             ) {
                 FloatingActionButton(
                     modifier = Modifier
+                        //TODO: В ресурсы
                         .height(70.dp)
+                        //TODO: В ресурсы
                         .width(70.dp)
                         .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
@@ -193,7 +212,9 @@ class ListFragment : ComposeFragment() {
             AnimatedVisibility(visible = isVisibleNow.value) {
                 FloatingActionButton(
                     modifier = Modifier
+                        //TODO: В ресурсы
                         .height(70.dp)
+                        //TODO: В ресурсы
                         .width(70.dp)
                         .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
                         .padding(
@@ -213,51 +234,16 @@ class ListFragment : ComposeFragment() {
         }
     }
 
+
+    //TODO: Перенести в пакет notelistcomponents
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun Item(note: NoteModel) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(NotesTheme.dimens.contentMargin)
-                .padding(top = 10.dp)
-                .combinedClickable(
-                    onClick = {
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true, note))
-                    },
-                    onLongClick = {
-                        viewModel.submitUIEvent(
-                            ListEvents.ShowDeleteDialog(
-                                true,
-                                note.id
-                            )
-                        )
-                    },
-                ),
-            shape = RoundedCornerShape(30.dp),
-            backgroundColor = NotesTheme.colors.primary,
-            elevation = NotesTheme.dimens.halfContentMargin
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
-                Text(text = note.name, style = NotesTheme.typography.h6)
-                Text(text = note.description, style = NotesTheme.typography.body1)
-            }
-        }
-    }
-
-    @OptIn(ExperimentalFoundationApi::class)
-    @Composable
-    private fun SecondItem(note: NoteModel) {
+    private fun BirthDayItem(note: NoteModel) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.halfContentMargin)
+                //TODO: В ресурсы
                 .padding(top = 10.dp)
                 .combinedClickable(
                     onClick = {
@@ -273,6 +259,7 @@ class ListFragment : ComposeFragment() {
                         )
                     },
                 ),
+            //TODO: В ресурсы
             shape = RoundedCornerShape(30.dp),
             backgroundColor = NotesTheme.colors.secondary,
             elevation = NotesTheme.dimens.contentMargin,
@@ -281,6 +268,7 @@ class ListFragment : ComposeFragment() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    //TODO: В ресурсы
                     .padding(10.dp)
             ) {
                 Text(text = note.name, style = NotesTheme.typography.h6)
@@ -290,7 +278,9 @@ class ListFragment : ComposeFragment() {
                 Row(
                     modifier = Modifier
                         .wrapContentSize()
+                        //TODO: В ресурсы
                         .padding(5.dp)
+                        //TODO: В ресурсы
                         .padding(end = 25.dp)
                         .align(Alignment.CenterEnd)
                 ) {
@@ -306,6 +296,7 @@ class ListFragment : ComposeFragment() {
                                 NotesTheme.colors.rippleColor,
                                 shape = RoundedCornerShape(5.dp)
                             )
+                            //TODO: В ресурсы
                             .padding(10.dp),
                         text = note.date,
                         color = NotesTheme.colors.onPrimary
@@ -315,19 +306,7 @@ class ListFragment : ComposeFragment() {
         }
     }
 
-    @Composable
-    private fun DeleteDialog(id: Long) {
-        DefaultDialog(
-            title = stringResource(id = R.string.delete_question),
-            onPositiveClick = {
-                if (id != -1L) viewModel.submitUIEvent(ListEvents.DeleteNote(id))
-                viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
-            },
-            onNegativeClick = { viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1)) }) {
-            viewModel.submitUIEvent(ListEvents.ShowDeleteDialog(false, -1))
-        }
-    }
-
+    //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ShowDateDialog(note: NoteModel) {
         DatePickerCalendar(selectedDate = getCurrentDateTime(), onDateSelected = {
@@ -335,37 +314,44 @@ class ListFragment : ComposeFragment() {
                 DateFormat.getDateInstance(DateFormat.SHORT).format(it)
             viewModel.submitUIEvent(ListEvents.SaveUserDate(note = note))
             viewModel.submitUIEvent(ListEvents.ShowCalendar(false, note))
-            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
+            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
         }) {}
     }
 
+    //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ShowChangeDialog(note: NoteModel) {
+        //TODO: В ресурсы
         val items = arrayOf("Открыть", "Удалить", "Изменить дату")
         ItemsDialog(
+            //TODO: В ресурсы
             title = "Выберите действие",
             items = items,
             onItemClick = { position ->
                 when (position) {
                     0 -> {
                         goToDetails(note)
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
                     }
+
                     1 -> {
                         viewModel.submitUIEvent(ListEvents.DeleteNoteModel(note))
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
+                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
                     }
+
                     2 -> {
+                        //TODO: В заметке с типом NOTE_TYPE нет даты, убрать отображение этого пункта
                         viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))
                     }
                 }
             }
         ) {
-            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false,note))
+            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
         }
     }
 
 
+    //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ClearAllNotes() {
         DefaultDialog(
@@ -384,6 +370,7 @@ class ListFragment : ComposeFragment() {
         {}
     }
 
+    //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun SettingsDialog() {
 
@@ -458,7 +445,7 @@ class ListFragment : ComposeFragment() {
                 notesList = listOf(model, secondModel, model)
             )
 
-            ListNotesScreen(state)
+            ListNotesScreen(state, themeCount = "1")
         }
     }
 

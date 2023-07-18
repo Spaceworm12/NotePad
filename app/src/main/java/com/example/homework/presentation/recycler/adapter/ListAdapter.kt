@@ -10,6 +10,7 @@ import com.example.homework.databinding.FragmentNoteBoxBinding
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 
+//TODO: Удалить ненужные классы и макеты
 class ListAdapter(
     private val clickListener: (NoteModel) -> Unit,
     private val longClickListener: (Long) -> Unit
