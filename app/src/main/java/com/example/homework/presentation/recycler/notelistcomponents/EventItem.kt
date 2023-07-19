@@ -29,8 +29,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(NotesTheme.dimens.halfContentMargin)
-            //TODO: В ресурсы
-            .padding(top = 10.dp)
+            .padding(NotesTheme.dimens.sideMargin)
             .combinedClickable(
                 onClick = {
                     onUiEvent.invoke(ListEvents.SaveCurrentNote(note))
@@ -45,8 +44,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
                     )
                 },
             ),
-        //TODO: В ресурсы
-        shape = RoundedCornerShape(30.dp),
+        shape = NotesTheme.shapes.xlLarge,
         backgroundColor = NotesTheme.colors.secondary,
         elevation = NotesTheme.dimens.contentMargin,
     ) {
@@ -54,8 +52,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                //TODO: В ресурсы
-                .padding(10.dp)
+                .padding(NotesTheme.dimens.contentMargin)
         ) {
             Text(text = note.name, style = NotesTheme.typography.h6)
             Text(text = note.description, style = NotesTheme.typography.body1)
@@ -64,10 +61,8 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
             Row(
                 modifier = Modifier
                     .wrapContentSize()
-                    //TODO: В ресурсы
-                    .padding(5.dp)
-                    //TODO: В ресурсы
-                    .padding(end = 25.dp)
+                    .padding(NotesTheme.dimens.halfContentMargin)
+                    .padding(NotesTheme.dimens.inputsMargin)
                     .align(Alignment.CenterEnd)
             ) {
                 Text(
@@ -82,8 +77,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
                             NotesTheme.colors.rippleColor,
                             shape = RoundedCornerShape(5.dp)
                         )
-                        //TODO: В ресурсы
-                        .padding(10.dp),
+                        .padding(NotesTheme.dimens.sideMargin),
                     text = note.date,
                     color = NotesTheme.colors.onPrimary
                 )

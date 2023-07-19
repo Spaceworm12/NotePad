@@ -10,4 +10,5 @@ data class NotesShape(
     val medium: RoundedCornerShape = RoundedCornerShape(8.dp),
     val large: RoundedCornerShape = RoundedCornerShape(12.dp),
     val xlarge: RoundedCornerShape = RoundedCornerShape(16.dp),
+    val xlLarge:RoundedCornerShape = RoundedCornerShape(30.dp),
 )

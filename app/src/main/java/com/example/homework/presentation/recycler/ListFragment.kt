@@ -227,79 +227,6 @@ class ListFragment : ComposeFragment() {
             }
         }
     }
-
-
-    //TODO: Перенести в пакет notelistcomponents
-    @OptIn(ExperimentalFoundationApi::class)
-    @Composable
-    private fun BirthDayItem(note: NoteModel) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(NotesTheme.dimens.halfContentMargin)
-                //TODO: В ресурсы
-                .padding(top = 10.dp)
-                .combinedClickable(
-                    onClick = {
-                        viewModel.viewState = viewModel.viewState.copy(currentNote = note)
-                        viewModel.submitUIEvent(ListEvents.ShowChangeDialog(true, note))
-                    },
-                    onLongClick = {
-                        viewModel.submitUIEvent(
-                            ListEvents.ShowDeleteDialog(
-                                true,
-                                note.id
-                            )
-                        )
-                    },
-                ),
-            //TODO: В ресурсы
-            shape = RoundedCornerShape(30.dp),
-            backgroundColor = NotesTheme.colors.secondary,
-            elevation = NotesTheme.dimens.contentMargin,
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //TODO: В ресурсы
-                    .padding(10.dp)
-            ) {
-                Text(text = note.name, style = NotesTheme.typography.h6)
-                Text(text = note.description, style = NotesTheme.typography.body1)
-            }
-            Box(contentAlignment = Alignment.BottomEnd) {
-                Row(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        //TODO: В ресурсы
-                        .padding(5.dp)
-                        //TODO: В ресурсы
-                        .padding(end = 25.dp)
-                        .align(Alignment.CenterEnd)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .drawBehind {
-                                drawCircle(
-                                    color = Color.Black,
-                                    radius = this.size.maxDimension
-                                )
-                            }
-                            .background(
-                                NotesTheme.colors.rippleColor,
-                                shape = RoundedCornerShape(5.dp)
-                            )
-                            //TODO: В ресурсы
-                            .padding(10.dp),
-                        text = note.date,
-                        color = NotesTheme.colors.onPrimary
-                    )
-                }
-            }
-        }
-    }
-
     //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ShowDateDialog(note: NoteModel) {
@@ -311,7 +238,6 @@ class ListFragment : ComposeFragment() {
             viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
         }) {}
     }
-
     //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ShowChangeDialog(note: NoteModel) {
@@ -439,7 +365,7 @@ class ListFragment : ComposeFragment() {
                 notesList = listOf(model, secondModel, model)
             )
 
-            ListNotesScreen(state, themeCount = "1")
+            ListNotesScreen(state, themeCount = "2")
         }
     }
 
