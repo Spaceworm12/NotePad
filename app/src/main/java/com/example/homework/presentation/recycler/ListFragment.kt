@@ -260,8 +260,8 @@ class ListFragment : ComposeFragment() {
                     }
 
                     2 -> {
-                        //TODO: В заметке с типом NOTE_TYPE нет даты, убрать отображение этого пункта
-                        viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))
+                        if(note.type==NoteType.BIRTHDAY_TYPE){
+                        viewModel.submitUIEvent(ListEvents.ShowCalendar(true, note))}
                     }
                 }
             }
