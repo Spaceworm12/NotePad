@@ -85,3 +85,20 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         }
     }
 }
+@Preview(name = "EventItem", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+private fun EventItemPreview() {
+    ThemeSettings {
+
+        val note = NoteModel(
+            id = 0,
+            name = "Заметка",
+            description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
+                    "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
+            type = NoteType.BIRTHDAY_TYPE,
+            date = "25.01.22"
+        )
+
+        EventItem(note) {}
+    }
+}

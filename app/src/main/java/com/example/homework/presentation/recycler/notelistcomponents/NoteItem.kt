@@ -68,7 +68,7 @@ private fun NoteItemPreview() {
             name = "Заметка",
             description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
                     "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
-            type = NoteType.BIRTHDAY_TYPE,
+            type = NoteType.NOTE_TYPE,
             date = "25.01.22"
         )
 
