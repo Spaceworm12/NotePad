@@ -50,7 +50,7 @@ fun ThemeSettings(
             typography = cursiveTypography()
         }
         THIRD_THEME -> {
-            dimensions = smallDimensions()
+            dimensions = bigDimensions()
             typography = cursiveTypography()
         }
         else -> {

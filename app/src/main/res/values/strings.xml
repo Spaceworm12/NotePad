@@ -34,6 +34,7 @@
     <string name="add_bd">Событие</string>
     <string name="add_note">Заметка</string>
     <string name="delete_all">Удалить все записи</string>
+    <string name="list_of_notes_theme_number">Список заметок - Тема №</string>
     <string name="delete_all_question">Удалить все записи?</string>
     <string name="bd">BD</string>
     <string name="note">Заметка</string>

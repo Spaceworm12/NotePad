@@ -56,11 +56,8 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     override fun GetContent() {
-        val state = viewModel.viewStateObs.observeAsState().value ?: return
-
-        //Все обращения непрямую к вьюмодели или настройкам делаем вне экрана
-        //При отричовке превью экране не знает ничего об этих сущностях и выдаёт ошибку
         viewModel.submitUIEvent(ListEvents.GetNotes)
+        val state = viewModel.viewStateObs.observeAsState().value ?: return
         val themeCount = AppNotes.getSettingsTheme().getInt(THEME_CODE, 0).toString()
 
         ThemeSettings(themeCode = state.currentTheme) {
@@ -70,6 +67,8 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ListNotesScreen(state: ListViewState, themeCount: String) {
+
+
         val isVisibleNow = remember { mutableStateOf(false) }
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
@@ -88,8 +87,8 @@ class ListFragment : ComposeFragment() {
             )
         ) {
             Toolbar(
-                //TODO: В ресурсы
-                title = "Список заметок - Тема № $themeCount",
+                //TODO: В ресурсы +
+                title = stringResource(id = R.string.list_of_notes_theme_number)+"$themeCount",
                 stringResource(id = R.string.list_fragment_title),
                 isBackArrowVisible = false,
                 actions = {
@@ -103,7 +102,7 @@ class ListFragment : ComposeFragment() {
                                 //TODO: В ресурсы
                                 .padding(15.dp),
                             imageVector = Icons.Filled.Api,
-                            contentDescription = "select theme"
+                            contentDescription = stringResource(R.string.select_theme)
                         )
                     }
                 },

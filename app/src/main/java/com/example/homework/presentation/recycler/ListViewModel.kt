@@ -19,6 +19,7 @@ import io.reactivex.rxkotlin.addTo
 class ListViewModel(
     private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
+    val currentTheme = MutableLiveData(FIRST_THEME)
     private val disposables = CompositeDisposable()
     private val _viewState = MutableLiveData(ListViewState())
     val viewStateObs: LiveData<ListViewState> get() = _viewState

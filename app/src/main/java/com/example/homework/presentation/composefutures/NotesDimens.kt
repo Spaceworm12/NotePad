@@ -44,4 +44,17 @@ fun smallDimensions(
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
+
+)
+fun bigDimensions(
+    sideMargin: Dp = 20.dp,
+    inputsMargin: Dp = 28.dp,
+    contentMargin: Dp = 10.dp,
+    halfContentMargin: Dp = 6.dp,
+
+    ): NotesDimens = NotesDimens(
+    sideMargin = sideMargin,
+    inputsMargin = inputsMargin,
+    contentMargin = contentMargin,
+    halfContentMargin = halfContentMargin,
 )
