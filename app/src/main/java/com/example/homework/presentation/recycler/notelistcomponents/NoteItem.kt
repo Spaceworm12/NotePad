@@ -27,8 +27,8 @@ internal fun NoteItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(NotesTheme.dimens.contentMargin)
-            //TODO: В ресурсы
-            .padding(top = 10.dp)
+            //TODO: В ресурсы+
+            .padding(NotesTheme.dimens.sideMargin)
             .combinedClickable(
                 onClick = {
                     onUiEvent.invoke(ListEvents.SaveCurrentNote(note))
@@ -51,8 +51,8 @@ internal fun NoteItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                //TODO: В ресурсы
-                .padding(10.dp)
+                //TODO: В ресурсы+
+                .padding(NotesTheme.dimens.sideMargin)
         ) {
             Text(text = note.name, style = NotesTheme.typography.h6)
             Text(text = note.description, style = NotesTheme.typography.body1)

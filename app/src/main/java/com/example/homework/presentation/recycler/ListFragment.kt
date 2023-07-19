@@ -42,6 +42,7 @@ import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.notelistcomponents.DeleteDialog
+import com.example.homework.presentation.recycler.notelistcomponents.EventItem
 import com.example.homework.presentation.recycler.notelistcomponents.NoteItem
 import com.example.homework.util.getCurrentDateTime
 import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
@@ -59,7 +60,6 @@ class ListFragment : ComposeFragment() {
         viewModel.submitUIEvent(ListEvents.GetNotes)
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         val themeCount = AppNotes.getSettingsTheme().getInt(THEME_CODE, 0).toString()
-
         ThemeSettings(themeCode = state.currentTheme) {
             ListNotesScreen(state, themeCount)
         }
@@ -67,7 +67,6 @@ class ListFragment : ComposeFragment() {
 
     @Composable
     private fun ListNotesScreen(state: ListViewState, themeCount: String) {
-
 
         val isVisibleNow = remember { mutableStateOf(false) }
         if (state.errorText.isNotBlank())
@@ -97,10 +96,10 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                //TODO: В ресурсы
-                                .size(60.dp)
-                                //TODO: В ресурсы
-                                .padding(15.dp),
+                                //TODO: В ресурсы+
+                                .size(NotesTheme.dimens.inputsMargin)
+                                //TODO: В ресурсы+
+                                .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)
                         )
@@ -108,28 +107,24 @@ class ListFragment : ComposeFragment() {
                 },
                 onBackClick = { }
             )
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    //TODO: В ресурсы
-                    .padding(top = 10.dp),
+                    //TODO: В ресурсы+
+                    .padding(NotesTheme.dimens.sideMargin),
             ) {
-
                 items(
                     items = state.notesList
                 ) { item: NoteModel ->
                     when (item.type) {
-                        NoteType.BIRTHDAY_TYPE -> BirthDayItem(item)
+                        NoteType.BIRTHDAY_TYPE -> EventItem(item) {event -> viewModel.submitUIEvent(event)}
                         NoteType.NOTE_TYPE -> NoteItem(item) { event -> viewModel.submitUIEvent(event) }
                     }
                 }
             }
         }
 
-
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
-
             FloatingActionButton(
                 modifier = Modifier
                     //TODO: В ресурсы
