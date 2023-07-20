@@ -15,6 +15,7 @@ data class ListViewState(
     val deletableNoteId: Long = -1L,
     var currentNote: NoteModel? = null,
     val isShowCalendar: Boolean = false,
+    val goingToDetails: Boolean = false,
 
     ) {
 
