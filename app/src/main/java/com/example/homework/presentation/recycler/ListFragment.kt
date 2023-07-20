@@ -71,7 +71,7 @@ class ListFragment : ComposeFragment() {
                 event
             )
         }
-        if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!) { event ->
+        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!) { event ->
             viewModel.submitUIEvent(
                 event
             )
