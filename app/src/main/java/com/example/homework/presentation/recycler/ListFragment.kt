@@ -341,7 +341,7 @@ class ListFragment : ComposeFragment() {
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun RecyclerScreenPreview() {
-        ThemeSettings {
+        ThemeSettings(themeCode = 3) {
 
             val model = NoteModel(
                 id = 0,
@@ -362,7 +362,7 @@ class ListFragment : ComposeFragment() {
 
 
             val state = ListViewState(
-                notesList = listOf(model, secondModel, model)
+                notesList = listOf(model, secondModel, model,secondModel, model)
             )
 
             ListNotesScreen(state, themeCount = "2")
