@@ -7,6 +7,9 @@
     <string name="update">Обновить</string>
     <string name="app_name_notepad">Блокнот</string>
     <string name="event">Событие</string>
+    <string name="open">Открыть</string>
+    <string name="change_date">Изменить дату</string>
+    <string name="choose_action">Выберите действие</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="go_back">Назад</string>
@@ -41,7 +44,6 @@
     <string name="note">Заметка</string>
     <string name="plus_chain">+</string>
     <string name="birthday">birthday</string>
-    <string name="open">Открыть</string>
     <string name="birthday_add">BIRTHDAY</string>
     <string name="description">Описание</string>
     <string name="birthday_new">Добавить событие</string>

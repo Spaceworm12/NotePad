@@ -2,14 +2,11 @@ package com.example.homework.presentation.recycler
 
 import NotesTheme
 import android.content.res.Configuration
-import android.view.*
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,13 +21,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.data.models.model.app.AppNotes
@@ -43,12 +37,9 @@ import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.notelistcomponents.DeleteDialog
+import com.example.homework.presentation.recycler.notelistcomponents.ShowDateDialog
 import com.example.homework.presentation.recycler.notelistcomponents.EventItem
 import com.example.homework.presentation.recycler.notelistcomponents.NoteItem
-import com.example.homework.util.getCurrentDateTime
-import ru.x5.core_compose.ui.theme.ui.datepicker.DatePickerCalendar
-import java.text.DateFormat
-import java.util.*
 
 class ListFragment : ComposeFragment() {
 
@@ -74,7 +65,7 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog)
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!)
+        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!) {event -> viewModel.submitUIEvent(event)}
         if (state.isShowChangeDialog) ShowChangeDialog(state.currentNote!!)
         if (state.isShowSettingsDialog) SettingsDialog()
         if (state.isShowDeleteAllDialog) ClearAllNotes()
@@ -176,7 +167,6 @@ class ListFragment : ComposeFragment() {
                 FloatingActionButton(
                     modifier = Modifier
                         .height(dimensionResource(R.dimen.big_70))
-                        //TODO: В ресурсы
                         .width(dimensionResource(R.dimen.big_70))
                         .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
@@ -197,10 +187,8 @@ class ListFragment : ComposeFragment() {
             AnimatedVisibility(visible = isVisibleNow.value) {
                 FloatingActionButton(
                     modifier = Modifier
-                        //TODO: В ресурсы
-                        .height(70.dp)
-                        //TODO: В ресурсы
-                        .width(70.dp)
+                        .height(dimensionResource(R.dimen.big_70))
+                        .width(dimensionResource(R.dimen.big_70))
                         .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -211,32 +199,19 @@ class ListFragment : ComposeFragment() {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Event,
-                        contentDescription = "Заметка",
+                        contentDescription = stringResource(R.string.note),
                         tint = NotesTheme.colors.background
                     )
                 }
             }
         }
     }
-    //TODO: Перенести в пакет notelistcomponents
-    @Composable
-    private fun ShowDateDialog(note: NoteModel) {
-        DatePickerCalendar(selectedDate = getCurrentDateTime(), onDateSelected = {
-            note.date =
-                DateFormat.getDateInstance(DateFormat.SHORT).format(it)
-            viewModel.submitUIEvent(ListEvents.SaveUserDate(note = note))
-            viewModel.submitUIEvent(ListEvents.ShowCalendar(false, note))
-            viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, note))
-        }) {}
-    }
-    //TODO: Перенести в пакет notelistcomponents
     @Composable
     private fun ShowChangeDialog(note: NoteModel) {
         //TODO: В ресурсы
-        val items = arrayOf("Открыть", "Удалить", "Изменить дату")
+        val items = arrayOf(stringResource(R.string.open, R.string.delete, R.string.change_date))
         ItemsDialog(
-            //TODO: В ресурсы
-            title = "Выберите действие",
+            title = stringResource(R.string.choose_action),
             items = items,
             onItemClick = { position ->
                 when (position) {
