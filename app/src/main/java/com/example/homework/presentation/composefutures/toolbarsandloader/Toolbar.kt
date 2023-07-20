@@ -2,8 +2,6 @@ package com.example.homework.presentation.composefutures.toolbarsandloader
 
 import NotesTheme
 import android.content.res.Configuration
-import android.graphics.fonts.FontStyle
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,20 +11,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.example.homework.presentation.composefutures.ThemeSettings
 
 @Composable
@@ -39,7 +29,9 @@ fun Toolbar(
     onBackClick: () -> Unit
 ) {
     TopAppBar(
-        modifier = Modifier.height(80.dp).shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)),
+        modifier = Modifier
+            .height(80.dp)
+            .shadow(10.dp, RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)),
         title = {
             Column {
                 Text(
@@ -80,7 +72,7 @@ fun Toolbar(
 
 @Preview(name = "Toolbar", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-private fun PToolbarPreview() {
+private fun ToolbarPreview() {
     ThemeSettings() {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Toolbar(

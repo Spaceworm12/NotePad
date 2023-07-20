@@ -106,11 +106,11 @@ fun EventsDialog(
     }
 }
 
-@Preview(name = "ItemsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "EventsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-private fun ItemsDialogPreview() {
+private fun EventsDialogPreview() {
     ThemeSettings() {
-        ItemsDialog(
+        EventsDialog(
             "Добавьте собаку",
             "Учтите все собачьи нюансы",
             "Закрыть",

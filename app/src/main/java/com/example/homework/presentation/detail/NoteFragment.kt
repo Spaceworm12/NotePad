@@ -84,9 +84,9 @@ class NoteFragment : ComposeFragment() {
                 onBackClick = { goBack() },
                 actions = {
                     IconButton(onClick = {
-                        Toast.makeText(requireContext(),"Здесь можно оставить заметку",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),R.string.here_u_can_add_note,Toast.LENGTH_SHORT).show()
                     }) {
-                        Icon(Icons.Filled.Info, contentDescription = "Информация о странице")
+                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.info_about))
                     }
                 })
 

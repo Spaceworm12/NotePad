@@ -84,11 +84,11 @@ fun ChangeDialog(
     }
 }
 
-@Preview(name = "DefaultDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "ChangeDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-private fun DefaultDialogPreview() {
+private fun ChangeDialogPreview() {
     ThemeSettings {
-        DefaultDialog(title = "Уверен?",
+        ChangeDialog(title = "Уверен?",
             message = "Ну жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст. А вообще иди в сраку. Делать тебе тут нечго и вообще андроид не для тебя.",
             onPositiveClick = {}) {}
     }

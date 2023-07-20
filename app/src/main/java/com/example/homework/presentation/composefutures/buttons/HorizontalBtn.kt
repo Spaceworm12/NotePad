@@ -78,9 +78,9 @@ fun HorizontalBtn(
     }
 }
 
-@Preview(name = "PrimaryBtn", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "HorizontalBtn", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-private fun PrimaryBtnPreview() {
+private fun HorizontalButtonPreview() {
     ThemeSettings {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             PrimaryBtn(modifier = Modifier.fillMaxWidth(), text = "Text") {}
