@@ -6,6 +6,7 @@
     <string name="delete">Удалить</string>
     <string name="update">Обновить</string>
     <string name="app_name_notepad">Блокнот</string>
+    <string name="event">Событие</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="go_back">Назад</string>

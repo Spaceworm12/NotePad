@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,7 +87,6 @@ class ListFragment : ComposeFragment() {
             )
         ) {
             Toolbar(
-                //TODO: В ресурсы +
                 title = stringResource(id = R.string.list_of_notes_theme_number)+"$themeCount",
                 stringResource(id = R.string.list_fragment_title),
                 isBackArrowVisible = false,
@@ -96,9 +96,7 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                //TODO: В ресурсы+
                                 .size(NotesTheme.dimens.inputsMargin)
-                                //TODO: В ресурсы+
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)
@@ -110,7 +108,6 @@ class ListFragment : ComposeFragment() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    //TODO: В ресурсы+
                     .padding(NotesTheme.dimens.sideMargin),
             ) {
                 items(
@@ -127,10 +124,8 @@ class ListFragment : ComposeFragment() {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
             FloatingActionButton(
                 modifier = Modifier
-                    //TODO: В ресурсы
-                    .height(70.dp)
-                    //TODO: В ресурсы
-                    .width(70.dp)
+                    .height(dimensionResource(R.dimen.big_70))
+                    .width(dimensionResource(R.dimen.big_70))
                     .padding(
                         start = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -151,15 +146,12 @@ class ListFragment : ComposeFragment() {
         //TODO: Все Fab-ы вынести в пакет notelistcomponents отдельным компонентом
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
 
-            //TODO: В ресурсы
-            val fabSize = 56.dp
+            val fabSize = dimensionResource(R.dimen.design_fab_size_normal)
 
             FloatingActionButton(
                 modifier = Modifier
-                    //TODO: В ресурсы
-                    .height(70.dp)
-                    //TODO: В ресурсы
-                    .width(70.dp)
+                    .height(dimensionResource(R.dimen.big_70))
+                    .width(dimensionResource(R.dimen.big_70))
                     .padding(
                         end = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -183,10 +175,9 @@ class ListFragment : ComposeFragment() {
             ) {
                 FloatingActionButton(
                     modifier = Modifier
+                        .height(dimensionResource(R.dimen.big_70))
                         //TODO: В ресурсы
-                        .height(70.dp)
-                        //TODO: В ресурсы
-                        .width(70.dp)
+                        .width(dimensionResource(R.dimen.big_70))
                         .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -197,7 +188,7 @@ class ListFragment : ComposeFragment() {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.NoteAdd,
-                        contentDescription = "Событие",
+                        contentDescription = stringResource(R.string.event),
                         tint = NotesTheme.colors.background
                     )
                 }
