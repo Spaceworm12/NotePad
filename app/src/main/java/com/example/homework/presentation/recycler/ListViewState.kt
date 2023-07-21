@@ -10,11 +10,11 @@ data class ListViewState(
     val isShowDeleteDialog: Boolean = false,
     val isShowSettingsDialog: Boolean = false,
     var isShowChangeDialog: Boolean = false,
-    val isShowDeleteAllDialog: Boolean = false,
+    var isShowDeleteAllDialog: Boolean = false,
     val currentTheme: Int = 0,
     val deletableNoteId: Long = -1L,
     var currentNote: NoteModel? = null,
-    val isShowCalendar: Boolean = false,
+    var isShowCalendar: Boolean = false,
 
     ) {
 

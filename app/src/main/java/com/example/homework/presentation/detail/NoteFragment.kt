@@ -27,7 +27,6 @@ import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.example.homework.presentation.recycler.ListEvents
 
 class NoteFragment : ComposeFragment() {
 
@@ -49,8 +48,7 @@ class NoteFragment : ComposeFragment() {
     override fun GetContent() {
         val note =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
-                KEY_NOTE,
-                NoteModel::class.java
+                KEY_NOTE, NoteModel::class.java
             ) ?: getEmptyNote() else requireArguments().getParcelable(KEY_NOTE) ?: getEmptyNote()
 
         viewModel.submitUIEvent(NoteEvent.SetNote(note))
@@ -79,14 +77,18 @@ class NoteFragment : ComposeFragment() {
 
 
         Column(modifier = Modifier.background(NotesTheme.colors.background)) {
-            Toolbar(
-                title = stringResource(id = R.string.detail_note),
+            Toolbar(title = stringResource(id = R.string.detail_note),
                 onBackClick = { goBack() },
                 actions = {
                     IconButton(onClick = {
-                        Toast.makeText(requireContext(),R.string.here_u_can_add_note,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(), R.string.here_u_can_add_note, Toast.LENGTH_SHORT
+                        ).show()
                     }) {
-                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.info_about))
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = stringResource(R.string.info_about)
+                        )
                     }
                 })
 
@@ -155,7 +157,7 @@ class NoteFragment : ComposeFragment() {
                         )
                     },
                     colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.Transparent,
+                        backgroundColor = NotesTheme.colors.secondary,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent,
@@ -180,139 +182,30 @@ class NoteFragment : ComposeFragment() {
 
     private fun getEmptyNote(): NoteModel {
         return NoteModel(
-            id = 0,
-            name = "",
-            description = "",
-            type = NoteType.NOTE_TYPE,
-            date = ""
+            id = 0, name = "", description = "", type = NoteType.NOTE_TYPE, date = ""
         )
     }
 
     @Preview(name = "NoteScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun NoteScreenPreview() {
-        ThemeSettings() {
+        ThemeSettings(2) {
 
             val model = NoteModel(
                 id = 0,
                 name = "Заметка про Димку",
-                description = "Димка, ниче не получится! Ты собака, я собака, ты собака, " +
-                        "я собака, ты собака, я собака, ты собака.",
+                description = "Димка, ниче не получится! Ты собака, я собака, ты собака, " + "я собака, ты собака, я собака, ты собака.",
                 date = "21.02.22",
                 type = NoteType.NOTE_TYPE
             )
 
             DetailNote(
-                note = model,
-                exit = false
+                note = model, exit = false
             )
         }
     }
 
 }
-
-
-//    private fun setValues(note: NoteModel) {
-//        note.name = noteViewModel.viewState.userTitle.observeAsState().value ?: return
-//        noteViewModel.viewState = note.observeAsState().value ?: return
-//        val currentTheme = currentTheme.observeAsState().value ?: return
-//        val exit = noteViewModel.exit.observeAsState().value ?: return
-////        binding.noteName.setText(note.name)
-////        binding.noteDescriprion.setText(note.description)
-////        binding.bdDate.setText(note.date)
-//        noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(note.name))
-//        noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(note.description))
-//        noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(note.date))
-//    }
-//
-//    private fun setTextWatchers() {
-//        binding.noteName.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                s?.let {
-//                    noteViewModel.submitUIEvent(NoteEvent.SaveUserTitle(s.toString()))
-//                }
-//            }
-//        })
-//        binding.noteDescriprion.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                s?.let {
-//                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDescription(s.toString()))
-//                }
-//            }
-//        })
-//    }
-//
-//    private fun setClicks(note: NoteModel) {
-//        binding.bdDate.setOnClickListener {
-//            val d = Calendar.getInstance()
-//            val year = d.get(Calendar.YEAR)
-//            val month = d.get(Calendar.MONTH)
-//            val day = d.get(Calendar.DAY_OF_MONTH)
-//            val datePickerDialog = DatePickerDialog(
-//                requireContext(),
-//                { view, year, monthOfYear, dayOfMonth ->
-//                    val s = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-//                    binding.bdDate.text = s
-//                    noteViewModel.submitUIEvent(NoteEvent.SaveUserDate(s))
-//                },
-//                year,
-//                month,
-//                day
-//            )
-//            datePickerDialog.show()
-//        }
-//        binding.btnSave.setOnClickListener {
-//            noteViewModel.submitUIEvent(NoteEvent.SaveNote(note.id))
-//            requireActivity()
-//                .supportFragmentManager
-//                .beginTransaction()
-//                .replace(
-//                    R.id.fragment_container,
-//                    ListFragment()
-//                )
-//                .commit()
-//        }
-//        binding.btnBack.setOnClickListener {
-//            noteViewModel.submitUIEvent(NoteEvent.Exit)
-//        }
-//        binding.btnDelete.setOnClickListener {
-//            noteViewModel.submitUIEvent(NoteEvent.DeleteNote(note.id))
-//            requireActivity()
-//                .supportFragmentManager
-//                .beginTransaction()
-//                .replace(
-//                    R.id.fragment_container,
-//                    ListFragment()
-//                )
-//                .commit()
-//        }
-//    }
-//
-//    private fun observeViewModel() {
-//        noteViewModel.viewStateObs.observe(viewLifecycleOwner) { state ->
-//            if (state.loading)
-//                LoaderBlock(text = "ABOBA")
-//            if (state.exit)
-//                requireActivity().supportFragmentManager.popBackStackImmediate()
-//            if (state.errorText.isNotBlank()) {
-//                Toast.makeText(context, "ERR%$@", Toast.LENGTH_SHORT).show()
-//                noteViewModel.submitUIEvent(NoteEvent.Error)
-//            }
-//        }
-//    }
-
 
 
 

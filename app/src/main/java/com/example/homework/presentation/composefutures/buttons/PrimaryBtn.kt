@@ -67,6 +67,7 @@ fun PrimaryBtn(
                 Text(
                     fontSize = 18.sp,
                     style = NotesTheme.typography.subtitle1,
+                    color=NotesTheme.colors.error,
                     text = text,
                 )
             }

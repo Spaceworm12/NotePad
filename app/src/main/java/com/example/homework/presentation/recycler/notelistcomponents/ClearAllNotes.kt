@@ -10,10 +10,13 @@ import com.example.homework.R
 import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.recycler.ListEvents
-import com.example.homework.presentation.recycler.ListFragment
 
 @Composable
-internal fun ClearAllNotes(context: Context,onUiEvent:(ListEvents)->Unit) {
+internal fun ClearAllNotes(
+    context: Context,
+    onDismiss: () -> Unit,
+    onUiEvent: (ListEvents) -> Unit
+) {
     DefaultDialog(
         title = stringResource(id = R.string.delete_all_question),
         negativeButtonText = stringResource(id = R.string.cancel),
@@ -25,14 +28,15 @@ internal fun ClearAllNotes(context: Context,onUiEvent:(ListEvents)->Unit) {
             onUiEvent.invoke(ListEvents.ClearAll(false))
         },
         onNegativeClick = {
-           onUiEvent.invoke(ListEvents.ClearAll(false))
+            onUiEvent.invoke(ListEvents.ClearAll(false))
         })
-    {}
+    { onDismiss.invoke() }
 }
 
 @Preview(name = "DeleteDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ClearAllNotesPreview() {
-    ThemeSettings { {}
+    ThemeSettings {
+        {}
     }
 }

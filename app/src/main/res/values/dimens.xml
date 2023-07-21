@@ -1,5 +1,6 @@
 <resources>
     <dimen name="design_fab_size_normal">56.dp</dimen>
     <dimen name="big_70">70.dp</dimen>
+    <dimen name="padding_250">250.dp</dimen>
     <dimen name="low_1">1.dp</dimen>
 </resources>

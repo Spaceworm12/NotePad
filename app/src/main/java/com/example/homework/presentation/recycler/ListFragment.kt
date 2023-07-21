@@ -63,12 +63,13 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog)
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!) { event ->
+        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!, onDismissInvoke = {state.isShowCalendar=false
+        state.isShowChangeDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
-        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
+        if (state.isShowChangeDialog) ShowChangeDialog(context = requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
         if (state.isShowSettingsDialog) ShowSettingsDialog { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext()) { event ->
+        if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext(), onDismiss = {state.isShowDeleteAllDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
 
         Column(
@@ -140,7 +141,6 @@ class ListFragment : ComposeFragment() {
             }
         }
 
-        //TODO: Все Fab-ы вынести в пакет notelistcomponents отдельным компонентом
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
 
             val fabSize = dimensionResource(R.dimen.design_fab_size_normal)

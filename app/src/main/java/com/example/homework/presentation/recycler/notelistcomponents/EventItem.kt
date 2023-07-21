@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,9 +47,9 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         backgroundColor = NotesTheme.colors.secondary,
         elevation = NotesTheme.dimens.contentMargin,
     ) {
-
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(NotesTheme.dimens.contentMargin)
         ) {
             Text(
@@ -58,31 +59,30 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                modifier = Modifier.wrapContentSize(),
+                modifier = Modifier.fillMaxWidth(),
                 text = note.description,
                 style = NotesTheme.typography.body1,
                 softWrap = true,
                 overflow = TextOverflow.Clip
             )
-        }
-        Box(contentAlignment = Alignment.TopStart) {
             Row(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .wrapContentSize()
-                    .padding(NotesTheme.dimens.halfContentMargin)
-                    .padding(NotesTheme.dimens.inputsMargin)
-                    .align(Alignment.CenterEnd)
+                    .fillMaxWidth()
+                    .padding(NotesTheme.dimens.halfContentMargin),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
             ) {
                 Text(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .background(
-                            NotesTheme.colors.rippleColor,
+                            NotesTheme.colors.primaryVariant,
                             shape = RoundedCornerShape(30.dp)
                         )
                         .padding(NotesTheme.dimens.sideMargin),
                     text = note.date,
-                    color = NotesTheme.colors.onPrimary
+                    color = NotesTheme.colors.onPrimary,
+                    textAlign = TextAlign.End
                 )
             }
         }
@@ -100,7 +100,7 @@ private fun EventItemPreview() {
             description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
                     "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака в фы вфы вфы в фы вфы вф ы вфы вфы в" +
                     " вфы вфы вфы фы вфы вфывфывфывфывфывфыв" +
-                    "фывфывфывввввввввввввввввввввввв            ывффффффффффффффффффффффф выфвфывввввввввввввввввввввввввввввввв выв",
+                    "фывфывфывввввввввввввввввввввввв   ывффффффффффффффффффффффф выфвфывввввввввввввввввввввввввввввввв выв",
             type = NoteType.BIRTHDAY_TYPE,
             date = "25.01.22"
         )

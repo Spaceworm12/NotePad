@@ -1,8 +1,6 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -11,13 +9,11 @@ import com.example.homework.presentation.composefutures.FIRST_THEME
 import com.example.homework.presentation.composefutures.SECOND_THEME
 import com.example.homework.presentation.composefutures.THIRD_THEME
 import com.example.homework.presentation.composefutures.ThemeSettings
-import com.example.homework.presentation.composefutures.dialogs.DefaultDialog
 import com.example.homework.presentation.composefutures.dialogs.ItemsDialog
 import com.example.homework.presentation.recycler.ListEvents
-import com.example.homework.presentation.recycler.ListFragment
 
 @Composable
-internal fun ShowSettingsDialog(onUiEvent:(ListEvents)->Unit) {
+internal fun ShowSettingsDialog(onUiEvent: (ListEvents) -> Unit) {
 
     val items = arrayOf(
         stringResource(id = R.string.first_theme),
@@ -41,6 +37,7 @@ internal fun ShowSettingsDialog(onUiEvent:(ListEvents)->Unit) {
 @Preview(name = "ShowSettingsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ShowSettingsDialogPreview() {
-    ThemeSettings { {}
+    ThemeSettings {
+        {}
     }
 }

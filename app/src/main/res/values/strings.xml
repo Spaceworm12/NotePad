@@ -16,6 +16,7 @@
     <string name="password">Пароль</string>
     <string name="go_back">Назад</string>
     <string name="add">Добавить</string>
+    <string name="cant_add_date">Невозможно добавить дату</string>
     <string name="detail_note">Заметка</string>
     <string name="detail_bdnote_toolbar">Событие</string>
     <string name="detail_bdnote_subtoolbar">Добавление даты, описания</string>

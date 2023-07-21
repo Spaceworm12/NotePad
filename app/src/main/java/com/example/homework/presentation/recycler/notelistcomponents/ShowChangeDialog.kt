@@ -2,7 +2,6 @@ package com.example.homework.presentation.recycler.notelistcomponents
 
 import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,11 +14,25 @@ import com.example.homework.presentation.recycler.ListEvents
 
 
 @Composable
-internal fun ShowChangeDialog(context: Context, note: NoteModel,goToTheNextScreen: (NoteModel)->Unit,dismiss:()->Unit,onUiEvent: (ListEvents) -> Unit) {
-    val items = arrayOf(stringResource(R.string.open), stringResource(R.string.delete), stringResource(R.string.change_date))
+internal fun ShowChangeDialog(
+    context: Context,
+    note: NoteModel,
+    goToTheNextScreen: (NoteModel) -> Unit,
+    dismiss: () -> Unit,
+    onUiEvent: (ListEvents) -> Unit
+) {
+    val items = arrayOf(
+        stringResource(R.string.open),
+        stringResource(R.string.delete),
+        stringResource(R.string.change_date)
+    )
+    val itemsNoDate = arrayOf(stringResource(R.string.open), stringResource(R.string.delete))
     ItemsDialog(
         title = stringResource(R.string.choose_action),
-        items = items,
+        items = when (note.type) {
+            NoteType.BIRTHDAY_TYPE -> items
+            NoteType.NOTE_TYPE -> itemsNoDate
+        },
         onItemClick = { position ->
             when (position) {
                 0 -> {
@@ -33,18 +46,13 @@ internal fun ShowChangeDialog(context: Context, note: NoteModel,goToTheNextScree
                 }
 
                 2 -> {
-                    if (note.type == NoteType.BIRTHDAY_TYPE) {
-                        onUiEvent.invoke(ListEvents.ShowCalendar(true, note))
-                    } else {
-                        Toast.makeText(context, "Cant", Toast.LENGTH_SHORT).show()
-                    }
+                    onUiEvent.invoke(ListEvents.ShowCalendar(true, note))
                 }
             }
         }
     ){dismiss.invoke()}
-
-
 }
+
 
 @Preview(name = "ShowChangeDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable

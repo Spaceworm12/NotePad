@@ -1,4 +1,4 @@
-package ru.x5.core_compose.ui.theme.ui.datepicker
+package com.example.homework.presentation.composefutures.dialogs
 
 import NotesTheme
 import android.content.res.Configuration
@@ -14,7 +14,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
