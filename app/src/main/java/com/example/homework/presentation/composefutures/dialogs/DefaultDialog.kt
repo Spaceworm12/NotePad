@@ -33,7 +33,7 @@ fun DefaultDialog(
 ) {
     Dialog(
         onDismissRequest = { dismiss.invoke() },
-        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
+        DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Column(
             modifier = Modifier

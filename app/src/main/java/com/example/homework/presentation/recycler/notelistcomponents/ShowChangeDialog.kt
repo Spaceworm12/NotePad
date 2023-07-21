@@ -15,7 +15,7 @@ import com.example.homework.presentation.recycler.ListEvents
 
 
 @Composable
-internal fun ShowChangeDialog(context: Context, note: NoteModel,goToTheNextScreen: (NoteModel)->Unit, onUiEvent: (ListEvents) -> Unit) {
+internal fun ShowChangeDialog(context: Context, note: NoteModel,goToTheNextScreen: (NoteModel)->Unit,dismiss:()->Unit,onUiEvent: (ListEvents) -> Unit) {
     val items = arrayOf(stringResource(R.string.open), stringResource(R.string.delete), stringResource(R.string.change_date))
     ItemsDialog(
         title = stringResource(R.string.choose_action),
@@ -41,7 +41,7 @@ internal fun ShowChangeDialog(context: Context, note: NoteModel,goToTheNextScree
                 }
             }
         }
-    ){}
+    ){dismiss.invoke()}
 
 
 }

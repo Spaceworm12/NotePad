@@ -12,8 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.homework.presentation.composefutures.ThemeSettings
@@ -27,7 +26,6 @@ import com.example.homework.presentation.recycler.ListEvents
 internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(NotesTheme.dimens.halfContentMargin)
             .padding(NotesTheme.dimens.sideMargin)
             .combinedClickable(
@@ -36,7 +34,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
                     onUiEvent.invoke(ListEvents.ShowChangeDialog(true, note))
                 },
                 onLongClick = {
-                   onUiEvent(
+                    onUiEvent(
                         ListEvents.ShowDeleteDialog(
                             true,
                             note.id
@@ -51,15 +49,26 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
 
         Column(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(NotesTheme.dimens.contentMargin)
         ) {
-            Text(text = note.name, style = NotesTheme.typography.h6)
-            Text(text = note.description, style = NotesTheme.typography.body1)
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = note.name,
+                style = NotesTheme.typography.h6,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                modifier = Modifier.wrapContentSize(),
+                text = note.description,
+                style = NotesTheme.typography.body1,
+                softWrap = true,
+                overflow = TextOverflow.Clip
+            )
         }
-        Box(contentAlignment = Alignment.BottomEnd) {
+        Box(contentAlignment = Alignment.TopStart) {
             Row(
                 modifier = Modifier
+                    .align(Alignment.BottomEnd)
                     .wrapContentSize()
                     .padding(NotesTheme.dimens.halfContentMargin)
                     .padding(NotesTheme.dimens.inputsMargin)
@@ -67,15 +76,9 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
             ) {
                 Text(
                     modifier = Modifier
-                        .drawBehind {
-                            drawCircle(
-                                color = Color.Black,
-                                radius = this.size.maxDimension
-                            )
-                        }
                         .background(
                             NotesTheme.colors.rippleColor,
-                            shape = RoundedCornerShape(5.dp)
+                            shape = RoundedCornerShape(30.dp)
                         )
                         .padding(NotesTheme.dimens.sideMargin),
                     text = note.date,
@@ -85,6 +88,7 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         }
     }
 }
+
 @Preview(name = "EventItem", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun EventItemPreview() {
@@ -94,7 +98,9 @@ private fun EventItemPreview() {
             id = 0,
             name = "Заметка",
             description = "Ты собака, я собака, ты собака, я собака, ты собака, я собака, ты собака, " +
-                    "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака",
+                    "я собака, ты собака, я собака, ты собака, я собака, ты собака, я собака в фы вфы вфы в фы вфы вф ы вфы вфы в" +
+                    " вфы вфы вфы фы вфы вфывфывфывфывфывфыв" +
+                    "фывфывфывввввввввввввввввввввввв            ывффффффффффффффффффффффф выфвфывввввввввввввввввввввввввввввввв выв",
             type = NoteType.BIRTHDAY_TYPE,
             date = "25.01.22"
         )

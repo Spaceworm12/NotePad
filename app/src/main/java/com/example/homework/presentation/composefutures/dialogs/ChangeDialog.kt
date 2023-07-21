@@ -33,7 +33,7 @@ fun ChangeDialog(
 ) {
     Dialog(
         onDismissRequest = { dismiss.invoke() },
-        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
+        DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Column(
             modifier = Modifier
@@ -71,7 +71,7 @@ fun ChangeDialog(
                     text = negativeButtonText.ifBlank { stringResource(R.string.no) },
                     isEnabled = isEnabled,
                     onClick = { if (onNegativeClick != null) onNegativeClick.invoke() else dismiss.invoke() },
-                    color = negativeButtonColor ?: NotesTheme.colors.secondary
+                    color = negativeButtonColor ?: NotesTheme.colors.secondary,
                 )
                 DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.yes) },

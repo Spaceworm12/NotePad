@@ -65,7 +65,7 @@ class ListFragment : ComposeFragment() {
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowCalendar) ShowDateDialog(state.currentNote!!) { event ->
             viewModel.submitUIEvent(event)}
-        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}) { event ->
+        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
         if (state.isShowSettingsDialog) ShowSettingsDialog { event -> viewModel.submitUIEvent(event) }
         if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext()) { event ->
@@ -88,9 +88,10 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                .size(NotesTheme.dimens.inputsMargin)
+                                .size(
+                                    dimensionResource(R.dimen.big_70))
                                 .padding(NotesTheme.dimens.sideMargin),
-                            imageVector = Icons.Filled.Sailing,
+                            imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)
                         )
                     }
