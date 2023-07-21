@@ -49,7 +49,6 @@ class ListViewModel(
             is ListEvents.DeleteNote -> deleteNote(id = event.id)
             is ListEvents.DeleteNoteModel -> deleteNoteModel(event.note)
             is ListEvents.DeleteAll -> deleteAll()
-            is ListEvents.GoToDetails -> viewState=viewState.copy(goingToDetails = true)
             is ListEvents.SaveCurrentNote -> viewState = viewState.copy(currentNote = event.note)
             is ListEvents.ShowChangeDialog -> viewState =
                 viewState.copy(isShowChangeDialog = event.itsShow)

@@ -11,7 +11,6 @@ sealed class ListEvents {
     class SaveUserDate(val note: NoteModel) : ListEvents()
     class ShowSettingsDialog(val itsShow: Boolean) : ListEvents()
     class ShowCalendar(val itsShow: Boolean, val note:NoteModel) : ListEvents()
-    class GoToDetails(val itsShow: Boolean, val note:NoteModel) : ListEvents()
     class ShowDeleteDialog(val itsShow: Boolean, val id: Long) : ListEvents()
     class ShowChangeDialog(val itsShow: Boolean, val note:NoteModel) : ListEvents()
     class SaveCurrentNote(val note: NoteModel) : ListEvents()

@@ -15,10 +15,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Api
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.NoteAdd
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -67,22 +64,12 @@ class ListFragment : ComposeFragment() {
         if (state.isShowDeleteDialog)
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowCalendar) ShowDateDialog(state.currentNote!!) { event ->
-            viewModel.submitUIEvent(
-                event
-            )
-        }
-        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!) { event ->
-            viewModel.submitUIEvent(
-                event
-            )
-        }
-        if (state.isShowSettingsDialog) SettingsDialog { event -> viewModel.submitUIEvent(event) }
+            viewModel.submitUIEvent(event)}
+        if (state.isShowChangeDialog) ShowChangeDialog(requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}) { event ->
+            viewModel.submitUIEvent(event)}
+        if (state.isShowSettingsDialog) ShowSettingsDialog { event -> viewModel.submitUIEvent(event) }
         if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext()) { event ->
-            viewModel.submitUIEvent(
-                event
-            )
-        }
-        if (state.goingToDetails) goToDetails(state.currentNote!!)
+            viewModel.submitUIEvent(event)}
 
         Column(
             modifier = Modifier.background(
@@ -103,7 +90,7 @@ class ListFragment : ComposeFragment() {
                             modifier = Modifier
                                 .size(NotesTheme.dimens.inputsMargin)
                                 .padding(NotesTheme.dimens.sideMargin),
-                            imageVector = Icons.Filled.Api,
+                            imageVector = Icons.Filled.Sailing,
                             contentDescription = stringResource(R.string.select_theme)
                         )
                     }
@@ -120,14 +107,10 @@ class ListFragment : ComposeFragment() {
                 ) { item: NoteModel ->
                     when (item.type) {
                         NoteType.BIRTHDAY_TYPE -> EventItem(item) { event ->
-                            viewModel.submitUIEvent(
-                                event
-                            )
+                            viewModel.submitUIEvent(event)
                         }
                         NoteType.NOTE_TYPE -> NoteItem(item) { event ->
-                            viewModel.submitUIEvent(
-                                event
-                            )
+                            viewModel.submitUIEvent(event)
                         }
                     }
                 }

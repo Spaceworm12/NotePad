@@ -17,7 +17,7 @@ import com.example.homework.presentation.recycler.ListEvents
 import com.example.homework.presentation.recycler.ListFragment
 
 @Composable
-internal fun SettingsDialog(onUiEvent:(ListEvents)->Unit) {
+internal fun ShowSettingsDialog(onUiEvent:(ListEvents)->Unit) {
 
     val items = arrayOf(
         stringResource(id = R.string.first_theme),
@@ -38,9 +38,9 @@ internal fun SettingsDialog(onUiEvent:(ListEvents)->Unit) {
     ) { onUiEvent.invoke(ListEvents.ShowSettingsDialog(false)) }
 }
 
-@Preview(name = "SettingsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "ShowSettingsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-private fun SettingsDialogPreview() {
+private fun ShowSettingsDialogPreview() {
     ThemeSettings { {}
     }
 }
