@@ -12,6 +12,7 @@
     <string name="change_date">Изменить дату</string>
     <string name="choose_action">Выберите действие</string>
     <string name="info_about">Информация о странице</string>
+    <string name="theme_already_run">Данная тема уже установлена</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="go_back">Назад</string>

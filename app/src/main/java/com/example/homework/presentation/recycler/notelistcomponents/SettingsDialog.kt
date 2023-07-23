@@ -35,16 +35,16 @@ internal fun ShowSettingsDialog(
                 0 -> if (currentTheme != FIRST_THEME) {
                     onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
                 } else {
-                    Toast.makeText(context, "Тема уже установлена", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
                 }
                 1 -> if (currentTheme != SECOND_THEME) {
                     onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
                 } else {
-                    Toast.makeText(context, "Тема уже установлена", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
                 }
             2 -> if (currentTheme != THIRD_THEME) {
             onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
-        } else {Toast.makeText(context,"Тема уже установлена",Toast.LENGTH_SHORT).show()}}
+        } else {Toast.makeText(context,R.string.theme_already_run,Toast.LENGTH_SHORT).show()}}
 }
 ) { onUiEvent.invoke(ListEvents.ShowSettingsDialog(false)) }
 }
