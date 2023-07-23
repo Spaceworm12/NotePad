@@ -68,7 +68,7 @@ class ListFragment : ComposeFragment() {
             viewModel.submitUIEvent(event)}
         if (state.isShowChangeDialog) ShowChangeDialog(context = requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
-        if (state.isShowSettingsDialog) ShowSettingsDialog { event -> viewModel.submitUIEvent(event) }
+        if (state.isShowSettingsDialog) ShowSettingsDialog(requireContext(),state.currentTheme) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext(), onDismiss = {state.isShowDeleteAllDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
 
