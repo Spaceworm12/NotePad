@@ -30,7 +30,7 @@ internal fun ShowChangeDialog(
     ItemsDialog(
         title = stringResource(R.string.choose_action),
         items = when (note.type) {
-            NoteType.BIRTHDAY_TYPE -> items
+            NoteType.BIRTHDAY_TYPE -> items 
             NoteType.NOTE_TYPE -> itemsNoDate
         },
         onItemClick = { position ->

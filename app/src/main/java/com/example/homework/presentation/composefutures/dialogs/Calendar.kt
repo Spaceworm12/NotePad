@@ -15,13 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
+import com.example.homework.R.*
+import com.example.homework.presentation.composefutures.ThemeSettings
 import java.util.*
 
 /**
@@ -43,31 +45,33 @@ fun DatePickerCalendar(
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
         Column(
             modifier = Modifier
-                .size(width = 400.dp, height = 600.dp)
+                .size(width = 450.dp, height = 650.dp)
                 .wrapContentSize()
                 .background(
                     color = NotesTheme.colors.primary,
-                    shape = NotesTheme.shapes.medium
+                    shape = RoundedCornerShape(size = NotesTheme.dimens.inputsMargin)
                 )
         ) {
             Column(
                 Modifier
-                    .defaultMinSize(minHeight = NotesTheme.dimens.contentMargin)
+                    .defaultMinSize(minHeight = NotesTheme.dimens.sideMargin)
                     .fillMaxWidth()
                     .background(
                         color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(
-                        NotesTheme.dimens.halfContentMargin)
+                            topStart = NotesTheme.dimens.sideMargin,
+                            topEnd = NotesTheme.dimens.sideMargin
+                        )
                     )
                     .padding(NotesTheme.dimens.sideMargin)
             ) {
                 Text(
-                    text = stringResource(com.example.homework.R.string.select_date),
+                    text = stringResource(id = string.select_date),
                     style = NotesTheme.typography.caption,
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.size(NotesTheme.dimens.inputsMargin))
+                Spacer(modifier = Modifier.size(NotesTheme.dimens.halfContentMargin))
 
                 Text(
                     text = DateFormat.format("dd.MM.yyyy", currentSelectedDate.value).toString(),
@@ -76,12 +80,9 @@ fun DatePickerCalendar(
                 )
             }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 300.dp),
-                contentAlignment = Alignment.Center
-            ) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 300.dp), contentAlignment = Alignment.Center) {
                 CustomCalendarView(
                     currentSelectedDate.value,
                     minDate,
@@ -96,18 +97,16 @@ fun DatePickerCalendar(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(
-                        bottom = NotesTheme.dimens.contentMargin,
-                        end = NotesTheme.dimens.contentMargin,
-                        start = NotesTheme.dimens.contentMargin,
-                        top = NotesTheme.dimens.contentMargin
-                    ), verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                        bottom = NotesTheme.dimens.sideMargin,
+                        end = NotesTheme.dimens.sideMargin
+                    )
             ) {
-                PrimaryBtn(modifier=Modifier.padding(end=NotesTheme.dimens.contentMargin),text = stringResource(com.example.homework.R.string.cancel)) {
+                PrimaryBtn(modifier = Modifier.wrapContentWidth(), text = stringResource(id = string.cancel)) {
                     onDismissRequest.invoke()
                 }
+                Spacer(modifier = Modifier.size(NotesTheme.dimens.halfContentMargin))
 
-                PrimaryBtn(text = stringResource(com.example.homework.R.string.yes)) {
+                PrimaryBtn(text = stringResource(id = string.save)) {
                     val newDate = currentSelectedDate.value
                     onDateSelected(
                         Date(
@@ -165,10 +164,22 @@ private fun CustomCalendarView(
 @Composable
 fun DatePickerPreview() {
     ThemeSettings() {
-        DatePickerCalendar(
-            selectedDate = Calendar.getInstance().time,
-            onDateSelected = {},
-            onDismissRequest = {})
+        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
     }
 }
 
+@Preview(device = Devices.PIXEL_C, widthDp = 800, heightDp = 1280)
+@Composable
+fun DatePickerTabletPreview() {
+    ThemeSettings() {
+        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
+    }
+}
+
+@Preview(device = Devices.PIXEL_C, widthDp = 1280, heightDp = 800)
+@Composable
+fun DatePickerLandPreview() {
+    ThemeSettings() {
+        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
+    }
+}
