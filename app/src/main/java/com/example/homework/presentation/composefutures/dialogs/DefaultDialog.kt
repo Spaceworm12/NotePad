@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.homework.R
@@ -47,7 +48,7 @@ fun DefaultDialog(
                     top = NotesTheme.dimens.sideMargin
                 )
         ) {
-            Text(
+            Text(fontSize = 15.sp,
                 text = title,
                 style = NotesTheme.typography.subtitle1,
                 modifier = Modifier
