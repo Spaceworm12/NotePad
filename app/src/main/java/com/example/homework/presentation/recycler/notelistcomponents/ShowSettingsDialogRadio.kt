@@ -43,7 +43,7 @@ internal fun ShowSettingsDialogRadio(
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
             RadioButton(
-                enabled=(currentTheme==FIRST_THEME),
+                enabled=(currentTheme==items[0]),
                 selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = FIRST_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
@@ -53,7 +53,7 @@ internal fun ShowSettingsDialogRadio(
             Spacer(modifier = Modifier.size(16.dp))
         }
         Row {
-            RadioButton(enabled=(currentTheme==SECOND_THEME),
+            RadioButton(enabled=(currentTheme==items[1]),
                 selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = SECOND_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
@@ -63,7 +63,7 @@ internal fun ShowSettingsDialogRadio(
             Spacer(modifier = Modifier.size(16.dp))
         }
         Row {
-            RadioButton(enabled=(currentTheme==THIRD_THEME),selected = selectedItem.value == currentTheme, onClick = {
+            RadioButton(enabled=(currentTheme==items[2]),selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = THIRD_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
             }, colors = RadioButtonDefaults.colors(Color.Green))
