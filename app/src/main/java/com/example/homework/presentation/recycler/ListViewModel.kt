@@ -61,6 +61,8 @@ class ListViewModel(
                 viewState.copy(isShowDeleteAllDialog = event.itsShow)
             is ListEvents.ShowSettingsDialog -> viewState =
                 viewState.copy(isShowSettingsDialog = event.itsShow)
+            is ListEvents.ShowSettingsDialogRadio -> viewState =
+                viewState.copy(isShowSettingsDialogRadio = event.itsShow)
         }
     }
 

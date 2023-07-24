@@ -1,11 +1,10 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,62 +35,44 @@ internal fun ShowSettingsDialogRadio(
         val items = listOf(FIRST_THEME, SECOND_THEME, THIRD_THEME)
 
         val selectedItem = remember {
-            mutableStateOf(1)
+            mutableStateOf(0)
         }
-        Text(color = Color.White, text = stringResource(R.string.select_theme,), fontSize = 18.sp)
+        Text(color = Color.White, text = stringResource(R.string.select_theme), fontSize = 18.sp)
         Spacer(modifier = Modifier.size(16.dp))
 
         Row {
 
-            RadioButton(selected = selectedItem.value == currentTheme, onClick = {
+            RadioButton(
+                enabled=(currentTheme==FIRST_THEME),
+                selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = FIRST_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
             }, colors = RadioButtonDefaults.colors(Color.Green))
             Spacer(modifier = Modifier.size(16.dp))
-            Text(stringResource(R.string.first_theme))
+            Text(color = Color.White, text = stringResource(R.string.first_theme))
             Spacer(modifier = Modifier.size(16.dp))
-
-            RadioButton(selected = selectedItem.value == currentTheme, onClick = {
+        }
+        Row {
+            RadioButton(enabled=(currentTheme==SECOND_THEME),
+                selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = SECOND_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
-            },colors = RadioButtonDefaults.colors(Color.Green))
+            }, colors = RadioButtonDefaults.colors(Color.Green))
             Spacer(modifier = Modifier.size(16.dp))
-            Text(stringResource(R.string.first_theme))
+            Text(color = Color.White, text = stringResource(R.string.second_theme))
             Spacer(modifier = Modifier.size(16.dp))
-
-            RadioButton(selected = selectedItem.value == currentTheme, onClick = {
+        }
+        Row {
+            RadioButton(enabled=(currentTheme==THIRD_THEME),selected = selectedItem.value == currentTheme, onClick = {
                 selectedItem.value = THIRD_THEME
                 onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
-            },colors = RadioButtonDefaults.colors(Color.Green))
+            }, colors = RadioButtonDefaults.colors(Color.Green))
             Spacer(modifier = Modifier.size(16.dp))
-            Text(stringResource(R.string.first_theme))
+            Text(color= Color.White,text= stringResource(R.string.third_theme))
             Spacer(modifier = Modifier.size(16.dp))
         }
     }
 }
-
-
-//    ItemsDialog(
-//        title = stringResource(R.string.set_theme),
-//        items = items,
-//        onItemClick = { position ->
-//            when (position) {
-//                0 -> if (currentTheme != FIRST_THEME) {
-//                    onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
-//                } else {
-//                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
-//                }
-//                1 -> if (currentTheme != SECOND_THEME) {
-//                    onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
-//                } else {
-//                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
-//                }
-//            2 -> if (currentTheme != THIRD_THEME) {
-//            onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
-//        } else {Toast.makeText(context,R.string.theme_already_run,Toast.LENGTH_SHORT).show()}}
-//}
-//) { onUiEvent.invoke(ListEvents.ShowSettingsDialog(false)) }
-//}
 
 @Preview(name = "ShowSettingsDialogRadio", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable

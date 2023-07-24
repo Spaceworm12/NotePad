@@ -9,6 +9,7 @@ data class ListViewState(
     val errorText: String = "",
     val isShowDeleteDialog: Boolean = false,
     val isShowSettingsDialog: Boolean = false,
+    val isShowSettingsDialogRadio: Boolean = false,
     var isShowChangeDialog: Boolean = false,
     var isShowDeleteAllDialog: Boolean = false,
     val currentTheme: Int = 0,

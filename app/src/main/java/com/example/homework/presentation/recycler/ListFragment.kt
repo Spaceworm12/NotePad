@@ -26,6 +26,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.data.models.model.app.AppNotes
@@ -69,6 +70,7 @@ class ListFragment : ComposeFragment() {
         if (state.isShowChangeDialog) ShowChangeDialog(context = requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
         if (state.isShowSettingsDialog) ShowSettingsDialog(requireContext(),state.currentTheme) { event -> viewModel.submitUIEvent(event) }
+        if (state.isShowSettingsDialogRadio) ShowSettingsDialogRadio(state.currentTheme) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext(), onDismiss = {state.isShowDeleteAllDialog=false}) { event ->
             viewModel.submitUIEvent(event)}
 
@@ -93,6 +95,22 @@ class ListFragment : ComposeFragment() {
                                     dimensionResource(R.dimen.big_70))
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
+                            contentDescription = stringResource(R.string.select_theme)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.padding(1.dp))
+
+                    IconButton(onClick = {
+                        viewModel.submitUIEvent(ListEvents.ShowSettingsDialogRadio(true))
+                    }) {
+                        Icon(
+                            modifier = Modifier
+                                .size(
+                                    dimensionResource(R.dimen.big_70)
+                                )
+                                .padding(NotesTheme.dimens.sideMargin),
+                            imageVector = Icons.Filled.Lens,
                             contentDescription = stringResource(R.string.select_theme)
                         )
                     }
