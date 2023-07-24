@@ -40,7 +40,7 @@ internal fun ShowSettingsDialogRadio(
         Text(color = Color.White, text = stringResource(R.string.select_theme), fontSize = 18.sp)
         Spacer(modifier = Modifier.size(16.dp))
 
-        Row {
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
             RadioButton(
                 enabled=(currentTheme==FIRST_THEME),
