@@ -64,15 +64,33 @@ class ListFragment : ComposeFragment() {
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog)
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!, onDismissInvoke = {state.isShowCalendar=false
-        state.isShowChangeDialog=false}) { event ->
-            viewModel.submitUIEvent(event)}
-        if (state.isShowChangeDialog) ShowChangeDialog(context = requireContext(),state.currentNote!!, goToTheNextScreen = {note -> goToDetails(note)}, dismiss = {state.isShowChangeDialog=false}) { event ->
-            viewModel.submitUIEvent(event)}
-        if (state.isShowSettingsDialog) ShowSettingsDialog(requireContext(),state.currentTheme) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowSettingsDialogRadio) ShowSettingsDialogRadio(requireContext(),state.currentTheme) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowDeleteAllDialog) ClearAllNotes(requireContext(), onDismiss = {state.isShowDeleteAllDialog=false}) { event ->
-            viewModel.submitUIEvent(event)}
+        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!, onDismissInvoke = {
+            state.isShowCalendar = false
+            state.isShowChangeDialog = false
+        }) { event ->
+            viewModel.submitUIEvent(event)
+        }
+        if (state.isShowChangeDialog) ShowChangeDialog(
+            context = requireContext(),
+            state.currentNote!!,
+            goToTheNextScreen = { note -> goToDetails(note) },
+            dismiss = { state.isShowChangeDialog = false }) { event ->
+            viewModel.submitUIEvent(event)
+        }
+        if (state.isShowSettingsDialog) ShowSettingsDialog(
+            requireContext(),
+            state.currentTheme
+        ) { event -> viewModel.submitUIEvent(event) }
+        if (state.isShowSettingsDialogRadio) ShowSettingsDialogRadio(
+            requireContext(),
+            state.currentTheme,
+            onDismiss = { state.isShowSettingsDialogRadio = false },
+            onUiEvent = { event -> viewModel.submitUIEvent(event) })
+        if (state.isShowDeleteAllDialog) ClearAllNotes(
+            requireContext(),
+            onDismiss = { state.isShowDeleteAllDialog = false }) { event ->
+            viewModel.submitUIEvent(event)
+        }
 
         Column(
             modifier = Modifier.background(
@@ -92,7 +110,8 @@ class ListFragment : ComposeFragment() {
                         Icon(
                             modifier = Modifier
                                 .size(
-                                    dimensionResource(R.dimen.big_70))
+                                    dimensionResource(R.dimen.big_70)
+                                )
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)

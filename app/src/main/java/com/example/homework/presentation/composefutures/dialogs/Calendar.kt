@@ -82,7 +82,7 @@ fun DatePickerCalendar(
 
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 300.dp), contentAlignment = Alignment.Center) {
+                .heightIn(max = 500.dp), contentAlignment = Alignment.Center) {
                 CustomCalendarView(
                     currentSelectedDate.value,
                     minDate,

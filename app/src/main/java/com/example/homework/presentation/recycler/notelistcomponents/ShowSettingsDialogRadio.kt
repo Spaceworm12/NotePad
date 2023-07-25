@@ -34,16 +34,17 @@ internal fun ShowSettingsDialogRadio(
     context: Context? = null,
     currentTheme: Int,
     onUiEvent: (ListEvents) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     Dialog(
-        onDismissRequest = {},
-        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
+        onDismissRequest = {onDismiss.invoke()},
+        DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .size(200.dp)
+                .size(250.dp)
                 .background(
                     NotesTheme.colors.primary, shape = RoundedCornerShape(15.dp)
                 ),
@@ -56,11 +57,11 @@ internal fun ShowSettingsDialogRadio(
             Text(
                 color = NotesTheme.colors.rippleColor,
                 text = stringResource(R.string.select_theme),
-                fontSize = 22.sp
+                fontSize = 22.sp,
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
 
                 RadioButton(
                     selected = (currentTheme == FIRST_THEME), onClick = {
@@ -81,7 +82,7 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
                 RadioButton(
                     selected = (currentTheme == SECOND_THEME), onClick = {
                         if (currentTheme != SECOND_THEME) {
@@ -101,7 +102,7 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
                 RadioButton(
                     selected = (currentTheme == THIRD_THEME),
                     onClick = {
