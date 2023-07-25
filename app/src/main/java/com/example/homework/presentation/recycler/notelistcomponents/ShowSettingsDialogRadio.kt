@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,8 +51,6 @@ internal fun ShowSettingsDialogRadio(
                     NotesTheme.colors.primary, shape = RoundedCornerShape(15.dp)
                 ),
         ) {
-            val items = listOf(FIRST_THEME, SECOND_THEME, THIRD_THEME)
-
             val selectedItem = remember {
                 mutableStateOf(0)
             }
@@ -58,6 +58,8 @@ internal fun ShowSettingsDialogRadio(
                 color = NotesTheme.colors.rippleColor,
                 text = stringResource(R.string.select_theme),
                 fontSize = 22.sp,
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.size(16.dp))
 
@@ -78,7 +80,8 @@ internal fun ShowSettingsDialogRadio(
                 Text(
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.first_theme),
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.End
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
@@ -98,7 +101,8 @@ internal fun ShowSettingsDialogRadio(
                 Text(
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.second_theme),
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.End
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
@@ -120,7 +124,8 @@ internal fun ShowSettingsDialogRadio(
                 Text(
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.third_theme),
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.End
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
