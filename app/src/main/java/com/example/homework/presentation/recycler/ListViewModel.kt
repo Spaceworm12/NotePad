@@ -72,17 +72,16 @@ class ListViewModel(
         repo.getAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> {}
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = false)
                     is Resource.Data -> {
-                        viewState = viewState.copy(
-                            notesList = Mapper.transformToPresentation(result.data ?: emptyList()),
+                        viewState.copy(
+                            notesList = Mapper.transformToPresentation(result.data),
                             isLoading = false
                         )
                     }
                     is Resource.Error -> {
-                        viewState =
-                            viewState.copy(isLoading = false, errorText = "error")
+                        viewState.copy(isLoading = false, errorText = "error")
                     }
                 }
             }
@@ -93,11 +92,12 @@ class ListViewModel(
         repo.delete(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> getListNotes()
-                    is Resource.Error -> viewState =
-                        viewState.copy(isLoading = false, errorText = "err")
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> {getListNotes()
+                        viewState.copy(isLoading = false)
+                    }
+                    is Resource.Error -> viewState.copy(isLoading = false, errorText = "err")
                 }
             }
             .addTo(disposables)
@@ -107,11 +107,12 @@ class ListViewModel(
         repo.delete(note.id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> getListNotes()
-                    is Resource.Error -> viewState =
-                        viewState.copy(isLoading = false, errorText = "err")
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> {getListNotes()
+                        viewState.copy(isLoading = false)
+                    }
+                    is Resource.Error -> viewState.copy(isLoading = false, errorText = "err")
                 }
             }
             .addTo(disposables)
@@ -121,11 +122,13 @@ class ListViewModel(
         repo.deleteAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> getListNotes()
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> {getListNotes()
+                        viewState.copy(isLoading = false)
+                    }
                     is Resource.Error -> {
-                        viewState = viewState.copy(
+                        viewState.copy(
                             isLoading = false,
                             errorText = result.error.message ?: ""
                         )
@@ -139,11 +142,12 @@ class ListViewModel(
         repo.changeDate(date, id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                when (result) {
-                    is Resource.Loading -> viewState = viewState.copy(isLoading = true)
-                    is Resource.Data -> getListNotes()
-                    is Resource.Error -> viewState =
-                        viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+                viewState = when (result) {
+                    is Resource.Loading -> viewState.copy(isLoading = true)
+                    is Resource.Data -> {getListNotes()
+                        viewState.copy(isLoading = false)
+                    }
+                    is Resource.Error -> viewState.copy(isLoading = false, errorText = result.error.message ?: "")
                 }
             }.addTo(disposables)
     }

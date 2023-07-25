@@ -16,9 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.homework.presentation.composefutures.ThemeSettings
+import kotlinx.coroutines.delay
 
 @Composable
-fun LoaderBlock(text: String) {
+fun LoaderBlock(text: String, delay: Unit) {
     Dialog(
         onDismissRequest = { },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
@@ -46,6 +47,6 @@ fun LoaderBlock(text: String) {
 @Composable
 private fun LoaderBlockPreview() {
     ThemeSettings() {
-        LoaderBlock("Идет обмен данными с сервером")
+        LoaderBlock("Идет обмен данными с сервером", delay(3000))
     }
 }
