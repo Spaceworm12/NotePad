@@ -1,7 +1,12 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
+import NotesTheme
+import android.content.Context
 import android.content.res.Configuration
+import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
@@ -15,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.FIRST_THEME
 import com.example.homework.presentation.composefutures.SECOND_THEME
@@ -24,61 +31,106 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ShowSettingsDialogRadio(
+    context: Context? = null,
     currentTheme: Int,
-    onUiEvent: (ListEvents) -> Unit
+    onUiEvent: (ListEvents) -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
     ) {
-        val items = listOf(FIRST_THEME, SECOND_THEME, THIRD_THEME)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .size(200.dp)
+                .background(
+                    NotesTheme.colors.primary, shape = RoundedCornerShape(15.dp)
+                ),
+        ) {
+            val items = listOf(FIRST_THEME, SECOND_THEME, THIRD_THEME)
 
-        val selectedItem = remember {
-            mutableStateOf(0)
-        }
-        Text(color = Color.White, text = stringResource(R.string.select_theme), fontSize = 18.sp)
-        Spacer(modifier = Modifier.size(16.dp))
+            val selectedItem = remember {
+                mutableStateOf(0)
+            }
+            Text(
+                color = NotesTheme.colors.rippleColor,
+                text = stringResource(R.string.select_theme),
+                fontSize = 22.sp
+            )
+            Spacer(modifier = Modifier.size(16.dp))
 
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
-            RadioButton(
-                enabled=(currentTheme==items[0]),
-                selected = selectedItem.value == currentTheme, onClick = {
-                selectedItem.value = FIRST_THEME
-                onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(color = Color.White, text = stringResource(R.string.first_theme))
-            Spacer(modifier = Modifier.size(16.dp))
-        }
-        Row {
-            RadioButton(enabled=(currentTheme==items[1]),
-                selected = selectedItem.value == currentTheme, onClick = {
-                selectedItem.value = SECOND_THEME
-                onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(color = Color.White, text = stringResource(R.string.second_theme))
-            Spacer(modifier = Modifier.size(16.dp))
-        }
-        Row {
-            RadioButton(enabled=(currentTheme==items[2]),selected = selectedItem.value == currentTheme, onClick = {
-                selectedItem.value = THIRD_THEME
-                onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(color= Color.White,text= stringResource(R.string.third_theme))
-            Spacer(modifier = Modifier.size(16.dp))
+                RadioButton(
+                    selected = (currentTheme == FIRST_THEME), onClick = {
+                        if (currentTheme != FIRST_THEME) {
+                            selectedItem.value = FIRST_THEME
+                            onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
+                        } else {
+                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }, colors = RadioButtonDefaults.colors(Color.DarkGray)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    color = NotesTheme.colors.rippleColor,
+                    text = stringResource(R.string.first_theme),
+                    fontSize = 22.sp
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+            Row {
+                RadioButton(
+                    selected = (currentTheme == SECOND_THEME), onClick = {
+                        if (currentTheme != SECOND_THEME) {
+                            selectedItem.value = SECOND_THEME
+                            onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
+                        } else {
+                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }, colors = RadioButtonDefaults.colors(Color.DarkGray)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    color = NotesTheme.colors.rippleColor,
+                    text = stringResource(R.string.second_theme),
+                    fontSize = 22.sp
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+            Row {
+                RadioButton(
+                    selected = (currentTheme == THIRD_THEME),
+                    onClick = {
+                        if (currentTheme != THIRD_THEME) {
+                            selectedItem.value = THIRD_THEME
+                            onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
+                        } else {
+                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    },
+                    colors = RadioButtonDefaults.colors(Color.DarkGray)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    color = NotesTheme.colors.rippleColor,
+                    text = stringResource(R.string.third_theme),
+                    fontSize = 22.sp
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+            }
         }
     }
+
 }
 
 @Preview(name = "ShowSettingsDialogRadio", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ShowSettingsDialogRadioPreview() {
     ThemeSettings {
-        ShowSettingsDialogRadio(currentTheme = FIRST_THEME)
-        {}
     }
 }
