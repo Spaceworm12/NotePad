@@ -61,8 +61,8 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState, themeCount: String) {
         val isVisibleNow = remember { mutableStateOf(false) }
-        if (state.isLoading){
-            LoaderBlock(text = "падажжи", delay(3000))}
+//        if (state.isLoading){
+//            LoaderBlock(text = "падажжи")}
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
         if (state.isShowDeleteDialog)
@@ -276,6 +276,7 @@ class ListFragment : ComposeFragment() {
                 .commit()
         }
     }
+
 
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
