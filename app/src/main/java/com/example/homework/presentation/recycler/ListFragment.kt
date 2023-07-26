@@ -86,7 +86,8 @@ class ListFragment : ComposeFragment() {
             state.currentTheme,
             onDismiss = { state.isShowSettingsDialogRadio = false },
             onUiEvent = { event -> viewModel.submitUIEvent(event) },
-            onToastShow = {}
+            onToastShow = {textToast -> Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()
+            state.showToast = textToast}
             )
         if (state.isShowDeleteAllDialog) ClearAllNotes(
             requireContext(),
