@@ -33,10 +33,10 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ShowSettingsDialogRadio(
-    context: Context?=null,
     currentTheme: Int,
     onUiEvent: (ListEvents) -> Unit,
     onDismiss: () -> Unit,
+    onToastShow: (String) -> Unit,
 ) {
     Dialog(
         onDismissRequest = { onDismiss.invoke() },
@@ -73,13 +73,12 @@ internal fun ShowSettingsDialogRadio(
                             selectedItem.value = FIRST_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
                         } else {
-                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
-                                .show()
+                            onToastShow.invoke("R.string.theme_already_run")
                         }
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=5.dp),
+                Text(modifier = Modifier.padding(top=7.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.first_theme),
                     fontSize = 22.sp,
@@ -96,13 +95,12 @@ internal fun ShowSettingsDialogRadio(
                             selectedItem.value = SECOND_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
                         } else {
-                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
-                                .show()
+                            onToastShow.invoke("R.string.theme_already_run")
                         }
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=5.dp),
+                Text(modifier = Modifier.padding(top=7.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.second_theme),
                     fontSize = 22.sp,
@@ -120,14 +118,13 @@ internal fun ShowSettingsDialogRadio(
                             selectedItem.value = THIRD_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
                         } else {
-                            Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT)
-                                .show()
+                            onToastShow.invoke("R.string.theme_already_run")
                         }
                     },
                     colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=5.dp),
+                Text(modifier = Modifier.padding(top=7.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.third_theme),
                     fontSize = 22.sp,
@@ -144,7 +141,7 @@ internal fun ShowSettingsDialogRadio(
 @Composable
 private fun ShowSettingsDialogRadioPreview() {
     ThemeSettings {
-        ShowSettingsDialogRadio(currentTheme = FIRST_THEME, onUiEvent = {}) {
+        ShowSettingsDialogRadio(currentTheme = FIRST_THEME, onUiEvent = {},{}) {
             
         }
     }

@@ -14,7 +14,7 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ClearAllNotes(
-    context: Context,
+    context: Context?=null,
     onDismiss: () -> Unit,
     onUiEvent: (ListEvents) -> Unit
 ) {
@@ -38,6 +38,6 @@ internal fun ClearAllNotes(
 @Composable
 private fun ClearAllNotesPreview() {
     ThemeSettings {
-
+        ClearAllNotes(onDismiss = {}, onUiEvent = {})
     }
 }
