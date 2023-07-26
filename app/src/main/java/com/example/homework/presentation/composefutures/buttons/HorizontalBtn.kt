@@ -83,9 +83,9 @@ fun HorizontalBtn(
 private fun HorizontalButtonPreview() {
     ThemeSettings {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            PrimaryBtn(modifier = Modifier.fillMaxWidth(), text = "Text") {}
-            PrimaryBtn(text = "Text", isEnabled = false) {}
-            PrimaryBtn(text = "Text", color = NotesTheme.colors.error) {}
+            HorizontalBtn(modifier = Modifier.wrapContentSize(), text = "Text") {}
+            HorizontalBtn(text = "Text2", isEnabled = false) {}
+            HorizontalBtn(text = "Text3", color = NotesTheme.colors.error) {}
         }
     }
 }

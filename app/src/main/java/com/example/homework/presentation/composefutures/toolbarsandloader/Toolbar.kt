@@ -73,7 +73,7 @@ fun Toolbar(
 @Preview(name = "Toolbar", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ToolbarPreview() {
-    ThemeSettings() {
+    ThemeSettings(themeCode = 1) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Toolbar(
                 title = "title",

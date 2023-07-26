@@ -33,13 +33,13 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ShowSettingsDialogRadio(
-    context: Context? = null,
+    context: Context?=null,
     currentTheme: Int,
     onUiEvent: (ListEvents) -> Unit,
     onDismiss: () -> Unit,
 ) {
     Dialog(
-        onDismissRequest = {onDismiss.invoke()},
+        onDismissRequest = { onDismiss.invoke() },
         DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Column(
@@ -63,7 +63,9 @@ internal fun ShowSettingsDialogRadio(
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()) {
 
                 RadioButton(
                     selected = (currentTheme == FIRST_THEME), onClick = {
@@ -77,7 +79,7 @@ internal fun ShowSettingsDialogRadio(
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(
+                Text(modifier = Modifier.padding(top=5.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.first_theme),
                     fontSize = 22.sp,
@@ -85,7 +87,9 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()) {
                 RadioButton(
                     selected = (currentTheme == SECOND_THEME), onClick = {
                         if (currentTheme != SECOND_THEME) {
@@ -98,7 +102,7 @@ internal fun ShowSettingsDialogRadio(
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(
+                Text(modifier = Modifier.padding(top=5.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.second_theme),
                     fontSize = 22.sp,
@@ -106,7 +110,9 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth()) {
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()) {
                 RadioButton(
                     selected = (currentTheme == THIRD_THEME),
                     onClick = {
@@ -121,7 +127,7 @@ internal fun ShowSettingsDialogRadio(
                     colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(
+                Text(modifier = Modifier.padding(top=5.dp),
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.third_theme),
                     fontSize = 22.sp,
@@ -138,5 +144,8 @@ internal fun ShowSettingsDialogRadio(
 @Composable
 private fun ShowSettingsDialogRadioPreview() {
     ThemeSettings {
+        ShowSettingsDialogRadio(currentTheme = FIRST_THEME, onUiEvent = {}) {
+            
+        }
     }
 }

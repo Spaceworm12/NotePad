@@ -42,7 +42,7 @@ fun DialogBtn(
             style = NotesTheme.typography.subtitle1,
             fontSize = 15.sp,
             text = text,
-            textAlign = textAlign,
+            textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
     }

@@ -38,6 +38,6 @@ internal fun ClearAllNotes(
 @Composable
 private fun ClearAllNotesPreview() {
     ThemeSettings {
-        {}
+
     }
 }

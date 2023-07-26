@@ -42,9 +42,6 @@ fun DateAddDialog(
     dismiss: () -> Unit,
 
     ) {
-    val noteDate = remember {
-        mutableStateOf(note!!.date)
-    }
     val selectedDate = remember { mutableStateOf("") }
     Dialog(
         onDismissRequest = { dismiss.invoke() },
@@ -71,7 +68,6 @@ fun DateAddDialog(
             mMonth = mCalendar.get(Calendar.MONTH)
             mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
             mCalendar.time = Date()
-            val choicedDate: String
             val mDatePickerDialog = DatePickerDialog(
                 mContext,
                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->

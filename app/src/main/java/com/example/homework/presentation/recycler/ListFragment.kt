@@ -33,14 +33,12 @@ import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.THEME_CODE
 import com.example.homework.presentation.composefutures.ThemeSettings
-import com.example.homework.presentation.composefutures.toolbarsandloader.LoaderBlock
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
 import com.example.homework.presentation.recycler.notelistcomponents.*
-import kotlinx.coroutines.delay
 
 class ListFragment : ComposeFragment() {
 
@@ -88,7 +86,8 @@ class ListFragment : ComposeFragment() {
             requireContext(),
             state.currentTheme,
             onDismiss = { state.isShowSettingsDialogRadio = false },
-            onUiEvent = { event -> viewModel.submitUIEvent(event) })
+            onUiEvent = { event -> viewModel.submitUIEvent(event) },
+            )
         if (state.isShowDeleteAllDialog) ClearAllNotes(
             requireContext(),
             onDismiss = { state.isShowDeleteAllDialog = false }) { event ->

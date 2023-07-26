@@ -3,12 +3,7 @@ package com.example.homework.presentation.composefutures.dialogs
 import NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
@@ -30,7 +25,8 @@ import com.example.homework.presentation.composefutures.buttons.DialogBtn
 @Composable
 fun EventsDialog(
     title: String = "",
-    subTitle: String = "",    negativeButtonText: String = "",
+    subTitle: String = "",
+    negativeButtonText: String = "",
     isEnabled: Boolean = true,
     items: Array<String>,
     onItemClick: (Int) -> Unit,
@@ -62,7 +58,11 @@ fun EventsDialog(
 
 
             if (subTitle.isNotBlank())
-                Text(text = subTitle, style = NotesTheme.typography.caption, color = NotesTheme.colors.notEnabled)
+                Text(
+                    text = subTitle,
+                    style = NotesTheme.typography.caption,
+                    color = NotesTheme.colors.notEnabled
+                )
 
             (items.indices).forEach { index ->
 
@@ -70,7 +70,7 @@ fun EventsDialog(
                     LocalMinimumInteractiveComponentEnforcement provides false,
                 ) {
                     TextButton(
-                        onClick = { onItemClick.invoke(index)},
+                        onClick = { onItemClick.invoke(index) },
                         enabled = isEnabled,
                         contentPadding = PaddingValues(0.dp),
                         modifier = Modifier
@@ -106,16 +106,16 @@ fun EventsDialog(
     }
 }
 
-@Preview(name = "EventsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "EventsDialogPreview", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun EventsDialogPreview() {
-    ThemeSettings() {
+    ThemeSettings(themeCode = 1) {
         EventsDialog(
-            "Добавьте собаку",
-            "Учтите все собачьи нюансы",
-            "Закрыть",
+            "1",
+            "2",
+            "3",
             true,
-            arrayOf("Сделать собаку", "Добавить собаку", "Выбрать собаку"),
+            arrayOf("1", "2", "3"),
             {},
             {}
         )

@@ -82,8 +82,8 @@ private fun PrimaryBtnPreview() {
     ThemeSettings {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             PrimaryBtn(modifier = Modifier.fillMaxWidth(), text = "Text") {}
-            PrimaryBtn(text = "Text", isEnabled = false) {}
-            PrimaryBtn(text = "Text", color = NotesTheme.colors.error) {}
+            PrimaryBtn(text = "Text2", isEnabled = false) {}
+            PrimaryBtn(text = "Text3", color = NotesTheme.colors.error) {}
         }
     }
 }
