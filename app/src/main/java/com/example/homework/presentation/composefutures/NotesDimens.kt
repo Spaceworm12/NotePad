@@ -26,6 +26,7 @@ fun normalDimensions(
     inputsMargin: Dp = 24.dp,
     contentMargin: Dp = 8.dp,
     halfContentMargin: Dp = 4.dp,
+    bigDimension: Dp = 70.dp
 ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,

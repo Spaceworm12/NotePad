@@ -1,10 +1,7 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.homework.R
@@ -14,7 +11,7 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ClearAllNotes(
-    context: Context?=null,
+    onToastShow: (Int) -> Unit,
     onDismiss: () -> Unit,
     onUiEvent: (ListEvents) -> Unit
 ) {
@@ -24,8 +21,7 @@ internal fun ClearAllNotes(
         positiveButtonText = stringResource(id = R.string.yes),
         onPositiveClick = {
             onUiEvent.invoke(ListEvents.DeleteAll)
-            Toast.makeText(context, R.string.all_notes_delete, Toast.LENGTH_SHORT)
-                .show()
+            onToastShow.invoke(R.string.all_notes_delete)
             onUiEvent.invoke(ListEvents.ClearAll(false))
         },
         onNegativeClick = {
@@ -38,6 +34,6 @@ internal fun ClearAllNotes(
 @Composable
 private fun ClearAllNotesPreview() {
     ThemeSettings {
-        ClearAllNotes(onDismiss = {}, onUiEvent = {})
+        ClearAllNotes(onToastShow = {}, onDismiss = {}, onUiEvent = {})
     }
 }

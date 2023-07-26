@@ -1,8 +1,6 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,7 +14,7 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ShowSettingsDialog(
-    context: Context,
+    onToastShow: (Int) -> Unit,
     currentTheme: Int,
     onUiEvent: (ListEvents) -> Unit
 ) {
@@ -35,24 +33,27 @@ internal fun ShowSettingsDialog(
                 0 -> if (currentTheme != FIRST_THEME) {
                     onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
                 } else {
-                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
+                    onToastShow.invoke(R.string.theme_already_run)
                 }
+
                 1 -> if (currentTheme != SECOND_THEME) {
                     onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
                 } else {
-                    Toast.makeText(context, R.string.theme_already_run, Toast.LENGTH_SHORT).show()
+                    onToastShow.invoke(R.string.theme_already_run)
                 }
-            2 -> if (currentTheme != THIRD_THEME) {
-            onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
-        } else {Toast.makeText(context,R.string.theme_already_run,Toast.LENGTH_SHORT).show()}}
-}
-) { onUiEvent.invoke(ListEvents.ShowSettingsDialog(false)) }
+
+                2 -> if (currentTheme != THIRD_THEME) {
+                    onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
+                } else onToastShow.invoke(R.string.theme_already_run)
+            }
+        }
+    ) { onUiEvent.invoke(ListEvents.ShowSettingsDialog(false)) }
 }
 
 @Preview(name = "ShowSettingsDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun ShowSettingsDialogPreview() {
     ThemeSettings {
-        {}
+     ShowSettingsDialog(onToastShow = {}, currentTheme = 1, onUiEvent = {})
     }
 }

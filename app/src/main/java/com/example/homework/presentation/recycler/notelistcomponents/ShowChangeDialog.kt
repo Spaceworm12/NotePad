@@ -1,6 +1,5 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -15,7 +14,6 @@ import com.example.homework.presentation.recycler.ListEvents
 
 @Composable
 internal fun ShowChangeDialog(
-    context: Context,
     note: NoteModel,
     goToTheNextScreen: (NoteModel) -> Unit,
     dismiss: () -> Unit,
@@ -30,7 +28,7 @@ internal fun ShowChangeDialog(
     ItemsDialog(
         title = stringResource(R.string.choose_action),
         items = when (note.type) {
-            NoteType.BIRTHDAY_TYPE -> items 
+            NoteType.BIRTHDAY_TYPE -> items
             NoteType.NOTE_TYPE -> itemsNoDate
         },
         onItemClick = { position ->
@@ -50,7 +48,7 @@ internal fun ShowChangeDialog(
                 }
             }
         }
-    ){dismiss.invoke()}
+    ) { dismiss.invoke() }
 }
 
 
@@ -58,5 +56,10 @@ internal fun ShowChangeDialog(
 @Composable
 private fun ShowChangeDialogPreview() {
     ThemeSettings {
+        ShowChangeDialog(
+            note = NoteModel(123, "", "", NoteType.BIRTHDAY_TYPE, ""),
+            goToTheNextScreen = {},
+            dismiss = {},
+            onUiEvent = {})
     }
 }

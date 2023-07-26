@@ -16,7 +16,6 @@ data class ListViewState(
     val deletableNoteId: Long = -1L,
     var currentNote: NoteModel? = null,
     var isShowCalendar: Boolean = false,
-    var showToast:String = ""
 
     ) {
 

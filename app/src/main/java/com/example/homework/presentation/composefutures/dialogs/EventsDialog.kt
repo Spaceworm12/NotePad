@@ -111,11 +111,11 @@ fun EventsDialog(
 private fun EventsDialogPreview() {
     ThemeSettings(themeCode = 1) {
         EventsDialog(
-            "1",
-            "2",
-            "3",
+            "Тема ивента",
+            "собачьи депутаты",
+            "закрой это",
             true,
-            arrayOf("1", "2", "3"),
+            arrayOf("собака 1", "собака 2", "собака 3"),
             {},
             {}
         )

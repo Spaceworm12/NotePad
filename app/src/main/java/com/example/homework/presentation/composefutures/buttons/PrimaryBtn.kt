@@ -41,7 +41,7 @@ fun PrimaryBtn(
             val shape = RoundedCornerShape(contentMargin)
 
             Button(
-                modifier = Modifier
+                modifier = Modifier.wrapContentSize()
                     .widthIn(min = minWidth)
                     .heightIn(min = minHeight)
                     .border(
@@ -69,6 +69,7 @@ fun PrimaryBtn(
                     style = NotesTheme.typography.subtitle1,
                     color=NotesTheme.colors.error,
                     text = text,
+                    maxLines = 1,
                 )
             }
 
@@ -82,7 +83,7 @@ private fun PrimaryBtnPreview() {
     ThemeSettings {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             PrimaryBtn(modifier = Modifier.fillMaxWidth(), text = "Text") {}
-            PrimaryBtn(text = "Text2", isEnabled = false) {}
+            PrimaryBtn(text = "Сохранить", isEnabled = false) {}
             PrimaryBtn(text = "Text3", color = NotesTheme.colors.error) {}
         }
     }

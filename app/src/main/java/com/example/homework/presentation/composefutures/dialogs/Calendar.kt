@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,7 +46,7 @@ fun DatePickerCalendar(
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
         Column(
             modifier = Modifier
-                .size(width = 450.dp, height = 650.dp)
+                .size(width = 500.dp, height = 650.dp)
                 .wrapContentSize()
                 .background(
                     color = NotesTheme.colors.primary,
@@ -101,7 +102,7 @@ fun DatePickerCalendar(
                         end = NotesTheme.dimens.sideMargin
                     )
             ) {
-                PrimaryBtn(modifier = Modifier.wrapContentWidth(), text = stringResource(id = string.cancel)) {
+                PrimaryBtn(text = stringResource(id = string.cancel)) {
                     onDismissRequest.invoke()
                 }
                 Spacer(modifier = Modifier.size(NotesTheme.dimens.halfContentMargin))

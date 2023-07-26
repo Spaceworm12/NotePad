@@ -3,7 +3,6 @@ package com.example.homework.presentation.composefutures.dialogs
 import NotesTheme
 import android.app.DatePickerDialog
 import android.content.res.Configuration
-import android.graphics.Paint.Style
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,14 +22,11 @@ import com.example.homework.R
 import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.buttons.DialogBtn
 import com.example.homework.presentation.composefutures.buttons.HorizontalBtn
-import com.example.homework.presentation.model.NoteModel
 import java.util.*
 
 
 @Composable
 fun DateAddDialog(
-    note: NoteModel? = null,
-    noteDate: String? = null,
     message: String = "",
     negativeButtonText: String = "",
     positiveButtonText: String = "",
@@ -42,7 +38,7 @@ fun DateAddDialog(
     dismiss: () -> Unit,
 
     ) {
-    val selectedDate = remember { mutableStateOf("") }
+    val selectedDate = remember { mutableStateOf("Дата") }
     Dialog(
         onDismissRequest = { dismiss.invoke() },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
@@ -105,7 +101,7 @@ fun DateAddDialog(
                 DialogBtn(
                     text = positiveButtonText.ifBlank { stringResource(R.string.save) },
                     isEnabled = isEnabled,
-                    onClick = { onPositiveClick.invoke() },
+                    onClick = { onPositiveClick.invoke(selectedDate.value) },
                     color = positiveButtonColor ?: NotesTheme.colors.secondary
                 )
             }

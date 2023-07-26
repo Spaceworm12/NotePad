@@ -1,11 +1,16 @@
 package com.example.homework.presentation.recycler.notelistcomponents
 
 import NotesTheme
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
@@ -36,7 +41,7 @@ internal fun ShowSettingsDialogRadio(
     currentTheme: Int,
     onUiEvent: (ListEvents) -> Unit,
     onDismiss: () -> Unit,
-    onToastShow: (String) -> Unit,
+    onToastShow: (Int) -> Unit,
 ) {
     Dialog(
         onDismissRequest = { onDismiss.invoke() },
@@ -63,9 +68,11 @@ internal fun ShowSettingsDialogRadio(
             )
             Spacer(modifier = Modifier.size(16.dp))
 
-            Row(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+            ) {
 
                 RadioButton(
                     selected = (currentTheme == FIRST_THEME), onClick = {
@@ -73,12 +80,22 @@ internal fun ShowSettingsDialogRadio(
                             selectedItem.value = FIRST_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
                         } else {
-                            onToastShow.invoke("R.string.theme_already_run")
+                            onToastShow.invoke(R.string.theme_already_run)
                         }
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=7.dp),
+                Text(
+                    modifier = Modifier
+                        .padding(top = 7.dp)
+                        .clickable {
+                            if (currentTheme != FIRST_THEME) {
+                                selectedItem.value = FIRST_THEME
+                                onUiEvent.invoke(ListEvents.ChangeTheme(FIRST_THEME))
+                            } else {
+                                onToastShow.invoke(R.string.theme_already_run)
+                            }
+                        },
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.first_theme),
                     fontSize = 22.sp,
@@ -86,21 +103,33 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+            ) {
                 RadioButton(
                     selected = (currentTheme == SECOND_THEME), onClick = {
                         if (currentTheme != SECOND_THEME) {
                             selectedItem.value = SECOND_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
                         } else {
-                            onToastShow.invoke("R.string.theme_already_run")
+                            onToastShow.invoke(R.string.theme_already_run)
                         }
                     }, colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=7.dp),
+                Text(
+                    modifier = Modifier
+                        .padding(top = 7.dp)
+                        .clickable {
+                            if (currentTheme != SECOND_THEME) {
+                                selectedItem.value = SECOND_THEME
+                                onUiEvent.invoke(ListEvents.ChangeTheme(SECOND_THEME))
+                            } else {
+                                onToastShow.invoke(R.string.theme_already_run)
+                            }
+                        },
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.second_theme),
                     fontSize = 22.sp,
@@ -108,9 +137,11 @@ internal fun ShowSettingsDialogRadio(
                 )
                 Spacer(modifier = Modifier.size(16.dp))
             }
-            Row(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+            ) {
                 RadioButton(
                     selected = (currentTheme == THIRD_THEME),
                     onClick = {
@@ -118,13 +149,23 @@ internal fun ShowSettingsDialogRadio(
                             selectedItem.value = THIRD_THEME
                             onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
                         } else {
-                            onToastShow.invoke("R.string.theme_already_run")
+                            onToastShow.invoke(R.string.theme_already_run)
                         }
                     },
                     colors = RadioButtonDefaults.colors(Color.DarkGray)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(modifier = Modifier.padding(top=7.dp),
+                Text(
+                    modifier = Modifier
+                        .padding(top = 7.dp)
+                        .clickable {
+                            if (currentTheme != THIRD_THEME) {
+                                selectedItem.value = THIRD_THEME
+                                onUiEvent.invoke(ListEvents.ChangeTheme(THIRD_THEME))
+                            } else {
+                                onToastShow.invoke(R.string.theme_already_run)
+                            }
+                        },
                     color = NotesTheme.colors.rippleColor,
                     text = stringResource(R.string.third_theme),
                     fontSize = 22.sp,
@@ -141,8 +182,8 @@ internal fun ShowSettingsDialogRadio(
 @Composable
 private fun ShowSettingsDialogRadioPreview() {
     ThemeSettings {
-        ShowSettingsDialogRadio(currentTheme = FIRST_THEME, onUiEvent = {},{}) {
-            
+        ShowSettingsDialogRadio(currentTheme = FIRST_THEME, onUiEvent = {}, {}) {
+
         }
     }
 }

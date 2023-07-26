@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,10 +28,8 @@ import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.composefutures.buttons.HorizontalBtn
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
-import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
 class BirthdayFragment : ComposeFragment() {
@@ -90,7 +87,8 @@ class BirthdayFragment : ComposeFragment() {
             Toolbar(
                 title = stringResource(id = R.string.detail_bdnote_toolbar),
                 subtitle = stringResource(id = R.string.detail_bdnote_subtoolbar),
-                onBackClick = { goBack()
+                onBackClick = {
+                    goBack()
                 }
             )
 
@@ -99,7 +97,7 @@ class BirthdayFragment : ComposeFragment() {
                     .fillMaxWidth()
                     .padding(NotesTheme.dimens.halfContentMargin)
                     .border(
-                        width = dimensionResource(R.dimen.low_1),
+                        width = 1.dp,
                         color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
                     )
@@ -139,9 +137,9 @@ class BirthdayFragment : ComposeFragment() {
             val mDate = remember { mutableStateOf("") }
             val mDatePickerDialog = DatePickerDialog(
                 mContext,
-                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int->
-                    mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
-                    currentDate=mDate.value
+                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                    mDate.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
+                    currentDate = mDate.value
                     note.date = currentDate
                 }, mYear, mMonth, mDay
             )
@@ -157,10 +155,11 @@ class BirthdayFragment : ComposeFragment() {
                     .fillMaxWidth()
                     .padding(NotesTheme.dimens.halfContentMargin)
                     .border(
-                        width = dimensionResource(R.dimen.low_1),
+                        width = 1.dp,
                         color = NotesTheme.colors.secondary,
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
-                    ), contentAlignment = Alignment.Center,
+                    ),
+                contentAlignment = Alignment.Center,
             ) {
 
                 TextField(
@@ -173,7 +172,8 @@ class BirthdayFragment : ComposeFragment() {
                         bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {
-                        Text(modifier = Modifier.fillMaxWidth(),
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
                             text = stringResource(id = R.string.date_birthday),
                             textAlign = TextAlign.Center,
                             style = NotesTheme.typography.body1,
@@ -194,7 +194,7 @@ class BirthdayFragment : ComposeFragment() {
                     .weight(1f)
                     .padding(NotesTheme.dimens.halfContentMargin)
                     .border(
-                        width = dimensionResource(R.dimen.low_1),
+                        width = 1.dp,
                         color = NotesTheme.colors.secondaryVariant,
                         shape = RoundedCornerShape(NotesTheme.dimens.contentMargin)
                     )
@@ -204,7 +204,7 @@ class BirthdayFragment : ComposeFragment() {
                     value = currentDescription,
                     onValueChange = {
                         currentDescription = it
-                        note.description=currentDescription
+                        note.description = currentDescription
                         bdViewModel.submitUIEvent(BirthdayEvent.SetBirthdayNote(note))
                     },
                     placeholder = {

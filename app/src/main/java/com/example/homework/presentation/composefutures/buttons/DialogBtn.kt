@@ -3,7 +3,12 @@ package com.example.homework.presentation.composefutures.buttons
 
 import NotesTheme
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -22,7 +27,6 @@ fun DialogBtn(
     text: String,
     isEnabled: Boolean = true,
     color: Color = NotesTheme.colors.secondary,
-    textAlign: TextAlign = TextAlign.End,
     onClick: () -> Unit,
 ) {
     Button(
@@ -48,10 +52,10 @@ fun DialogBtn(
     }
 }
 
-@Preview(name = "DialogBtn", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "DialogBtnPreview", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun DialogBtnPreview() {
-    ThemeSettings() {
+    ThemeSettings{
         Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
             DialogBtn(text = "Text1") {}
             DialogBtn(text = "Text2", isEnabled = false) {}

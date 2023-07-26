@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,26 +71,24 @@ class ListFragment : ComposeFragment() {
             viewModel.submitUIEvent(event)
         }
         if (state.isShowChangeDialog) ShowChangeDialog(
-            context = requireContext(),
             state.currentNote!!,
             goToTheNextScreen = { note -> goToDetails(note) },
             dismiss = { state.isShowChangeDialog = false }) { event ->
             viewModel.submitUIEvent(event)
         }
         if (state.isShowSettingsDialog) ShowSettingsDialog(
-            requireContext(),
+            onToastShow = {textToast ->Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()},
             state.currentTheme
         ) { event -> viewModel.submitUIEvent(event) }
         if (state.isShowSettingsDialogRadio) ShowSettingsDialogRadio(
             state.currentTheme,
             onDismiss = { state.isShowSettingsDialogRadio = false },
             onUiEvent = { event -> viewModel.submitUIEvent(event) },
-            onToastShow = {textToast -> Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()
-            state.showToast = textToast}
+            onToastShow = {textToast -> Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()}
             )
         if (state.isShowDeleteAllDialog) ClearAllNotes(
-            requireContext(),
-            onDismiss = { state.isShowDeleteAllDialog = false }) { event ->
+            onToastShow = {textToast ->Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()},
+            onDismiss = {state.isShowDeleteAllDialog = false }) { event ->
             viewModel.submitUIEvent(event)
         }
 
@@ -112,9 +109,7 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                .size(
-                                    dimensionResource(R.dimen.big_70)
-                                )
+                                .size(70.dp)
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)
@@ -129,7 +124,7 @@ class ListFragment : ComposeFragment() {
                         Icon(
                             modifier = Modifier
                                 .size(
-                                    dimensionResource(R.dimen.big_70)
+                                    (70.dp)
                                 )
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Lens,
@@ -162,8 +157,8 @@ class ListFragment : ComposeFragment() {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
             FloatingActionButton(
                 modifier = Modifier
-                    .height(dimensionResource(R.dimen.big_70))
-                    .width(dimensionResource(R.dimen.big_70))
+                    .height(70.dp)
+                    .width(70.dp)
                     .padding(
                         start = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -183,12 +178,12 @@ class ListFragment : ComposeFragment() {
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
 
-            val fabSize = dimensionResource(R.dimen.design_fab_size_normal)
+            val fabSize = 56.dp
 
             FloatingActionButton(
                 modifier = Modifier
-                    .height(dimensionResource(R.dimen.big_70))
-                    .width(dimensionResource(R.dimen.big_70))
+                    .height(70.dp)
+                    .width(70.dp)
                     .padding(
                         end = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -212,8 +207,8 @@ class ListFragment : ComposeFragment() {
             ) {
                 FloatingActionButton(
                     modifier = Modifier
-                        .height(dimensionResource(R.dimen.big_70))
-                        .width(dimensionResource(R.dimen.big_70))
+                        .height(70.dp)
+                        .width(70.dp)
                         .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -233,8 +228,8 @@ class ListFragment : ComposeFragment() {
             AnimatedVisibility(visible = isVisibleNow.value) {
                 FloatingActionButton(
                     modifier = Modifier
-                        .height(dimensionResource(R.dimen.big_70))
-                        .width(dimensionResource(R.dimen.big_70))
+                        .height(70.dp)
+                        .width(70.dp)
                         .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -281,7 +276,7 @@ class ListFragment : ComposeFragment() {
     @Preview(name = "ListNotesScreen", uiMode = Configuration.UI_MODE_NIGHT_NO)
     @Composable
     private fun RecyclerScreenPreview() {
-        ThemeSettings(themeCode = 3) {
+        ThemeSettings {
 
             val model = NoteModel(
                 id = 0,
