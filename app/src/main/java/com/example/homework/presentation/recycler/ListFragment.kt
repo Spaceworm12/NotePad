@@ -2,6 +2,10 @@ package com.example.homework.presentation.recycler
 
 import NotesTheme
 import android.content.res.Configuration
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.shrinkVertically
@@ -46,11 +50,20 @@ class ListFragment : ComposeFragment() {
         ViewModelProvider(this)[ListViewModel::class.java]
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewModel.submitUIEvent(ListEvents.GetNotes)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     @Composable
     override fun GetContent() {
-        viewModel.submitUIEvent(ListEvents.GetNotes)
         val state = viewModel.viewStateObs.observeAsState().value ?: return
         val themeCount = AppNotes.getSettingsTheme().getInt(THEME_CODE, 0).toString()
+
         ThemeSettings(themeCode = state.currentTheme) {
             ListNotesScreen(state, themeCount)
         }
