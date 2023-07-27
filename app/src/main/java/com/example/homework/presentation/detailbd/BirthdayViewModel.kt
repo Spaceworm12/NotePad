@@ -42,7 +42,6 @@ class BirthdayViewModel(
         when (event) {
             is BirthdayEvent.SaveBirthdayNote -> saveNewBd(id = event.id)
             is BirthdayEvent.SetBirthdayNote -> bdNoteExample.postValue(event.note)
-            is BirthdayEvent.ShowCalendar -> itsShow.value = true
         }
     }
 
