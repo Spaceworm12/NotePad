@@ -13,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -27,7 +26,6 @@ internal fun NoteItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(NotesTheme.dimens.contentMargin)
-            .padding(NotesTheme.dimens.sideMargin)
             .combinedClickable(
                 onClick = {
                     onUiEvent.invoke(ListEvents.SaveCurrentNote(note))
@@ -42,7 +40,7 @@ internal fun NoteItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
                     )
                 },
             ),
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(NotesTheme.dimens.inputsMargin),
         backgroundColor = NotesTheme.colors.primary,
         elevation = NotesTheme.dimens.halfContentMargin
     ) {

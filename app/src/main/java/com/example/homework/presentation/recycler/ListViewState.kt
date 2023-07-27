@@ -9,14 +9,13 @@ data class ListViewState(
     val errorText: String = "",
     val isShowDeleteDialog: Boolean = false,
     val isShowSettingsDialog: Boolean = false,
-    var isShowSettingsDialogRadio: Boolean = false,
-    var isShowChangeDialog: Boolean = false,
-    var isShowDeleteAllDialog: Boolean = false,
+    val isShowSettingsDialogRadio: Boolean = false,
+    val isShowChangeDialog: Boolean = false,
+    val isShowDeleteAllDialog: Boolean = false,
     val currentTheme: Int = 0,
     val deletableNoteId: Long = -1L,
-    var currentNote: NoteModel? = null,
-    var isShowCalendar: Boolean = false,
-
+    val currentNote: NoteModel? = null,
+    val isShowCalendar: Boolean = false,
     ) {
 
     fun getEmptyNote(): NoteModel {

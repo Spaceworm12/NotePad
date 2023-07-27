@@ -10,12 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.homework.presentation.composefutures.ThemeSettings
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
@@ -47,44 +45,45 @@ internal fun EventItem(note: NoteModel, onUiEvent: (ListEvents) -> Unit) {
         backgroundColor = NotesTheme.colors.secondary,
         elevation = NotesTheme.dimens.contentMargin,
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(NotesTheme.dimens.contentMargin)
         ) {
+
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = NotesTheme.dimens.halfContentMargin, end = NotesTheme.dimens.halfContentMargin),
                 text = note.name,
                 style = NotesTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis
             )
+
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = NotesTheme.dimens.halfContentMargin, end = NotesTheme.dimens.halfContentMargin),
                 text = note.description,
                 style = NotesTheme.typography.body1,
                 softWrap = true,
                 overflow = TextOverflow.Clip
             )
-            Row(
+
+            Text(
                 modifier = Modifier
+                    .padding(NotesTheme.dimens.halfContentMargin)
                     .fillMaxWidth()
-                    .padding(NotesTheme.dimens.halfContentMargin),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            NotesTheme.colors.primaryVariant,
-                            shape = RoundedCornerShape(30.dp)
-                        )
-                        .padding(NotesTheme.dimens.sideMargin),
-                    text = note.date,
-                    color = NotesTheme.colors.onPrimary,
-                    textAlign = TextAlign.End
-                )
-            }
+                    .background(
+                        NotesTheme.colors.primaryVariant,
+                        shape = RoundedCornerShape(NotesTheme.dimens.inputsMargin)
+                    )
+                    .padding(NotesTheme.dimens.sideMargin),
+                text = note.date,
+                color = NotesTheme.colors.onPrimary,
+                textAlign = TextAlign.End
+            )
         }
     }
 }

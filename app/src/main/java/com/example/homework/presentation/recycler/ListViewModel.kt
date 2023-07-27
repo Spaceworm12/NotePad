@@ -1,6 +1,5 @@
 package com.example.homework.presentation.recycler
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -52,15 +51,19 @@ class ListViewModel(
             is ListEvents.SaveCurrentNote -> viewState = viewState.copy(currentNote = event.note)
             is ListEvents.ShowChangeDialog -> viewState =
                 viewState.copy(isShowChangeDialog = event.itsShow)
+
             is ListEvents.ShowCalendar -> viewState = viewState.copy(isShowCalendar = event.itsShow)
             is ListEvents.SaveUserDate -> changeDate(date = event.note.date, id = event.note.id)
             is ListEvents.ChangeTheme -> setTheme(event.themeCode)
             is ListEvents.ShowDeleteDialog -> viewState =
                 viewState.copy(isShowDeleteDialog = event.itsShow, deletableNoteId = event.id)
+
             is ListEvents.ClearAll -> viewState =
                 viewState.copy(isShowDeleteAllDialog = event.itsShow)
+
             is ListEvents.ShowSettingsDialog -> viewState =
                 viewState.copy(isShowSettingsDialog = event.itsShow)
+
             is ListEvents.ShowSettingsDialogRadio -> viewState =
                 viewState.copy(isShowSettingsDialogRadio = event.itsShow)
         }
@@ -68,7 +71,6 @@ class ListViewModel(
 
 
     private fun getListNotes() {
-        viewState = viewState.copy(isLoading = true)
         repo.getAll()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -80,6 +82,7 @@ class ListViewModel(
                             isLoading = false
                         )
                     }
+
                     is Resource.Error -> {
                         viewState.copy(isLoading = false, errorText = "error")
                     }
@@ -94,9 +97,11 @@ class ListViewModel(
             .subscribe { result ->
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
-                    is Resource.Data -> {getListNotes()
+                    is Resource.Data -> {
+                        getListNotes()
                         viewState.copy(isLoading = false)
                     }
+
                     is Resource.Error -> viewState.copy(isLoading = false, errorText = "err")
                 }
             }
@@ -109,9 +114,11 @@ class ListViewModel(
             .subscribe { result ->
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
-                    is Resource.Data -> {getListNotes()
+                    is Resource.Data -> {
+                        getListNotes()
                         viewState.copy(isLoading = false)
                     }
+
                     is Resource.Error -> viewState.copy(isLoading = false, errorText = "err")
                 }
             }
@@ -124,9 +131,11 @@ class ListViewModel(
             .subscribe { result ->
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
-                    is Resource.Data -> {getListNotes()
+                    is Resource.Data -> {
+                        getListNotes()
                         viewState.copy(isLoading = false)
                     }
+
                     is Resource.Error -> {
                         viewState.copy(
                             isLoading = false,
@@ -144,10 +153,15 @@ class ListViewModel(
             .subscribe { result ->
                 viewState = when (result) {
                     is Resource.Loading -> viewState.copy(isLoading = true)
-                    is Resource.Data -> {getListNotes()
+                    is Resource.Data -> {
+                        getListNotes()
                         viewState.copy(isLoading = false)
                     }
-                    is Resource.Error -> viewState.copy(isLoading = false, errorText = result.error.message ?: "")
+
+                    is Resource.Error -> viewState.copy(
+                        isLoading = false,
+                        errorText = result.error.message ?: ""
+                    )
                 }
             }.addTo(disposables)
     }

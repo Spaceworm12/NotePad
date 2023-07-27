@@ -10,6 +10,7 @@ class NotesDimens(
     inputsMargin: Dp,
     contentMargin: Dp,
     halfContentMargin: Dp,
+    bigDimension: Dp = 70.dp
 ) {
     var sideMargin by mutableStateOf(sideMargin, structuralEqualityPolicy())
         internal set
@@ -18,6 +19,8 @@ class NotesDimens(
     var contentMargin by mutableStateOf(contentMargin, structuralEqualityPolicy())
         internal set
     var halfContentMargin by mutableStateOf(halfContentMargin, structuralEqualityPolicy())
+        internal set
+    var bigDimension by mutableStateOf(bigDimension, structuralEqualityPolicy())
         internal set
 }
 
@@ -32,6 +35,7 @@ fun normalDimensions(
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
+    bigDimension = bigDimension
 )
 
 fun smallDimensions(
@@ -39,12 +43,13 @@ fun smallDimensions(
     inputsMargin: Dp = 20.dp,
     contentMargin: Dp = 6.dp,
     halfContentMargin: Dp = 3.dp,
-
+    bigDimension: Dp = 50.dp
 ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
+    bigDimension = bigDimension
 
 )
 fun bigDimensions(
@@ -52,10 +57,12 @@ fun bigDimensions(
     inputsMargin: Dp = 28.dp,
     contentMargin: Dp = 10.dp,
     halfContentMargin: Dp = 6.dp,
+    bigDimension: Dp = 100.dp
 
     ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
+    bigDimension = bigDimension
 )

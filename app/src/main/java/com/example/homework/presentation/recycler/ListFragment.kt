@@ -32,6 +32,7 @@ import com.example.homework.data.models.model.app.AppNotes
 import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.THEME_CODE
 import com.example.homework.presentation.composefutures.ThemeSettings
+import com.example.homework.presentation.composefutures.toolbarsandloader.LoaderBlock
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.detail.NoteFragment
 import com.example.homework.presentation.detailbd.BirthdayFragment
@@ -58,39 +59,55 @@ class ListFragment : ComposeFragment() {
     @Composable
     private fun ListNotesScreen(state: ListViewState, themeCount: String) {
         val isVisibleNow = remember { mutableStateOf(false) }
-//        if (state.isLoading){
-//            LoaderBlock(text = "падажжи")}
+
+        if (state.isLoading) LoaderBlock(text = "падажжи")
+
         if (state.errorText.isNotBlank())
             Toast.makeText(context, state.errorText, Toast.LENGTH_SHORT).show()
+
         if (state.isShowDeleteDialog)
             DeleteDialog(state.deletableNoteId) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowCalendar) ShowDateDialog(state.currentNote!!, onDismissInvoke = {
-            state.isShowCalendar = false
-            state.isShowChangeDialog = false
-        }) { event ->
-            viewModel.submitUIEvent(event)
-        }
-        if (state.isShowChangeDialog) ShowChangeDialog(
-            state.currentNote!!,
-            goToTheNextScreen = { note -> goToDetails(note) },
-            dismiss = { state.isShowChangeDialog = false }) { event ->
-            viewModel.submitUIEvent(event)
-        }
-        if (state.isShowSettingsDialog) ShowSettingsDialog(
-            onToastShow = {textToast ->Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()},
-            state.currentTheme
-        ) { event -> viewModel.submitUIEvent(event) }
-        if (state.isShowSettingsDialogRadio) ShowSettingsDialogRadio(
-            state.currentTheme,
-            onDismiss = { state.isShowSettingsDialogRadio = false },
-            onUiEvent = { event -> viewModel.submitUIEvent(event) },
-            onToastShow = {textToast -> Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()}
+
+        if (state.isShowCalendar)
+            ShowDateDialog(
+                state.currentNote!!,
+                onDismissInvoke = {
+                    viewModel.submitUIEvent(ListEvents.ShowCalendar(false, state.currentNote))
+                    viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, state.currentNote))
+                }) {
+                    event -> viewModel.submitUIEvent(event)
+            }
+
+        if (state.isShowChangeDialog)
+            ShowChangeDialog(
+                state.currentNote!!,
+                goToTheNextScreen = { note -> goToDetails(note) },
+                dismiss = { viewModel.submitUIEvent(ListEvents.ShowChangeDialog(false, state.currentNote)) }
+            ) { event ->
+                viewModel.submitUIEvent(event)
+            }
+
+        if (state.isShowSettingsDialog)
+            ShowSettingsDialog(
+                onToastShow = { textToast -> Toast.makeText(context, textToast, Toast.LENGTH_SHORT).show() },
+                state.currentTheme
+            ) { event -> viewModel.submitUIEvent(event) }
+
+        if (state.isShowSettingsDialogRadio)
+            ShowSettingsDialogRadio(
+                state.currentTheme,
+                onDismiss = { viewModel.submitUIEvent(ListEvents.ShowSettingsDialogRadio(false)) },
+                onUiEvent = { event -> viewModel.submitUIEvent(event) },
+                onToastShow = { textToast -> Toast.makeText(context, textToast, Toast.LENGTH_SHORT).show() }
             )
-        if (state.isShowDeleteAllDialog) ClearAllNotes(
-            onToastShow = {textToast ->Toast.makeText(context,textToast,Toast.LENGTH_SHORT).show()},
-            onDismiss = {state.isShowDeleteAllDialog = false }) { event ->
-            viewModel.submitUIEvent(event)
-        }
+
+        if (state.isShowDeleteAllDialog)
+            ClearAllNotes(
+                onToastShow = { textToast -> Toast.makeText(context, textToast, Toast.LENGTH_SHORT).show() },
+                onDismiss = { viewModel.submitUIEvent(ListEvents.ShowSettingsDialogRadio(false)) }
+            ) { event ->
+                viewModel.submitUIEvent(event)
+            }
 
         Column(
             modifier = Modifier.background(
@@ -100,7 +117,11 @@ class ListFragment : ComposeFragment() {
             )
         ) {
             Toolbar(
-                title = stringResource(id = R.string.list_of_notes_theme_number) + "$themeCount",
+                title = String.format(
+                    "%s%s",
+                    stringResource(id = R.string.list_of_notes_theme_number),
+                    themeCount
+                ),
                 stringResource(id = R.string.list_fragment_title),
                 isBackArrowVisible = false,
                 actions = {
@@ -109,7 +130,7 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                .size(70.dp)
+                                .size(NotesTheme.dimens.bigDimension)
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Api,
                             contentDescription = stringResource(R.string.select_theme)
@@ -123,9 +144,7 @@ class ListFragment : ComposeFragment() {
                     }) {
                         Icon(
                             modifier = Modifier
-                                .size(
-                                    (70.dp)
-                                )
+                                .size(NotesTheme.dimens.bigDimension)
                                 .padding(NotesTheme.dimens.sideMargin),
                             imageVector = Icons.Filled.Lens,
                             contentDescription = stringResource(R.string.select_theme)
@@ -134,6 +153,7 @@ class ListFragment : ComposeFragment() {
                 },
                 onBackClick = { }
             )
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -146,6 +166,7 @@ class ListFragment : ComposeFragment() {
                         NoteType.BIRTHDAY_TYPE -> EventItem(item) { event ->
                             viewModel.submitUIEvent(event)
                         }
+
                         NoteType.NOTE_TYPE -> NoteItem(item) { event ->
                             viewModel.submitUIEvent(event)
                         }
@@ -157,8 +178,8 @@ class ListFragment : ComposeFragment() {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart) {
             FloatingActionButton(
                 modifier = Modifier
-                    .height(70.dp)
-                    .width(70.dp)
+                    .height(NotesTheme.dimens.bigDimension)
+                    .width(NotesTheme.dimens.bigDimension)
                     .padding(
                         start = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -182,8 +203,8 @@ class ListFragment : ComposeFragment() {
 
             FloatingActionButton(
                 modifier = Modifier
-                    .height(70.dp)
-                    .width(70.dp)
+                    .height(NotesTheme.dimens.bigDimension)
+                    .width(NotesTheme.dimens.bigDimension)
                     .padding(
                         end = NotesTheme.dimens.sideMargin,
                         bottom = NotesTheme.dimens.sideMargin
@@ -207,8 +228,8 @@ class ListFragment : ComposeFragment() {
             ) {
                 FloatingActionButton(
                     modifier = Modifier
-                        .height(70.dp)
-                        .width(70.dp)
+                        .height(NotesTheme.dimens.bigDimension)
+                        .width(NotesTheme.dimens.bigDimension)
                         .offset(y = (-fabSize) - (NotesTheme.dimens.sideMargin))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,
@@ -228,8 +249,8 @@ class ListFragment : ComposeFragment() {
             AnimatedVisibility(visible = isVisibleNow.value) {
                 FloatingActionButton(
                     modifier = Modifier
-                        .height(70.dp)
-                        .width(70.dp)
+                        .height(NotesTheme.dimens.bigDimension)
+                        .width(NotesTheme.dimens.bigDimension)
                         .offset(y = (-fabSize * 2) - (NotesTheme.dimens.sideMargin * 2))
                         .padding(
                             end = NotesTheme.dimens.sideMargin,

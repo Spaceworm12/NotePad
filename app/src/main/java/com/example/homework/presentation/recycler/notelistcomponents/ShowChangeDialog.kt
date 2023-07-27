@@ -24,7 +24,9 @@ internal fun ShowChangeDialog(
         stringResource(R.string.delete),
         stringResource(R.string.change_date)
     )
+
     val itemsNoDate = arrayOf(stringResource(R.string.open), stringResource(R.string.delete))
+
     ItemsDialog(
         title = stringResource(R.string.choose_action),
         items = when (note.type) {
