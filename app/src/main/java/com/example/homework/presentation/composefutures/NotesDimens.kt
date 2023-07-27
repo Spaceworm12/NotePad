@@ -10,7 +10,7 @@ class NotesDimens(
     inputsMargin: Dp,
     contentMargin: Dp,
     halfContentMargin: Dp,
-    bigDimension: Dp = 70.dp
+    bigDimension: Dp
 ) {
     var sideMargin by mutableStateOf(sideMargin, structuralEqualityPolicy())
         internal set

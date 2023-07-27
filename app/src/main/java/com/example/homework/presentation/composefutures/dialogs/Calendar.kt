@@ -5,7 +5,16 @@ import android.content.res.Configuration
 import android.text.format.DateFormat
 import android.widget.CalendarView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +23,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,10 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
-import com.example.homework.R.*
+import com.example.homework.R.string
 import com.example.homework.presentation.composefutures.ThemeSettings
-import java.util.*
+import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
+import java.util.Calendar
+import java.util.Date
 
 /**
  * @param minDate Минимальная дата, которую можно выбрать.
@@ -81,9 +90,11 @@ fun DatePickerCalendar(
                 )
             }
 
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 500.dp), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 500.dp), contentAlignment = Alignment.Center
+            ) {
                 CustomCalendarView(
                     currentSelectedDate.value,
                     minDate,
@@ -99,15 +110,23 @@ fun DatePickerCalendar(
                     .align(Alignment.End)
                     .padding(
                         bottom = NotesTheme.dimens.sideMargin,
-                        end = NotesTheme.dimens.sideMargin
+                        top = NotesTheme.dimens.sideMargin,
+                        start = NotesTheme.dimens.halfContentMargin,
+                        end = NotesTheme.dimens.halfContentMargin,
                     )
             ) {
-                PrimaryBtn(text = stringResource(id = string.cancel)) {
+                PrimaryBtn(
+                    modifier = Modifier.weight(1f).padding(end = NotesTheme.dimens.halfContentMargin),
+                    text = stringResource(id = string.cancel)
+                ) {
                     onDismissRequest.invoke()
                 }
                 Spacer(modifier = Modifier.size(NotesTheme.dimens.halfContentMargin))
 
-                PrimaryBtn(text = stringResource(id = string.save)) {
+                PrimaryBtn(
+                    modifier = Modifier.weight(1f).padding(start = NotesTheme.dimens.halfContentMargin),
+                    text = stringResource(id = string.save)
+                ) {
                     val newDate = currentSelectedDate.value
                     onDateSelected(
                         Date(
@@ -165,7 +184,10 @@ private fun CustomCalendarView(
 @Composable
 fun DatePickerPreview() {
     ThemeSettings() {
-        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
     }
 }
 
@@ -173,7 +195,10 @@ fun DatePickerPreview() {
 @Composable
 fun DatePickerTabletPreview() {
     ThemeSettings() {
-        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
     }
 }
 
@@ -181,6 +206,9 @@ fun DatePickerTabletPreview() {
 @Composable
 fun DatePickerLandPreview() {
     ThemeSettings() {
-        DatePickerCalendar(selectedDate = Calendar.getInstance().time, onDateSelected = {}, onDismissRequest = {})
+        DatePickerCalendar(
+            selectedDate = Calendar.getInstance().time,
+            onDateSelected = {},
+            onDismissRequest = {})
     }
 }
