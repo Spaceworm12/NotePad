@@ -7,11 +7,22 @@ import android.os.Build
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,12 +36,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.homework.R
 import com.example.homework.presentation.composefutures.ComposeFragment
 import com.example.homework.presentation.composefutures.ThemeSettings
-import com.example.homework.presentation.composefutures.buttons.HorizontalBtn
 import com.example.homework.presentation.composefutures.buttons.PrimaryBtn
 import com.example.homework.presentation.composefutures.toolbarsandloader.Toolbar
 import com.example.homework.presentation.model.NoteModel
 import com.example.homework.presentation.model.NoteType
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class BirthdayFragment : ComposeFragment() {
 
@@ -81,6 +92,24 @@ class BirthdayFragment : ComposeFragment() {
         var currentDate by remember { mutableStateOf("") }
         currentDate = currentDate.ifBlank { note.date }
 
+        val context = LocalContext.current
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val date = remember { mutableStateOf("") }
+        val datePickerDialog = DatePickerDialog(
+            context,
+            { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                date.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
+                currentDate = date.value
+                note.date = currentDate
+            },
+            year,
+            month,
+            day
+        )
 
         Column(modifier = Modifier.background(NotesTheme.colors.background)) {
 
@@ -125,31 +154,7 @@ class BirthdayFragment : ComposeFragment() {
                     ),
                 )
             }
-            val mContext = LocalContext.current
-            val mYear: Int
-            val mMonth: Int
-            val mDay: Int
-            val mCalendar = Calendar.getInstance()
-            mYear = mCalendar.get(Calendar.YEAR)
-            mMonth = mCalendar.get(Calendar.MONTH)
-            mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-            mCalendar.time = Date()
-            val mDate = remember { mutableStateOf("") }
-            val mDatePickerDialog = DatePickerDialog(
-                mContext,
-                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                    mDate.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
-                    currentDate = mDate.value
-                    note.date = currentDate
-                }, mYear, mMonth, mDay
-            )
-            HorizontalBtn(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.select_date),
-                isEnabled = true,
-            ) {
-                mDatePickerDialog.show()
-            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -163,7 +168,11 @@ class BirthdayFragment : ComposeFragment() {
             ) {
 
                 TextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            datePickerDialog.show()
+                        },
                     enabled = false,
                     value = note.date,
                     onValueChange = {
@@ -188,6 +197,7 @@ class BirthdayFragment : ComposeFragment() {
                     ),
                 )
             }
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -235,6 +245,7 @@ class BirthdayFragment : ComposeFragment() {
     }
 
     private fun goBack() = requireActivity().supportFragmentManager.popBackStack()
+
     private fun getEmptyBirthdayNote(): NoteModel {
         return NoteModel(
             id = 0,
