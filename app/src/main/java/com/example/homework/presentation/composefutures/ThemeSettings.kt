@@ -1,11 +1,5 @@
 package com.example.homework.presentation.composefutures
 
-import LocalAppColors
-import LocalAppDimens
-import LocalAppShapes
-import LocalAppTypography
-import NotesTheme
-import WrsRippleTheme
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider

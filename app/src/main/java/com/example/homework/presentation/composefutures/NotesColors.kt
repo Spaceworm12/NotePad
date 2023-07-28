@@ -18,7 +18,8 @@ class NotesColors(
     onSurface: Color,
     onError: Color,
     rippleColor: Color,
-    notEnabled: Color
+    notEnabled: Color,
+    custom: Color,
 ) {
     var primary by mutableStateOf(primary, structuralEqualityPolicy())
         internal set
@@ -48,6 +49,8 @@ class NotesColors(
         internal set
     var notEnabled by mutableStateOf(notEnabled, structuralEqualityPolicy())
         internal set
+    var custom by mutableStateOf(custom, structuralEqualityPolicy())
+        internal set
 
 }
 
@@ -65,7 +68,8 @@ fun firstColors(
     onSurface: Color = Color(0xFF64dfdf),
     onError: Color = Color.White,
     notEnabled: Color = Color(0XFF72efdd),
-    rippleColor: Color = Color(0XFF72efdd)
+    rippleColor: Color = Color(0XFF72efdd),
+    custom:Color = Color(0xFF00E9C7)
 ): NotesColors = NotesColors(
     primary = primary,
     primaryVariant = primaryVariant,
@@ -81,6 +85,7 @@ fun firstColors(
     onError = onError,
     rippleColor = rippleColor,
     notEnabled = notEnabled,
+    custom=custom,
 )
 
 fun secondColors(
@@ -98,6 +103,7 @@ fun secondColors(
     onError: Color = Color.Black,
     notEnabled: Color = Color(0xFF7287B1),
     rippleColor: Color = Color(0xFF5D7AB9),
+    custom:Color = Color(0xFF0D4FDF)
 ): NotesColors = NotesColors(
     primary,
     primaryVariant,
@@ -113,6 +119,7 @@ fun secondColors(
     onError,
     rippleColor,
     notEnabled,
+    custom,
 )
 
 fun thirdColors(
@@ -130,6 +137,7 @@ fun thirdColors(
     onError: Color = Color.Black,
     notEnabled: Color = Color(0xFF771AC7),
     rippleColor: Color = Color(0xFF5A0AA8),
+    custom:Color = Color(0xFF7B0CE7)
 ): NotesColors = NotesColors(
     primary,
     primaryVariant,
@@ -145,4 +153,5 @@ fun thirdColors(
     onError,
     rippleColor,
     notEnabled,
+    custom
 )

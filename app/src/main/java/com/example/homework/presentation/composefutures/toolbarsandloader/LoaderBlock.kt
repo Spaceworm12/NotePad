@@ -1,6 +1,6 @@
 package com.example.homework.presentation.composefutures.toolbarsandloader
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.homework.presentation.composefutures.ThemeSettings
-import kotlinx.coroutines.delay
 
 @Composable
 fun LoaderBlock(text: String) {

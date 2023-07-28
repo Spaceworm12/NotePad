@@ -10,7 +10,8 @@ class NotesDimens(
     inputsMargin: Dp,
     contentMargin: Dp,
     halfContentMargin: Dp,
-    bigDimension: Dp
+    bigDimension: Dp,
+    someOneDimension: Dp,
 ) {
     var sideMargin by mutableStateOf(sideMargin, structuralEqualityPolicy())
         internal set
@@ -22,6 +23,8 @@ class NotesDimens(
         internal set
     var bigDimension by mutableStateOf(bigDimension, structuralEqualityPolicy())
         internal set
+    var someOneDimension by mutableStateOf(someOneDimension, structuralEqualityPolicy())
+        internal set
 }
 
 fun normalDimensions(
@@ -29,13 +32,15 @@ fun normalDimensions(
     inputsMargin: Dp = 24.dp,
     contentMargin: Dp = 8.dp,
     halfContentMargin: Dp = 4.dp,
-    bigDimension: Dp = 70.dp
+    bigDimension: Dp = 70.dp,
+    someOneDimension: Dp = 150.dp
 ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
-    bigDimension = bigDimension
+    bigDimension = bigDimension,
+    someOneDimension=someOneDimension
 )
 
 fun smallDimensions(
@@ -43,13 +48,16 @@ fun smallDimensions(
     inputsMargin: Dp = 20.dp,
     contentMargin: Dp = 6.dp,
     halfContentMargin: Dp = 3.dp,
-    bigDimension: Dp = 50.dp
+    bigDimension: Dp = 50.dp,
+    someOneDimension: Dp = 80.dp
+
 ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
-    bigDimension = bigDimension
+    bigDimension = bigDimension,
+    someOneDimension=someOneDimension
 
 )
 fun bigDimensions(
@@ -57,12 +65,14 @@ fun bigDimensions(
     inputsMargin: Dp = 28.dp,
     contentMargin: Dp = 10.dp,
     halfContentMargin: Dp = 6.dp,
-    bigDimension: Dp = 100.dp
+    bigDimension: Dp = 100.dp,
+    someOneDimension: Dp = 150.dp
 
     ): NotesDimens = NotesDimens(
     sideMargin = sideMargin,
     inputsMargin = inputsMargin,
     contentMargin = contentMargin,
     halfContentMargin = halfContentMargin,
-    bigDimension = bigDimension
+    bigDimension = bigDimension,
+    someOneDimension=someOneDimension
 )

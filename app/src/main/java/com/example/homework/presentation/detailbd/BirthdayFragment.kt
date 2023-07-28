@@ -1,6 +1,6 @@
 package com.example.homework.presentation.detailbd
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.app.DatePickerDialog
 import android.content.res.Configuration
 import android.os.Build

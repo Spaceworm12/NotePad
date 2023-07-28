@@ -1,6 +1,6 @@
 package com.example.homework.presentation.composefutures.dialogs
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import android.text.format.DateFormat
 import android.widget.CalendarView

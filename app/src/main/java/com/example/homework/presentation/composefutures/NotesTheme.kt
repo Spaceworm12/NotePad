@@ -1,9 +1,4 @@
-import com.example.homework.presentation.composefutures.NotesColors
-import com.example.homework.presentation.composefutures.NotesDimens
-import com.example.homework.presentation.composefutures.NotesShape
-import com.example.homework.presentation.composefutures.NotesTypography
-
-
+package com.example.homework.presentation.composefutures
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
@@ -31,6 +26,7 @@ object NotesTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppDimens.current
+
 }
 
 val LocalAppColors = staticCompositionLocalOf<NotesColors> {

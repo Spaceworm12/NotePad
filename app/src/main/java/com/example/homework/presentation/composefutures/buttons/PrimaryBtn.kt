@@ -1,6 +1,6 @@
 package com.example.homework.presentation.composefutures.buttons
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -67,7 +67,7 @@ fun PrimaryBtn(
                 Text(
                     fontSize = 18.sp,
                     style = NotesTheme.typography.subtitle1,
-                    color=NotesTheme.colors.error,
+                    color= NotesTheme.colors.error,
                     text = text,
                     maxLines = 1,
                 )

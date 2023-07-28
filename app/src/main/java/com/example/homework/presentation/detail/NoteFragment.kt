@@ -1,6 +1,6 @@
 package com.example.homework.presentation.detail
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import android.os.Build
 import android.widget.Toast

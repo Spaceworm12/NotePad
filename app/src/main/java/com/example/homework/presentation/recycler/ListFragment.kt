@@ -1,6 +1,6 @@
 package com.example.homework.presentation.recycler
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater

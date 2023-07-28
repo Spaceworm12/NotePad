@@ -1,6 +1,6 @@
 package com.example.homework.presentation.composefutures.buttons
 
-import NotesTheme
+import com.example.homework.presentation.composefutures.NotesTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
