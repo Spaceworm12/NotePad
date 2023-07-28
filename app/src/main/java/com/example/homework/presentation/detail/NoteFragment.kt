@@ -92,8 +92,6 @@ class NoteFragment : ComposeFragment() {
                     }
                 })
 
-
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

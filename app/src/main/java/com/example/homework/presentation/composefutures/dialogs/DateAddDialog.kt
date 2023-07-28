@@ -38,7 +38,25 @@ fun DateAddDialog(
     dismiss: () -> Unit,
 
     ) {
-    val selectedDate = remember { mutableStateOf("Дата") }
+
+    val startTitle = stringResource(id = R.string.date)
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+    calendar.time = Date()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val selectedDate = remember { mutableStateOf(startTitle) }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            selectedDate.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
+        },
+        year,
+        month,
+        day
+    )
+
     Dialog(
         onDismissRequest = { dismiss.invoke() },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = true)
@@ -55,35 +73,20 @@ fun DateAddDialog(
                     top = NotesTheme.dimens.sideMargin
                 )
         ) {
-            val mContext = LocalContext.current
-            val mYear: Int
-            val mMonth: Int
-            val mDay: Int
-            val mCalendar = Calendar.getInstance()
-            mYear = mCalendar.get(Calendar.YEAR)
-            mMonth = mCalendar.get(Calendar.MONTH)
-            mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-            mCalendar.time = Date()
-            val mDatePickerDialog = DatePickerDialog(
-                mContext,
-                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                    selectedDate.value = "$mDayOfMonth.${mMonth + 1}.$mYear"
-                }, mYear, mMonth, mDay
-            )
+
             HorizontalBtn(
                 modifier = Modifier.fillMaxWidth(),
                 text = selectedDate.value,
                 isEnabled = true,
-                onClick = {
-                    mDatePickerDialog.show()
-                }
+                onClick = { datePickerDialog.show() }
             )
 
-            if (message.isNotBlank()) Text(
-                text = message,
-                style = NotesTheme.typography.body1,
-                modifier = Modifier.fillMaxWidth()
-            )
+            if (message.isNotBlank())
+                Text(
+                    text = message,
+                    style = NotesTheme.typography.body1,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
             Row(
                 modifier = Modifier
@@ -108,11 +111,6 @@ fun DateAddDialog(
         }
     }
 }
-
-private fun <R> Function<R>.invoke(): R {
-    TODO("Not yet implemented")
-}
-
 
 @Preview(name = "DateAddDialog", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable

@@ -22,7 +22,6 @@ import com.example.homework.presentation.composefutures.buttons.DialogBtn
 @Composable
 fun DefaultDialog(
     title: String,
-    message: String = "",
     negativeButtonText: String = "",
     positiveButtonText: String = "",
     negativeButtonColor: Color? = null,
@@ -83,8 +82,9 @@ fun DefaultDialog(
 @Composable
 private fun DefaultDialogPreview() {
     ThemeSettings {
-        DefaultDialog(title = "Уверен?",
-            message = "Ну жми. Но только аккуратно. Пока жмешь, проверим как смотрится длинный текст. А вообще иди в сраку. Делать тебе тут нечго и вообще андроид не для тебя.",
-            onPositiveClick = {}) {}
+        DefaultDialog(
+            title = "Уверен?",
+            onPositiveClick = {}
+        ) {}
     }
 }
