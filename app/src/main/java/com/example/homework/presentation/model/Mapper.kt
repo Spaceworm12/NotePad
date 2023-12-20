@@ -9,7 +9,9 @@ object Mapper {
         return NoteModelPresentation(
             id = model.id,
             name = model.name,
-            description = model.description
+            description = model.description,
+            type = model.type,
+            date = model.date
         )
     }
 
@@ -21,8 +23,11 @@ object Mapper {
         return NoteEntity(
             id = model.id,
             name = model.name,
-            description = model.description
+            description = model.description,
+            type = model.type,
+            date = model.date
         )
     }
 
 }
+

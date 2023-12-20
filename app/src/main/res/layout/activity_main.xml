@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_container"
-    style = "@style/MyBackgroundGradientStyle"
+    style = "@style/LightTheme"
     android:keepScreenOn="true"
     tools:context=".MainActivity"/>
 

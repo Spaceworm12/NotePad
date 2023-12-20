@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".data.models.model.app.DbNotes"
+        android:name=".data.models.model.app.AppNotes"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|screenSize|orientation"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,10 +15,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name_notepad">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

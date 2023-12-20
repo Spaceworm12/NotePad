@@ -1,86 +1,85 @@
 package com.example.homework.presentation.detail
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.homework.data.models.model.app.DbNotes
-import com.example.homework.data.models.model.noteRepository.Repository
-import com.example.homework.data.models.model.noteRepository.RepositoryImplement
+import com.example.homework.data.models.model.app.AppNotes
+import com.example.homework.data.models.model.noterepository.Repository
+import com.example.homework.data.models.model.noterepository.RepositoryImplement
+import com.example.homework.presentation.composefutures.FIRST_THEME
+import com.example.homework.presentation.composefutures.THEME_CODE
 import com.example.homework.presentation.model.Mapper
 import com.example.homework.presentation.model.NoteModel
+import com.example.homework.presentation.model.NoteType
 import com.example.homework.util.Resource
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 
 class NoteViewModel(
-    private val repo: Repository = RepositoryImplement(DbNotes.dao(), DbNotes.getDb())
+    private val repo: Repository = RepositoryImplement(AppNotes.dao(), AppNotes.getDb())
 ) : ViewModel() {
-    private val userTitle = MutableLiveData<String>()
-    private val userDescription = MutableLiveData<String>()
-    val errorText = MutableLiveData<String>()
-
+    private val disposables = CompositeDisposable()
+    val noteExample = MutableLiveData<NoteModel>()
+    private val loading = MutableLiveData<Boolean>()
+    val currentTheme = MutableLiveData(FIRST_THEME)
     val exit = MutableLiveData(false)
+    private val errorText = MutableLiveData<String>()
+
+    init {
+        currentTheme.postValue(AppNotes.getSettingsTheme().getInt(THEME_CODE, FIRST_THEME))
+    }
 
     fun submitUIEvent(event: NoteEvent) {
         handleUIEvent(event)
     }
 
     private fun handleUIEvent(event: NoteEvent) {
+        eventsActions(event)
+    }
+
+    private fun eventsActions(event: NoteEvent) {
         when (event) {
-            is NoteEvent.SaveUserTitle -> userTitle.postValue(event.text)
-            is NoteEvent.SaveUserDescription -> userDescription.postValue(event.text)
             is NoteEvent.SaveNote -> saveNewNote(id = event.id)
-            is NoteEvent.DeleteNote -> deleteNote(id = event.id)
-            NoteEvent.Exit -> goBack()
-            NoteEvent.Error -> errorText.postValue("")
+            is NoteEvent.SetNote -> noteExample.postValue(event.note)
         }
     }
 
-    private fun goBack() {
-        viewModelScope.launch {
-            exit.postValue(true)
-        }
-    }
 
+    @SuppressLint("CheckResult")
     private fun saveNewNote(id: Long) {
-
-        viewModelScope.launch {
-            val result = repo.create(
-                Mapper.transformToData(
-                    NoteModel(
-                        id = id,
-                        name = userTitle.value ?: "Empty title",
-                        description = userDescription.value ?: "Empty Description"
-                    )
-                )
-            )
-
-            when (result) {
-                is Resource.Success -> {
-                    exit.postValue(true)
-
-                }
-
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
+        repo.create(Mapper.transformToData(noteExample.value!!.copy(id=id)))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    Resource.Loading -> {}
+                    is Resource.Data -> exit.postValue(true)
+                    is Resource.Error -> errorText.postValue(result.error.message ?: "")
                 }
             }
-        }
+            .addTo(disposables)
     }
-
 
     private fun deleteNote(id: Long) {
-        viewModelScope.launch {
-            when (val result = repo.delete(id)) {
-                is Resource.Success -> {
-                    goBack()
-
-                }
-                is Resource.Error -> {
-                    errorText.postValue(result.message ?: "")
+        repo.delete(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                when (result) {
+                    is Resource.Loading -> loading.postValue(true)
+                    is Resource.Data -> { exit.postValue(true)
+                    loading.postValue(false)}
+                    is Resource.Error -> {
+                            errorText.postValue(result.error.message ?: "")
+                        loading.postValue(false)
+                    }
                 }
             }
-        }
+            .addTo(disposables)
+    }
+
+    override fun onCleared() {
+        disposables.clear()
     }
 
 }

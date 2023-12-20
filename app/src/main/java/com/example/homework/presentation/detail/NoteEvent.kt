@@ -1,16 +1,9 @@
 package com.example.homework.presentation.detail
 
+import com.example.homework.presentation.model.NoteModel
+
+
 sealed class NoteEvent {
-
-    class SaveUserTitle(val text: String) : NoteEvent()
-
-    class SaveUserDescription(val text: String) : NoteEvent()
-
+    class SetNote(val note: NoteModel) : NoteEvent()
     class SaveNote(val id: Long) : NoteEvent()
-
-    class DeleteNote(val id: Long) : NoteEvent()
-
-    object Exit : NoteEvent()
-
-    object Error:NoteEvent()
 }
